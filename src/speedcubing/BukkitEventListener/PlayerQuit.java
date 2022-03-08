@@ -58,31 +58,27 @@ public class PlayerQuit implements Listener {
             Reduce.BlockPlaced.remove(uuid);
             Reduce.SideBar.get(uuid).cancel();
             Reduce.SideBar.remove(uuid);
-            new Thread(() -> {
-                Integer[] ints = Reduce.integerCache.get(uuid);
-                Boolean[] bs = Reduce.booleanCache.get(uuid);
-                speedcubingServer.connection.update("playersdata",
-                        "reduce_stick=" + ints[0] +
-                                ",reduce_block=" + ints[1] +
-                                ",reduce_setting=" + ints[2] +
-                                ",reduce_stickskin=" + ints[3] +
-                                ",reduce_blockskin=" + ints[4] +
-                                ",reduce_reach=" + ints[5] +
-                                ",reduce_hor=" + ints[6] +
-                                ",reduce_ver=" + ints[7] +
-                                ",reduce_spec=" + ints[8] +
-                                ",reduce_npccolor=" + (bs[0] ? 1 : 0) +
-                                ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
-                                ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
-                                ",reduce_allowspec=" + (bs[3] ? 1 : 0)
-                        , "uuid='" + uuid + "'");
-                if (!spec) {
-                    if (bs[3])
-                        Reduce.removeFromGUI(player.getName(), uuid, map, null);
-                    Reduce.booleanCache.remove(uuid);
-                    Reduce.integerCache.remove(uuid);
-                }
-            }).start();
+            Integer[] ints = Reduce.integerCache.get(uuid);
+            Boolean[] bs = Reduce.booleanCache.get(uuid);
+            new Thread(() -> speedcubingServer.connection.update("playersdata",
+                    "reduce_stick=" + ints[0] +
+                            ",reduce_block=" + ints[1] +
+                            ",reduce_setting=" + ints[2] +
+                            ",reduce_stickskin=" + ints[3] +
+                            ",reduce_blockskin=" + ints[4] +
+                            ",reduce_reach=" + ints[5] +
+                            ",reduce_hor=" + ints[6] +
+                            ",reduce_ver=" + ints[7] +
+                            ",reduce_spec=" + ints[8] +
+                            ",reduce_npccolor=" + (bs[0] ? 1 : 0) +
+                            ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
+                            ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
+                            ",reduce_allowspec=" + (bs[3] ? 1 : 0)
+                    , "uuid='" + uuid + "'")).start();
+            if (!spec && bs[3])
+                Reduce.removeFromGUI(player.getName(), uuid, map, null);
+            Reduce.booleanCache.remove(uuid);
+            Reduce.integerCache.remove(uuid);
             PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, Reduce.EntityPlayers.get(uuid)));
             Reduce.EntityPlayers.remove(uuid);

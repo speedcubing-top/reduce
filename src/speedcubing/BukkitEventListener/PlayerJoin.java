@@ -3,17 +3,12 @@ package speedcubing.BukkitEventListener;
 import cubing.bukkit.api.BungeePluginMessage;
 import cubing.utils.Console;
 import cubing.utils.Reflections;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitScheduler;
-import speedcubing.All.Chat;
-import speedcubing.All.NPCClick;
 import speedcubing.Core.Reduce;
-import speedcubing.Main;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -52,8 +47,6 @@ public class PlayerJoin implements Listener {
             player.sendMessage("§4Keep in mind that the Spectator System is still under development.");
             Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b joined in §aroom=" + room + ",map=" + map);
             Reduce.GameStart(map, player, uuid, room, null);
-            new NPCClick().PacketInject(player);
-            new Chat().PacketInject(player);
         }
     }
 }

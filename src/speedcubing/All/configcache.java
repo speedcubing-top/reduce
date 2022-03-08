@@ -1,6 +1,6 @@
 package speedcubing.All;
 
-import cubingserver.StringList.CommandString;
+import cubingserver.StringList.GlobalString;
 import cubingserver.libs.PlayerData;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class configcache implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        commandSender.sendMessage(CommandString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : PlayerData.getLang(((Player) commandSender).getUniqueId())]);
+        commandSender.sendMessage(GlobalString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : PlayerData.getLang(((Player) commandSender).getUniqueId())]);
         reload();
         return true;
     }

@@ -24,7 +24,7 @@ public class BlockPlace implements Listener {
             int y = block.getY();
             int z = block.getZ();
             UUID uuid = player.getUniqueId();
-            if (y > 112 || y < 85 || Math.abs(z - Reduce.PlayerCoord.get(uuid)) > 150 || Math.abs(x - Reduce.PlayerMap.get(uuid) * 500) > 150)
+            if (y < 85 || Math.abs(z - Reduce.PlayerCoord.get(uuid)) > 150 || Math.abs(x - Reduce.PlayerMap.get(uuid) * 500) > 150)
                 e.setCancelled(true);
             else {
                 int lang = PlayerData.getLang(uuid);
