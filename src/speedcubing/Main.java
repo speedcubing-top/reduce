@@ -32,6 +32,6 @@ public class Main extends JavaPlugin {
         new ItemStackList().Load();
         new Reduce().Load();
         new BlockEditor().Load();
-        ServerEventManager.registerEventListener(new ServerEvent());
+        ServerEventManager.registerListeners(new ServerEvent());
     }
 }
