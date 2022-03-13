@@ -1,6 +1,6 @@
 package speedcubing.List;
 
-import cubingserver.configcache;
+import cubingserver.config;
 
 public class StringList {
    public static String[] spec = {"§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu"};
@@ -19,10 +19,10 @@ public class StringList {
     public static final String[] mapselect = {"§6Select Map", "§6Select Map", "§6Select Map", "§6Select Map"};
     public static final String[] prefedit = {"§bPreferences", "§bPreferences", "§bPreferences", "§bPreferences"};
     public static String[][] ReduceSidebar = {
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + configcache.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + configcache.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + configcache.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + configcache.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"}
+            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
+            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
+            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
+            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"}
     };
 
     public static String[] InputStringCancel2 = {

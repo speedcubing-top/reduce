@@ -2,13 +2,9 @@ package speedcubing.Core;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import cubing.bukkit.EntityPlayerUtils;
-import cubing.bukkit.ItemUtils;
-import cubing.bukkit.PlayerUtils;
-import cubing.bukkit.SkinUtils;
+import cubing.bukkit.*;
 import cubing.bukkit.api.SideBarAPI;
-import cubingserver.libs.PlayerData;
-import cubingserver.libs.Rank;
+import cubingserver.libs.User;
 import cubingserver.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang.ArrayUtils;
@@ -81,7 +77,8 @@ public class Reduce {
     public void Load() {
         NoNameTag.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         for (int i = 0; i < 4; i++) {
-            Invalid[i] = ItemUtils.item(Material.STAINED_GLASS_PANE, new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i], 1, 8, false, false, null, null, null, null);
+            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i]).build()
+            ;
         }
         for (int i = 0; i < maptypes; i++) {
             used[i] = 0;
@@ -95,7 +92,7 @@ public class Reduce {
 
 
     public static void GameStart(int map, Player player, UUID uuid, int room, Set<PlayerConnection> spectators) {
-        int lang = PlayerData.getLang(uuid);
+        int lang = User.getLang(uuid);
         int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         PlayerConnection connection = entityP.playerConnection;
@@ -122,7 +119,7 @@ public class Reduce {
         holo.setGravity(true);
         holo.setInvisible(true);
         holo.n(true);
-        holo.setCustomName("§6" + cubingserver.configcache.SERVERIP);
+        holo.setCustomName("§6" + cubingserver.config.SERVERIP);
         holo.setLocation(NPCx, 101.85, coord + 0.5, 0, 0);
         Holo.put(uuid, holo);
         PacketPlayOutPlayerInfo info = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer);
@@ -177,7 +174,7 @@ public class Reduce {
             inventory.setItem(ints[8], ItemStackList.Spec[lang]);
             inventory.setItem(ints[2], ItemStackList.settings[lang]);
             if (booleanCache.get(uuid)[3]) {
-                int rank = PlayerData.getRank(uuid);
+                int rank = User.getCode(User.getRank(uuid));
                 int diffmap = 0;
                 int diffrank = 0;
                 int total = totalName.size();
@@ -204,7 +201,7 @@ public class Reduce {
                 for (int i = total; i > realindex; i--) {
                     spec.setItem(i, spec.getItem(i - 1));
                 }
-                spec.setItem(realindex, ItemUtils.item(ItemStackList.Maps[0][map][0].getType(), Rank.format(uuid)[0] + player.getName(), 1, -1, false, false, null, null, null, null));
+                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[0] + player.getName()).build());
                 updateSpecPage(null);
             }
         }).start();
@@ -314,7 +311,7 @@ public class Reduce {
         if (backtoarena) {
             int map = PlayerMap.get(uuid);
             PlayerUtils.teleport(connection, map * 500 - MapLocations[map][0], 100 + MapLocations[map][1], PlayerCoord.get(uuid) + 0.5, 270, 0);
-            int lang = PlayerData.getLang(uuid);
+            int lang = User.getLang(uuid);
             Integer[] ints = integerCache.get(uuid);
             Inventory inventory = player.getInventory();
             inventory.clear();
@@ -340,7 +337,7 @@ public class Reduce {
                 }
             }, 4000);
             if (booleanCache.get(uuid)[3]) {
-                int rank = PlayerData.getRank(uuid);
+                int rank = User.getCode(User.getRank(uuid));
                 int diffmap = 0;
                 int diffrank = 0;
                 int total = totalName.size();
@@ -367,7 +364,7 @@ public class Reduce {
                 for (int i = total; i > realindex; i--) {
                     spec.setItem(i, spec.getItem(i - 1));
                 }
-                spec.setItem(realindex, ItemUtils.item(ItemStackList.Maps[0][map][0].getType(), Rank.format(uuid)[0] + player.getName(), 1, -1, false, false, null, null, null, null));
+                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[0] + player.getName()).build());
                 updateSpecPage(null);
             }
         }
@@ -412,7 +409,7 @@ public class Reduce {
                 if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder) {
                     UUID id = p.getUniqueId();
                     Inventory orig = spec;
-                    Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[PlayerData.getLang(id)]);
+                    Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[User.getLang(id)]);
                     inv1.setContents(orig.getContents());
                     if (p.getGameMode() == GameMode.ADVENTURE)
                         ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(target.get(id)).getName())));
@@ -424,7 +421,7 @@ public class Reduce {
                 UUID id = p.getUniqueId();
                 if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !uuid.equals(id)) {
                     Inventory orig = spec;
-                    Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[PlayerData.getLang(id)]);
+                    Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[User.getLang(id)]);
                     inv1.setContents(orig.getContents());
                     if (p.getGameMode() == GameMode.ADVENTURE)
                         ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(target.get(id)).getName())));
@@ -435,9 +432,9 @@ public class Reduce {
     }
 
     public static void removeFromGUI(String name, UUID uuid, int map, UUID ignored) {
-        List<String> x = specName[map].get(PlayerData.getRank(uuid));
+        List<String> x = specName[map].get(User.getCode(User.getRank(uuid)));
         if (x.size() == 1) {
-            specName[map].remove(PlayerData.getRank(uuid));
+            specName[map].remove(User.getCode(User.getRank(uuid)));
         } else x.remove(name);
         int total = totalName.size();
         int index = totalName.indexOf(name);

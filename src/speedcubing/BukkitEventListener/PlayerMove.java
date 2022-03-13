@@ -1,7 +1,7 @@
 package speedcubing.BukkitEventListener;
 
 import cubing.bukkit.PlayerUtils;
-import cubingserver.libs.PlayerData;
+import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.GameMode;
@@ -35,7 +35,7 @@ public class PlayerMove implements Listener {
         } else if (player.getGameMode() == GameMode.SURVIVAL)
             Reduce.Aim(player, Reduce.Spectators.get(uuid));
         if (to.getY() < 85 || Math.abs(to.getZ() - Reduce.PlayerCoord.get(uuid) - 0.5) > 149.5 || Math.abs(to.getX() - Reduce.PlayerMap.get(uuid) * 500 - 0.5) > 149.5) {
-            int lang = PlayerData.getLang(uuid);
+            int lang = User.getLang(uuid);
             int map = Reduce.PlayerMap.get(uuid);
             double NPCx = map * 500 + 0.5;
             double NPCz = Reduce.PlayerCoord.get(uuid) + 0.5;

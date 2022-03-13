@@ -2,8 +2,8 @@ package speedcubing.BukkitEventListener;
 
 import cubing.bukkit.ItemUtils;
 import cubing.utils.Console;
-import cubingserver.libs.PlayerData;
-import net.minecraft.server.v1_8_R3.ItemSaddle;
+import cubingserver.libs.User;
+import cubingserver.speedcubingServer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -16,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
@@ -34,7 +33,7 @@ public class PlayerInteract implements Listener {
             case INK_SACK:
                 if (player.getLocation().getY() >= 90) {
                     UUID uuid = player.getUniqueId();
-                    int lang = PlayerData.getLang(uuid);
+                    int lang = User.getLang(uuid);
                     player.openInventory(ItemStackList.Settings[lang]);
                     if (Reduce.setSkin.contains(uuid)) {
                         player.sendMessage(StringList.InputStringCancel[lang]);
@@ -60,9 +59,9 @@ public class PlayerInteract implements Listener {
                 break;
             case COMPASS:
                 UUID uuid = player.getUniqueId();
-                if (PlayerData.getAbilityRank(uuid) == 10) {
+                if (speedcubingServer.permissions.get(uuid).contains("spec.use")) {
                     Inventory orig = Reduce.spec;
-                    Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[PlayerData.getLang(uuid)]);
+                    Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[User.getLang(uuid)]);
                     inventory.setContents(orig.getContents());
                     if (player.getGameMode().equals(GameMode.ADVENTURE)) {
                         int a = Reduce.totalName.indexOf(Bukkit.getPlayer(Reduce.target.get(uuid)).getName());

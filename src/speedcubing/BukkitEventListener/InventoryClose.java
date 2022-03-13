@@ -3,7 +3,7 @@ package speedcubing.BukkitEventListener;
 
 import cubing.bukkit.InventoryUtils;
 import cubingserver.StringList.GlobalString;
-import cubingserver.libs.PlayerData;
+import cubingserver.libs.User;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public class InventoryClose implements Listener {
         UUID uuid = player.getUniqueId();
         if (e.getInventory().getHolder() == ItemStackList.KitEditorHolder && Reduce.kitedit.contains(uuid)) {
             Reduce.kitedit.remove(uuid);
-            player.sendMessage(GlobalString.UnSavedSettings[PlayerData.getLang(uuid)]);
+            player.sendMessage(GlobalString.UnSavedSettings[User.getLang(uuid)]);
             InventoryUtils.fillItem(player.getInventory(), 9, 36, new ItemStack(Material.AIR));
             player.updateInventory();
         }

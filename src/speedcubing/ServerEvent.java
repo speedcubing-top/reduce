@@ -12,8 +12,7 @@ import cubingserver.StringList.GlobalString;
 import cubingserver.connection.SocketUtils;
 import cubingserver.customEvents.SocketEvent;
 import cubingserver.customEvents.UDPEvent;
-import cubingserver.libs.PlayerData;
-import cubingserver.libs.Rank;
+import cubingserver.libs.User;
 import cubingserver.speedcubingServer;
 import cubingserver.things.events.PlayerJoin;
 import net.minecraft.server.v1_8_R3.*;
@@ -45,21 +44,21 @@ public class ServerEvent {
         if (rs[0].equals("o") && rs[1].equals("1")) {
             speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
             for (Player p : Bukkit.getOnlinePlayers()) {
-                int lang = PlayerData.getLang(p.getUniqueId());
+                int lang = User.getLang(p.getUniqueId());
                 PlayerUtils.sendTabHeaderFooter(((CraftPlayer) p).getHandle().playerConnection, GlobalString.LobbyTabList[0][lang], GlobalString.LobbyTabList[1][lang].replace("%int%", rs[2]));
             }
         }
     }
 
     @ServerEventHandler
-    public void PlayInChatEvent(PlayInChatEvent e){
+    public void PlayInChatEvent(PlayInChatEvent e) {
         e.setCancelled(true);
         Player player = e.player;
         String message = e.packet.a();
         UUID uuid = player.getUniqueId();
         if (Reduce.setSkin.contains(uuid)) {
             if (message.contains(" ") || message.length() > 16)
-                player.sendMessage(GlobalString.invalidName[PlayerData.getLang(uuid)]);
+                player.sendMessage(GlobalString.invalidName[User.getLang(uuid)]);
             else {
                 String id;
                 try {
@@ -130,12 +129,12 @@ public class ServerEvent {
         long time = System.currentTimeMillis();
         boolean spam = PlayerJoin.Canspam.contains(uuid);
         if (!spam && time - speedcubingServer.spam.get(uuid) < 500)
-            player.sendMessage(GlobalString.spam[PlayerData.getLang(uuid)]);
+            player.sendMessage(GlobalString.spam[User.getLang(uuid)]);
         else if (message.charAt(0) != '/') {
             if (!spam && speedcubingServer.lastmsg.get(uuid).equals(message))
-                player.sendMessage(GlobalString.samemsg[PlayerData.getLang(uuid)]);
+                player.sendMessage(GlobalString.samemsg[User.getLang(uuid)]);
             else {
-                String[] formats = Rank.format(uuid);
+                String[] formats = User.getFormat(User.getRank(uuid));
                 String text = formats[0] + formats[1] + player.getName();
                 String[] str = GlobalString.MessageFormat[0];
                 String[] out = new String[]{
@@ -145,7 +144,7 @@ public class ServerEvent {
                         str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
                 };
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    p.sendMessage(out[PlayerData.getLang(p.getUniqueId())]);
+                    p.sendMessage(out[User.getLang(p.getUniqueId())]);
                 }
                 Console.sendColoredConsole("§7[§aChatLog§7] [§b" + player.getWorld().getName() + "§7] " + out[1]);
                 speedcubingServer.lastmsg.put(uuid, message);

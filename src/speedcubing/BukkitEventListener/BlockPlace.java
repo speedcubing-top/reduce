@@ -1,6 +1,6 @@
 package speedcubing.BukkitEventListener;
 
-import cubingserver.libs.PlayerData;
+import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
@@ -27,7 +27,7 @@ public class BlockPlace implements Listener {
             if (y < 85 || Math.abs(z - Reduce.PlayerCoord.get(uuid)) > 150 || Math.abs(x - Reduce.PlayerMap.get(uuid) * 500) > 150)
                 e.setCancelled(true);
             else {
-                int lang = PlayerData.getLang(uuid);
+                int lang = User.getLang(uuid);
                 int a = Reduce.PlacedBlocks.get(uuid) + 1;
                 int b = Reduce.BlockPlaced.get(uuid);
                 Reduce.PlacedBlocks.put(uuid, a);

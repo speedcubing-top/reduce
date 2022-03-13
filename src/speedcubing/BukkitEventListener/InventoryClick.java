@@ -1,13 +1,11 @@
 package speedcubing.BukkitEventListener;
 
 
+import cubing.bukkit.*;
 import cubing.bukkit.InventoryUtils;
-import cubing.bukkit.ItemUtils;
-import cubing.bukkit.PlayerUtils;
-import cubing.bukkit.SkinUtils;
 import cubing.utils.Console;
 import cubingserver.StringList.GlobalString;
-import cubingserver.libs.PlayerData;
+import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -48,22 +46,22 @@ public class InventoryClick implements Listener {
                     switch (RawSlot) {
                         case 10: {
                             UUID uuid = player.getUniqueId();
-                            int lang = PlayerData.getLang(uuid);
+                            int lang = User.getLang(uuid);
                             Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[lang]);
                             String[] reach = StringList.ReachLore[lang];
                             String[] hor = StringList.HorLore[lang];
                             String[] ver = StringList.VerLore[lang];
                             Integer[] cache = Reduce.integerCache.get(uuid);
-                            inv.setItem(11, ItemUtils.item(Material.STICK, reach[0], 1, -1, false, false, null, null, null, Arrays.asList(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3], reach[4])));
-                            inv.setItem(13, ItemUtils.item(Material.STICK, hor[0], 1, -1, false, false, null, null, null, Arrays.asList(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3], hor[4])));
-                            inv.setItem(15, ItemUtils.item(Material.STICK, ver[0], 1, -1, false, false, null, null, null, Arrays.asList(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4])));
+                            inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3], reach[4]).build());
+                            inv.setItem(13, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3], hor[4]).build());
+                            inv.setItem(15, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4]).build());
                             player.openInventory(inv);
                         }
                         break;
                         case 11: {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = PlayerData.getLang(uuid);
+                            int lang = User.getLang(uuid);
                             Inventory inv = player.getInventory();
                             player.openInventory(ItemStackList.InventoryKitEditor[lang]);
                             InventoryUtils.fillItem(inv, 9, 36, Reduce.Invalid[lang]);
@@ -76,7 +74,7 @@ public class InventoryClick implements Listener {
                         case 13: {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = PlayerData.getLang(uuid);
+                            int lang = User.getLang(uuid);
                             int x = Reduce.integerCache.get(uuid)[3];
                             Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[lang]);
                             for (int i = 0; i < 6; i++) {
@@ -90,7 +88,7 @@ public class InventoryClick implements Listener {
                         case 14: {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = PlayerData.getLang(uuid);
+                            int lang = User.getLang(uuid);
                             int map = Reduce.PlayerMap.get(uuid);
                             Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[lang]);
                             inv.setItem(0, ItemStackList.Maps[0][0][lang]);
@@ -103,20 +101,20 @@ public class InventoryClick implements Listener {
                         break;
                         case 15: {
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = PlayerData.getLang(player.getUniqueId());
+                            int lang = User.getLang(player.getUniqueId());
                             Inventory inv = Bukkit.createInventory(ItemStackList.SkinHolder, 27, StringList.title[lang]);
-                            inv.setItem(10, ItemUtils.item(Material.SIGN, StringList.input[lang], 1, -1, false, false, null, null, null, null));
-                            inv.setItem(11, ItemUtils.skull(Material.SKULL_ITEM, StringList.own[lang], 1, 3, false, null, player.getName()));
-                            inv.setItem(13, ItemUtils.item(Material.NAME_TAG, StringList.name[lang], 1, -1, false, false, null, null, null, null));
-                            inv.setItem(14, ItemUtils.item(Material.NAME_TAG, StringList.resetname[lang], 1, -1, false, false, null, null, null, null));
-                            inv.setItem(16, ItemUtils.item(Material.STICK, StringList.resetname[lang], 1, -1, false, false, null, null, null, null));
+                            inv.setItem(10, new ItemBuilder(Material.SIGN).name(StringList.input[lang]).build());
+                            inv.setItem(11, new ItemBuilder(Material.SKULL_ITEM).durability(3).name(StringList.own[lang]).owner(player.getName()).build());
+                            inv.setItem(13, new ItemBuilder(Material.NAME_TAG).name(StringList.name[lang]).build());
+                            inv.setItem(14, new ItemBuilder(Material.NAME_TAG).name(StringList.resetname[lang]).build());
+                            inv.setItem(16, new ItemBuilder(Material.STICK).name(StringList.resetname[lang]).build());
                             player.openInventory(inv);
                         }
                         break;
                         case 16: {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = PlayerData.getLang(uuid);
+                            int lang = User.getLang(uuid);
                             Boolean[] bs = Reduce.booleanCache.get(uuid);
                             org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][lang];
                             ItemStack s2 = ItemStackList.preferButton[1][lang];
@@ -139,7 +137,7 @@ public class InventoryClick implements Listener {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             if (e.getCursor().getType() == Material.AIR) {
-                                player.sendMessage(GlobalString.SavedSettings[PlayerData.getLang(uuid)]);
+                                player.sendMessage(GlobalString.SavedSettings[User.getLang(uuid)]);
                                 Integer[] reduce = Reduce.integerCache.get(uuid);
                                 Inventory inv = player.getInventory();
                                 for (int i = 0; i < 9; i++) {
@@ -183,7 +181,7 @@ public class InventoryClick implements Listener {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = Reduce.booleanCache.get(uuid)[0];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][PlayerData.getLang(uuid)]);
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][User.getLang(uuid)]);
                             Reduce.booleanCache.get(uuid)[0] = !b;
                         }
                         break;
@@ -191,7 +189,7 @@ public class InventoryClick implements Listener {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = Reduce.booleanCache.get(uuid)[1];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][PlayerData.getLang(uuid)]);
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][User.getLang(uuid)]);
                             Reduce.booleanCache.get(uuid)[1] = !b;
                         }
                         break;
@@ -199,7 +197,7 @@ public class InventoryClick implements Listener {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = Reduce.booleanCache.get(uuid)[2];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][PlayerData.getLang(uuid)]);
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][User.getLang(uuid)]);
                             Reduce.booleanCache.get(uuid)[2] = !b;
                         }
                         break;
@@ -208,7 +206,7 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     if (RawSlot >= 10 && RawSlot <= 15) {
                         UUID uuid = player.getUniqueId();
-                        int lang = PlayerData.getLang(uuid);
+                        int lang = User.getLang(uuid);
                         int x = RawSlot - 10;
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
                         Reduce.integerCache.get(uuid)[3] = x;
@@ -221,8 +219,8 @@ public class InventoryClick implements Listener {
                     UUID uuid = player.getUniqueId();
                     if (RawSlot < Reduce.maptypes && RawSlot != Reduce.PlayerMap.get(uuid)) { //swap map
                         if (Reduce.used[RawSlot] == Reduce.rooms) {
-                            Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b swapped to map §a"+RawSlot);
-                            player.sendMessage(GlobalString.NoEnoughServers[PlayerData.getLang(uuid)]);
+                            Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b swapped to map §a" + RawSlot);
+                            player.sendMessage(GlobalString.NoEnoughServers[User.getLang(uuid)]);
                             return;
                         }
                         int newroom = -1;
@@ -263,7 +261,7 @@ public class InventoryClick implements Listener {
                     switch (RawSlot) {
                         case 10: {
                             UUID uuid = player.getUniqueId();
-                            player.sendMessage(StringList.InputString[PlayerData.getLang(uuid)]);
+                            player.sendMessage(StringList.InputString[User.getLang(uuid)]);
                             player.closeInventory();
                             Reduce.setSkin.add(uuid);
                         }
@@ -277,7 +275,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 13: {
                             UUID uuid = player.getUniqueId();
-                            player.sendMessage(StringList.InputString2[PlayerData.getLang(uuid)]);
+                            player.sendMessage(StringList.InputString2[User.getLang(uuid)]);
                             player.closeInventory();
                             Reduce.setName.add(uuid);
                         }
@@ -285,7 +283,7 @@ public class InventoryClick implements Listener {
                         case 14: {
                             UUID uuid = player.getUniqueId();
                             EntityArmorStand stand = Reduce.Holo.get(uuid);
-                            stand.setCustomName("§6" + cubingserver.configcache.SERVERIP);
+                            stand.setCustomName("§6" + cubingserver.config.SERVERIP);
                             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, Reduce.Spectators.get(uuid), new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
                             player.closeInventory();
                         }
@@ -297,21 +295,21 @@ public class InventoryClick implements Listener {
                         case 11: {
                             UUID uuid = player.getUniqueId();
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput2[PlayerData.getLang(uuid)]);
+                            player.sendMessage(StringList.veloinput2[User.getLang(uuid)]);
                             Reduce.ReachSettings.add(uuid);
                         }
                         break;
                         case 13: {
                             UUID uuid = player.getUniqueId();
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput[PlayerData.getLang(uuid)]);
+                            player.sendMessage(StringList.veloinput[User.getLang(uuid)]);
                             Reduce.horSettings.add(uuid);
                         }
                         break;
                         case 15: {
                             UUID uuid = player.getUniqueId();
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput[PlayerData.getLang(uuid)]);
+                            player.sendMessage(StringList.veloinput[User.getLang(uuid)]);
                             Reduce.verSettings.add(uuid);
                         }
                         break;
@@ -345,7 +343,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                         }
 
-                        int lang = PlayerData.getLang(uuid);
+                        int lang = User.getLang(uuid);
                         EntityPlayer ePlayer = ((CraftPlayer) player).getHandle();
                         PlayerConnection connection = ePlayer.playerConnection;
                         if (isSpec) {

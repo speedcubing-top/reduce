@@ -1,6 +1,7 @@
 package speedcubing.List;
 
 import cubing.bukkit.InventoryUtils;
+import cubing.bukkit.ItemBuilder;
 import cubing.bukkit.ItemUtils;
 import cubingserver.StringList.GlobalString;
 import org.bukkit.Bukkit;
@@ -61,42 +62,42 @@ public class ItemStackList {
         String[] leavespec = {"§cLeave Spectate mode", "§cLeave Spectate mode", "§cLeave Spectate mode", "§cLeave Spectate mode"};
         String[] specitem = {"§bSpectate", "§bSpectate", "§bSpectate", "§bSpectate"};
         for (int i = 0; i < 4; i++) {
-            Maps[0][0][i] = ItemUtils.item(Material.LOG, StringList.mapname[0][i], 1, 3, false, false, null, null, null, null);
-            Maps[0][1][i] = ItemUtils.item(Material.BED, StringList.mapname[1][i], 1, -1, false, false, null, null, null, null);
-            Maps[0][2][i] = ItemUtils.item(Material.BARRIER, StringList.mapname[2][i], 1, -1, false, false, null, null, null, null);
-            Maps[0][3][i] = ItemUtils.item(Material.SMOOTH_BRICK, StringList.mapname[3][i], 1, 1, false, false, null, null, null, null);
-            Maps[1][0][i] = ItemUtils.item(Material.LOG, StringList.mapname[0][i], 1, 3, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i]));
-            Maps[1][1][i] = ItemUtils.item(Material.BED, StringList.mapname[1][i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i]));
-            Maps[1][2][i] = ItemUtils.item(Material.BARRIER, StringList.mapname[2][i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i]));
-            Maps[1][3][i] = ItemUtils.item(Material.SMOOTH_BRICK, StringList.mapname[3][i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i]));
-            Spec[i] = ItemUtils.item(Material.COMPASS, specitem[i], 1, -1, false, false, null, null, null, null);
-            LeaveSpec[i] = ItemUtils.item(Material.SLIME_BALL, leavespec[i], 1, -1, false, false, null, null, null, null);
+            Maps[0][0][i] = new ItemBuilder(Material.LOG).durability(3).name(StringList.mapname[0][i]).build();
+            Maps[0][1][i] = new ItemBuilder(Material.BED).name(StringList.mapname[1][i]).build();
+            Maps[0][2][i] = new ItemBuilder(Material.BARRIER).name(StringList.mapname[2][i]).build();
+            Maps[0][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).durability(1).name(StringList.mapname[3][i]).build();
+            Maps[1][0][i] = new ItemBuilder(Material.LOG).glow().durability(3).name(StringList.mapname[0][i]).lore(GlobalString.selected[i]).build();
+            Maps[1][1][i] = new ItemBuilder(Material.BED).glow().name(StringList.mapname[1][i]).lore(GlobalString.selected[i]).build();
+            Maps[1][2][i] = new ItemBuilder(Material.BARRIER).glow().name(StringList.mapname[2][i]).lore(GlobalString.selected[i]).build();
+            Maps[1][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).glow().name(StringList.mapname[3][i]).lore(GlobalString.selected[i]).build();
+            Spec[i] = new ItemBuilder(Material.COMPASS).name(specitem[i]).build();
+            LeaveSpec[i] = new ItemBuilder(Material.SLIME_BALL).name(leavespec[i]).build();
         }
         {
             String[] stick = {"§6Stock", "§6Stick", "§6擊退棒", "§6击退棒"};
             String[] block = {"§6Blöcke", "§6Blocks", "§6方塊", "§6方块"};
             for (int i = 0; i < 4; i++) {
                 ItemStack[] sticks = {
-                        ItemUtils.item(Material.STICK, stick[i], 1, -1, false, false, null, new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}, null),
-                        ItemUtils.item(Material.DIAMOND_SWORD, stick[i], 1, -1, false, true, new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES}, new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}, null),
-                        ItemUtils.item(Material.DIAMOND_HOE, stick[i], 1, -1, false, true, new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES}, new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}, null),
-                        ItemUtils.item(Material.BLAZE_ROD, stick[i], 1, -1, false, false, null, new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}, null),
-                        ItemUtils.item(Material.BONE, stick[i], 1, -1, false, false, null, new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}, null),
-                        ItemUtils.item(Material.FEATHER, stick[i], 1, -1, false, false, null, new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}, null)
+                        new ItemBuilder(Material.STICK).name(stick[i]).ench(new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}).build(),
+                        new ItemBuilder(Material.DIAMOND_SWORD).name(stick[i]).unBreak().hideAttr().ench(new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}).build(),
+                        new ItemBuilder(Material.DIAMOND_HOE).name(stick[i]).unBreak().hideAttr().ench(new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}).build(),
+                        new ItemBuilder(Material.BLAZE_ROD).name(stick[i]).ench(new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}).build(),
+                        new ItemBuilder(Material.BONE).name(stick[i]).ench(new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}).build(),
+                        new ItemBuilder(Material.FEATHER).name(stick[i]).ench(new Enchantment[]{Enchantment.KNOCKBACK}, new int[]{1}).build()
                 };
                 for (int j = 0; j < sticks.length; j++) {
                     Sticks[j][i] = sticks[j];
                 }
 
                 ItemStack[] blocks = {
-                        ItemUtils.item(Material.SANDSTONE, block[i], 64, 2, false, false, null, null, null, null),
-                        ItemUtils.item(Material.RED_SANDSTONE, block[i], 64, 2, false, false, null, null, null, null),
-                        ItemUtils.item(Material.GOLD_BLOCK, block[i], 64, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.DIAMOND_BLOCK, block[i], 64, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.EMERALD_BLOCK, block[i], 64, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.PRISMARINE, block[i], 64, 2, false, false, null, null, null, null),
-                        ItemUtils.item(Material.PACKED_ICE, block[i], 64, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.QUARTZ_BLOCK, block[i], 64, -1, false, false, null, null, null, null)
+                        new ItemBuilder(Material.SANDSTONE).amount(64).durability(2).name(block[i]).build(),
+                        new ItemBuilder(Material.RED_SANDSTONE).amount(64).durability(2).name(block[i]).build(),
+                        new ItemBuilder(Material.GOLD_BLOCK).amount(64).name(block[i]).build(),
+                        new ItemBuilder(Material.DIAMOND_BLOCK).amount(64).name(block[i]).build(),
+                        new ItemBuilder(Material.EMERALD_BLOCK).amount(64).name(block[i]).build(),
+                        new ItemBuilder(Material.PRISMARINE).amount(64).durability(2).name(block[i]).build(),
+                        new ItemBuilder(Material.PACKED_ICE).amount(64).name(block[i]).build(),
+                        new ItemBuilder(Material.QUARTZ_BLOCK).amount(64).name(block[i]).build()
                 };
                 int length2 = blocks.length;
                 for (int j = 0; j < length2; j++) {
@@ -107,7 +108,7 @@ public class ItemStackList {
         {
             String[] display = {"§cpause & settings", "§cpause & settings", "§cpause & settings", "§cpause & settings"};
             for (int i = 0; i < 4; i++) {
-                settings[i] = ItemUtils.item(Material.INK_SACK, display[i], 1, 1, false, false, null, null, null, null);
+                settings[i] = new ItemBuilder(Material.INK_SACK).durability(1).name(display[i]).build();
             }
         }
         {
@@ -121,13 +122,13 @@ public class ItemStackList {
             String[] other = {"§bPreferences", "§bPreferences", "§bPreferences", "§bPreferences"};
             for (int i = 0; i < 4; i++) {
                 Settings[i] = Bukkit.createInventory(SettingsHolder, 27, title[i]);
-                Settings[i].setItem(10, ItemUtils.item(Material.STICK, hit[i], 1, -1, false, false, null, null, null, null));
-                Settings[i].setItem(11, ItemUtils.item(Material.CHEST, inv[i], 1, 3, false, false, null, null, null, null));
-                Settings[i].setItem(12, ItemUtils.item(Material.SANDSTONE, block[i], 1, 2, false, false, null, null, null, null));
-                Settings[i].setItem(13, ItemUtils.item(Material.BLAZE_ROD, stick[i], 1, -1, false, false, null, null, null, null));
-                Settings[i].setItem(14, ItemUtils.item(Material.EMPTY_MAP, map[i], 1, -1, false, false, null, null, null, null));
-                Settings[i].setItem(15, ItemUtils.item(Material.SKULL_ITEM, skin[i], 1, 4, false, false, null, null, null, null));
-                Settings[i].setItem(16, ItemUtils.item(Material.REDSTONE_COMPARATOR, other[i], 1, -1, false, false, null, null, null, null));
+                Settings[i].setItem(10, new ItemBuilder(Material.STICK).name(hit[i]).build());
+                Settings[i].setItem(11, new ItemBuilder(Material.CHEST).durability(3).name(inv[i]).build());
+                Settings[i].setItem(12, new ItemBuilder(Material.SANDSTONE).durability(2).name(block[i]).build());
+                Settings[i].setItem(13, new ItemBuilder(Material.BLAZE_ROD).name(stick[i]).build());
+                Settings[i].setItem(14, new ItemBuilder(Material.EMPTY_MAP).name(map[i]).build());
+                Settings[i].setItem(15, new ItemBuilder(Material.SKULL_ITEM).durability(4).name(skin[i]).build());
+                Settings[i].setItem(16, new ItemBuilder(Material.REDSTONE_COMPARATOR).name(other[i]).build());
             }
         }
         {
@@ -136,9 +137,9 @@ public class ItemStackList {
             String[] unsave = {"§cnicht gespeicherte Änderungen", "§cUnSave Changes", "§c不儲存設定", "§c不储存设置"};
             for (int i = 0; i < 4; i++) {
                 InventoryKitEditor[i] = Bukkit.createInventory(KitEditorHolder, 9, title[i]);
-                InventoryUtils.fillItem(InventoryKitEditor[i], 0, 9, ItemUtils.item(Material.STAINED_GLASS_PANE, "§a", 1, 7, false, false, null, null, null, null));
-                InventoryKitEditor[i].setItem(3, ItemUtils.item(Material.INK_SACK, save[i], 1, 10, false, false, null, null, null, null));
-                InventoryKitEditor[i].setItem(5, ItemUtils.item(Material.INK_SACK, unsave[i], 1, 1, false, false, null, null, null, null));
+                InventoryUtils.fillItem(InventoryKitEditor[i], 0, 9, new ItemBuilder(Material.STAINED_GLASS_PANE).durability(7).name("§a").build());
+                InventoryKitEditor[i].setItem(3, new ItemBuilder(Material.INK_SACK).durability(10).name(save[i]).build());
+                InventoryKitEditor[i].setItem(5, new ItemBuilder(Material.INK_SACK).durability(1).name(unsave[i]).build());
             }
         }
 
@@ -152,12 +153,13 @@ public class ItemStackList {
             String[] deactive = {"§cDeactivated", "§cDeactivated", "§cDeactivated", "§cDeactivated"};
             for (int i = 0; i < 4; i++) {
                 ItemStack[] prefers = {
-                        ItemUtils.item(Material.REDSTONE, prefs[0][i], 1, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.NOTE_BLOCK, prefs[1][i], 1, 3, false, false, null, null, null, null),
-                        ItemUtils.item(Material.STICK, prefs[2][i], 1, -1, true, false, null, null, null, null),
+                        new ItemBuilder(Material.REDSTONE).name(prefs[0][i]).build(),
+                        new ItemBuilder(Material.NOTE_BLOCK).durability(3).name(prefs[1][i]).build(),
+                        new ItemBuilder(Material.STICK).glow().name(prefs[2][i]).build(),
                 };
-                ItemStack[] pref = {ItemUtils.item(Material.INK_SACK, active[i], 1, 10, false, false, null, null, null, null),
-                        ItemUtils.item(Material.INK_SACK, deactive[i], 1, 1, false, false, null, null, null, null)
+                ItemStack[] pref = {
+                        new ItemBuilder(Material.INK_SACK).durability(10).name(active[i]).build(),
+                        new ItemBuilder(Material.INK_SACK).durability(1).name(deactive[i]).build()
                 };
                 for (int j = 0; j < prefers.length; j++) {
                     prefereditor[j][i] = prefers[j];
@@ -177,20 +179,20 @@ public class ItemStackList {
             String[] feather = {"§6Feather", "§6Feather", "§6Feather", "§6Feather"};
             for (int i = 0; i < 4; i++) {
                 ItemStack[] sticks = {
-                        ItemUtils.item(Material.STICK, stick[i], 1, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.DIAMOND_SWORD, sword[i], 1, -1, false, false, new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES}, null, null, null),
-                        ItemUtils.item(Material.DIAMOND_HOE, hoe[i], 1, -1, false, false, new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES}, null, null, null),
-                        ItemUtils.item(Material.BLAZE_ROD, blaze[i], 1, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.BONE, bone[i], 1, -1, false, false, null, null, null, null),
-                        ItemUtils.item(Material.FEATHER, feather[i], 1, -1, false, false, null, null, null, null)
+                        new ItemBuilder(Material.STICK).name(stick[i]).build(),
+                        new ItemBuilder(Material.DIAMOND_SWORD).name(sword[i]).hideAttr().build(),
+                        new ItemBuilder(Material.DIAMOND_HOE).name(hoe[i]).hideAttr().build(),
+                        new ItemBuilder(Material.BLAZE_ROD).name(blaze[i]).build(),
+                        new ItemBuilder(Material.BONE).name(bone[i]).build(),
+                        new ItemBuilder(Material.FEATHER).name(feather[i]).build()
                 };
                 ItemStack[] sticks2 = {
-                        ItemUtils.item(Material.STICK, stick[i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i])),
-                        ItemUtils.item(Material.DIAMOND_SWORD, sword[i], 1, -1, true, false, new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES}, null, null, Collections.singletonList(GlobalString.selected[i])),
-                        ItemUtils.item(Material.DIAMOND_HOE, hoe[i], 1, -1, true, false, new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES}, null, null, Collections.singletonList(GlobalString.selected[i])),
-                        ItemUtils.item(Material.BLAZE_ROD, blaze[i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i])),
-                        ItemUtils.item(Material.BONE, bone[i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i])),
-                        ItemUtils.item(Material.FEATHER, feather[i], 1, -1, true, false, null, null, null, Collections.singletonList(GlobalString.selected[i]))
+                        new ItemBuilder(Material.STICK).name(stick[i]).lore(GlobalString.selected[i]).build(),
+                        new ItemBuilder(Material.DIAMOND_SWORD).glow().name(sword[i]).hideAttr().lore(GlobalString.selected[i]).build(),
+                        new ItemBuilder(Material.DIAMOND_HOE).glow().name(hoe[i]).hideAttr().lore(GlobalString.selected[i]).build(),
+                        new ItemBuilder(Material.BLAZE_ROD).name(blaze[i]).lore(GlobalString.selected[i]).build(),
+                        new ItemBuilder(Material.BONE).name(bone[i]).lore(GlobalString.selected[i]).build(),
+                        new ItemBuilder(Material.FEATHER).name(feather[i]).lore(GlobalString.selected[i]).build()
                 };
                 int length = sticks.length;
                 for (int j = 0; j < length; j++) {
@@ -211,181 +213,181 @@ public class ItemStackList {
             };
 
             ItemStack[] categoryblockeditor = {
-                    ItemUtils.item(Material.SANDSTONE, block[0][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i])),
-                    ItemUtils.item(Material.WOOL, block[1][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i])),
-                    ItemUtils.item(Material.DIAMOND_BLOCK, block[2][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i])),
-                    ItemUtils.item(Material.DIAMOND_ORE, block[3][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i])),
-                    ItemUtils.item(Material.QUARTZ_BLOCK, block[4][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i])),
-                    ItemUtils.item(Material.WOOD, block[5][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i])),
-                    ItemUtils.item(Material.STAINED_CLAY, block[6][i], 1, -1, false, false, null, null, null, Collections.singletonList(GlobalString.category[i]))
+                    new ItemBuilder(Material.SANDSTONE).name(block[0][i]).lore(GlobalString.category[i]).build(),
+                    new ItemBuilder(Material.WOOL).name(block[1][i]).lore(GlobalString.category[i]).build(),
+                    new ItemBuilder(Material.DIAMOND_BLOCK).name(block[2][i]).lore(GlobalString.category[i]).build(),
+                    new ItemBuilder(Material.DIAMOND_ORE).name(block[3][i]).lore(GlobalString.category[i]).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).name(block[4][i]).lore(GlobalString.category[i]).build(),
+                    new ItemBuilder(Material.WOOD).name(block[5][i]).lore(GlobalString.category[i]).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).name(block[6][i]).lore(GlobalString.category[i]).build()
             };
 
             ItemStack[] blockeditor = {
-                    ItemUtils.item(Material.PACKED_ICE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.MELON_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.SNOW_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.OBSIDIAN, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.ENDER_STONE, null, 1, -1, false, false, null, null, null, null)
+                    new ItemBuilder(Material.PACKED_ICE).build(),
+                    new ItemBuilder(Material.MELON_BLOCK).build(),
+                    new ItemBuilder(Material.SNOW_BLOCK).build(),
+                    new ItemBuilder(Material.OBSIDIAN).build(),
+                    new ItemBuilder(Material.ENDER_STONE).build()
             };
 
             ItemStack[] sandstoneeditor = {
-                    ItemUtils.item(Material.SANDSTONE, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.SANDSTONE, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.SANDSTONE, null, 1, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.RED_SANDSTONE, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.RED_SANDSTONE, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.RED_SANDSTONE, null, 1, 2, false, false, null, null, null, null),
+                    new ItemBuilder(Material.SANDSTONE).durability(0).build(),
+                    new ItemBuilder(Material.SANDSTONE).durability(1).build(),
+                    new ItemBuilder(Material.SANDSTONE).durability(2).build(),
+                    new ItemBuilder(Material.RED_SANDSTONE).durability(0).build(),
+                    new ItemBuilder(Material.RED_SANDSTONE).durability(1).build(),
+                    new ItemBuilder(Material.RED_SANDSTONE).durability(2).build(),
             };
 
             ItemStack[] wooleditor = {
-                    ItemUtils.item(Material.WOOL, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 4, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 5, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 6, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 7, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 8, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 9, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 10, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 11, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 12, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 13, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 14, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 1, 15, false, false, null, null, null, null)
+                    new ItemBuilder(Material.WOOL).durability(0).build(),
+                    new ItemBuilder(Material.WOOL).durability(1).build(),
+                    new ItemBuilder(Material.WOOL).durability(2).build(),
+                    new ItemBuilder(Material.WOOL).durability(3).build(),
+                    new ItemBuilder(Material.WOOL).durability(4).build(),
+                    new ItemBuilder(Material.WOOL).durability(5).build(),
+                    new ItemBuilder(Material.WOOL).durability(6).build(),
+                    new ItemBuilder(Material.WOOL).durability(7).build(),
+                    new ItemBuilder(Material.WOOL).durability(8).build(),
+                    new ItemBuilder(Material.WOOL).durability(9).build(),
+                    new ItemBuilder(Material.WOOL).durability(10).build(),
+                    new ItemBuilder(Material.WOOL).durability(11).build(),
+                    new ItemBuilder(Material.WOOL).durability(12).build(),
+                    new ItemBuilder(Material.WOOL).durability(13).build(),
+                    new ItemBuilder(Material.WOOL).durability(14).build(),
+                    new ItemBuilder(Material.WOOL).durability(15).build()
             };
             ItemStack[] oreblockeditor = {
-                    ItemUtils.item(Material.DIAMOND_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.IRON_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.REDSTONE_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LAPIS_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.EMERALD_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.GOLD_BLOCK, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.COAL_BLOCK, null, 1, -1, false, false, null, null, null, null),
+                    new ItemBuilder(Material.DIAMOND_BLOCK).build(),
+                    new ItemBuilder(Material.IRON_BLOCK).build(),
+                    new ItemBuilder(Material.REDSTONE_BLOCK).build(),
+                    new ItemBuilder(Material.LAPIS_BLOCK).build(),
+                    new ItemBuilder(Material.EMERALD_BLOCK).build(),
+                    new ItemBuilder(Material.GOLD_BLOCK).build(),
+                    new ItemBuilder(Material.COAL_BLOCK).build(),
             };
             ItemStack[] oreeditor = {
-                    ItemUtils.item(Material.DIAMOND_ORE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.IRON_ORE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.REDSTONE_ORE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LAPIS_ORE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.EMERALD_ORE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.GOLD_ORE, null, 1, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.COAL_ORE, null, 1, -1, false, false, null, null, null, null),
+                    new ItemBuilder(Material.DIAMOND_ORE).build(),
+                    new ItemBuilder(Material.IRON_ORE).build(),
+                    new ItemBuilder(Material.REDSTONE_ORE).build(),
+                    new ItemBuilder(Material.LAPIS_ORE).build(),
+                    new ItemBuilder(Material.EMERALD_ORE).build(),
+                    new ItemBuilder(Material.GOLD_ORE).build(),
+                    new ItemBuilder(Material.COAL_ORE).build(),
             };
             ItemStack[] quartzeditor = {
-                    ItemUtils.item(Material.QUARTZ_BLOCK, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.QUARTZ_BLOCK, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.QUARTZ_BLOCK, null, 1, 2, false, false, null, null, null, null),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).durability(0).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).durability(1).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).durability(2).build(),
             };
             ItemStack[] woodeditor = {
-                    ItemUtils.item(Material.WOOD, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 1, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 1, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 1, 4, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 1, 5, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 1, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 1, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG_2, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG_2, null, 1, 1, false, false, null, null, null, null),
+                    new ItemBuilder(Material.WOOD).durability(0).build(),
+                    new ItemBuilder(Material.WOOD).durability(1).build(),
+                    new ItemBuilder(Material.WOOD).durability(2).build(),
+                    new ItemBuilder(Material.WOOD).durability(3).build(),
+                    new ItemBuilder(Material.WOOD).durability(4).build(),
+                    new ItemBuilder(Material.WOOD).durability(5).build(),
+                    new ItemBuilder(Material.LOG).durability(0).build(),
+                    new ItemBuilder(Material.LOG).durability(1).build(),
+                    new ItemBuilder(Material.LOG).durability(2).build(),
+                    new ItemBuilder(Material.LOG).durability(3).build(),
+                    new ItemBuilder(Material.LOG_2).durability(0).build(),
+                    new ItemBuilder(Material.LOG_2).durability(1).build(),
             };
 
             ItemStack[] clayeditor = {
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 4, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 5, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 6, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 7, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 8, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 9, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 10, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 11, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 12, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 13, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 14, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 1, 15, false, false, null, null, null, null),
-                    ItemUtils.item(Material.HARD_CLAY, null, 1, -1, false, false, null, null, null, null)
+                    new ItemBuilder(Material.STAINED_CLAY).durability(0).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(1).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(2).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(3).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(4).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(5).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(6).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(7).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(8).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(9).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(10).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(11).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(12).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(13).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(14).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).durability(15).build(),
+                    new ItemBuilder(Material.HARD_CLAY).build()
             };
             ItemStack[] blocks = {
-                    ItemUtils.item(Material.SANDSTONE, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.SANDSTONE, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.SANDSTONE, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.RED_SANDSTONE, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.RED_SANDSTONE, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.RED_SANDSTONE, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 4, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 5, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 6, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 7, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 8, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 9, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 10, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 11, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 12, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 13, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 14, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOL, null, 64, 15, false, false, null, null, null, null),
-                    ItemUtils.item(Material.DIAMOND_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.IRON_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.REDSTONE_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LAPIS_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.EMERALD_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.GOLD_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.COAL_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.DIAMOND_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.IRON_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.REDSTONE_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LAPIS_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.EMERALD_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.GOLD_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.COAL_ORE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.QUARTZ_BLOCK, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.QUARTZ_BLOCK, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.QUARTZ_BLOCK, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 64, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 64, 4, false, false, null, null, null, null),
-                    ItemUtils.item(Material.WOOD, null, 64, 5, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG, null, 64, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG_2, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.LOG_2, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 0, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 3, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 4, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 5, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 6, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 7, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 8, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 9, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 10, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 11, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 12, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 13, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 14, false, false, null, null, null, null),
-                    ItemUtils.item(Material.STAINED_CLAY, null, 64, 15, false, false, null, null, null, null),
-                    ItemUtils.item(Material.HARD_CLAY, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.PACKED_ICE, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.MELON_BLOCK, null, 64, 2, false, false, null, null, null, null),
-                    ItemUtils.item(Material.SNOW_BLOCK, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.OBSIDIAN, null, 64, -1, false, false, null, null, null, null),
-                    ItemUtils.item(Material.ENDER_STONE, null, 64, -1, false, false, null, null, null, null)
+                    new ItemBuilder(Material.SANDSTONE).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.SANDSTONE).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.SANDSTONE).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.RED_SANDSTONE).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.RED_SANDSTONE).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.RED_SANDSTONE).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(3).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(4).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(5).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(6).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(7).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(8).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(9).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(10).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(11).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(12).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(13).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(14).build(),
+                    new ItemBuilder(Material.WOOL).amount(64).durability(15).build(),
+                    new ItemBuilder(Material.DIAMOND_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.IRON_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.REDSTONE_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.LAPIS_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.EMERALD_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.GOLD_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.COAL_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.DIAMOND_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.IRON_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.REDSTONE_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.LAPIS_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.EMERALD_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.GOLD_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.COAL_ORE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.WOOD).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.WOOD).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.WOOD).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.WOOD).amount(64).durability(3).build(),
+                    new ItemBuilder(Material.WOOD).amount(64).durability(4).build(),
+                    new ItemBuilder(Material.WOOD).amount(64).durability(5).build(),
+                    new ItemBuilder(Material.LOG).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.LOG).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.LOG).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.LOG).amount(64).durability(3).build(),
+                    new ItemBuilder(Material.LOG_2).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.LOG_2).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(0).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(1).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(3).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(4).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(5).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(6).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(7).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(8).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(9).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(10).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(11).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(12).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(13).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(14).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).amount(64).durability(15).build(),
+                    new ItemBuilder(Material.HARD_CLAY).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.PACKED_ICE).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.MELON_BLOCK).amount(64).durability(2).build(),
+                    new ItemBuilder(Material.SNOW_BLOCK).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.OBSIDIAN).amount(64).durability(-1).build(),
+                    new ItemBuilder(Material.ENDER_STONE).amount(64).durability(-1).build()
             };
 
             for (int j = 0; j < blocks.length; j++) {
