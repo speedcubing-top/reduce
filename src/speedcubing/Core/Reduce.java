@@ -2,8 +2,8 @@ package speedcubing.Core;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import cubing.bukkit.*;
-import cubing.bukkit.api.SideBarAPI;
+import cubing.spigot.lib.bukkit.*;
+import cubing.spigot.lib.bukkit.api.SideBarAPI;
 import cubingserver.libs.User;
 import cubingserver.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
@@ -77,8 +77,7 @@ public class Reduce {
     public void Load() {
         NoNameTag.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         for (int i = 0; i < 4; i++) {
-            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i]).build()
-            ;
+            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i]).build();
         }
         for (int i = 0; i < maptypes; i++) {
             used[i] = 0;
@@ -97,7 +96,8 @@ public class Reduce {
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         PlayerConnection connection = entityP.playerConnection;
         double NPCx = 500 * map + 0.5;
-        String[] skin = SkinUtils.getProfileSkin(entityP.getProfile());
+        Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
+        String[] skin = new String[]{property.getValue(),property.getSignature()};
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));
         int EntityID = entityPlayer.getId();

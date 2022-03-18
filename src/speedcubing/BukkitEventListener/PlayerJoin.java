@@ -1,8 +1,9 @@
 package speedcubing.BukkitEventListener;
 
-import cubing.bukkit.api.BungeePluginMessage;
-import cubing.utils.Console;
-import cubing.utils.Reflections;
+import cubing.spigot.lib.bukkit.api.BungeePluginMessage;
+import cubing.spigot.lib.utils.Console;
+import cubing.spigot.lib.utils.Reflections;
+import cubingserver.PluginMessage;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,7 +32,7 @@ public class PlayerJoin implements Listener {
                     @Override
                     public void run() {
                         Reduce.PlayerMap.remove(uuid);
-                        BungeePluginMessage.switchServer(player, "lobby");
+                        PluginMessage.switchServer(player, "lobby");
                     }
                 }, 500);
                 return;

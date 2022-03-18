@@ -1,19 +1,15 @@
 package speedcubing.List;
 
-import cubing.bukkit.InventoryUtils;
-import cubing.bukkit.ItemBuilder;
-import cubing.bukkit.ItemUtils;
+import cubing.spigot.lib.bukkit.InventoryUtils;
+import cubing.spigot.lib.bukkit.ItemBuilder;
 import cubingserver.StringList.GlobalString;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import speedcubing.Core.Reduce;
-
-import java.util.Collections;
 
 public class ItemStackList {
 

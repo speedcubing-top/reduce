@@ -1,6 +1,6 @@
 package speedcubing.BukkitEventListener;
 
-import cubing.bukkit.PlayerUtils;
+import cubing.spigot.lib.bukkit.PlayerUtils;
 import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.EntityPlayer;

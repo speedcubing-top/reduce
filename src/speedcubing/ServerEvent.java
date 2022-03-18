@@ -1,13 +1,13 @@
 package speedcubing;
 
-import cubing.api.MojangAPI;
-import cubing.api.SessionServer;
-import cubing.api.exception.APIErrorException;
-import cubing.bukkit.Event.ServerEventHandler;
-import cubing.bukkit.Event.events.PlayInChatEvent;
-import cubing.bukkit.Event.events.PlayInUseEntityEvent;
-import cubing.bukkit.PlayerUtils;
-import cubing.utils.Console;
+import cubing.spigot.lib.api.MojangAPI;
+import cubing.spigot.lib.api.SessionServer;
+import cubing.spigot.lib.api.exception.APIErrorException;
+import cubing.spigot.lib.bukkit.Event.ServerEventHandler;
+import cubing.spigot.lib.bukkit.Event.events.PlayInChatEvent;
+import cubing.spigot.lib.bukkit.Event.events.PlayInUseEntityEvent;
+import cubing.spigot.lib.bukkit.PlayerUtils;
+import cubing.spigot.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.connection.SocketUtils;
 import cubingserver.customEvents.SocketEvent;
@@ -45,7 +45,7 @@ public class ServerEvent {
             speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
             for (Player p : Bukkit.getOnlinePlayers()) {
                 int lang = User.getLang(p.getUniqueId());
-                PlayerUtils.sendTabHeaderFooter(((CraftPlayer) p).getHandle().playerConnection, GlobalString.LobbyTabList[0][lang], GlobalString.LobbyTabList[1][lang].replace("%int%", rs[2]));
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerListHeaderFooter(GlobalString.LobbyTabList[0][lang], GlobalString.LobbyTabList[1][lang].replace("%int%", rs[2])));
             }
         }
     }

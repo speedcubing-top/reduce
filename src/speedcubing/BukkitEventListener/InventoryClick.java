@@ -1,9 +1,10 @@
 package speedcubing.BukkitEventListener;
 
 
-import cubing.bukkit.*;
-import cubing.bukkit.InventoryUtils;
-import cubing.utils.Console;
+import com.mojang.authlib.properties.Property;
+import cubing.spigot.lib.bukkit.*;
+import cubing.spigot.lib.bukkit.InventoryUtils;
+import cubing.spigot.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.*;
@@ -269,7 +270,8 @@ public class InventoryClick implements Listener {
                         case 11: {
                             UUID uuid = player.getUniqueId();
                             EntityPlayer entityPlayer = Reduce.EntityPlayers.get(uuid);
-                            Reduce.setSkin(player, entityPlayer, uuid, SkinUtils.getProfileSkin(((CraftPlayer) player).getHandle().getProfile()));
+                            Property property = ((CraftPlayer) player).getProfile().getProperties().get("textures").iterator().next();
+                            Reduce.setSkin(player, entityPlayer, uuid, new String[]{property.getValue(), property.getSignature()});
                             player.closeInventory();
                         }
                         break;
