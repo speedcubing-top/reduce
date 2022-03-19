@@ -2,7 +2,7 @@ package speedcubing.BukkitEventListener;
 
 
 import cubing.spigot.lib.bukkit.PlayerUtils;
-import cubing.spigot.lib.utils.Console;
+import cubing.lib.utils.Console;
 import cubingserver.speedcubingServer;
 import cubingserver.things.events.PlayerJoin;
 import net.minecraft.server.v1_8_R3.BlockPosition;

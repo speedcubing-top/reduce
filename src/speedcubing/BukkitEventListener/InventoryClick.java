@@ -4,7 +4,7 @@ package speedcubing.BukkitEventListener;
 import com.mojang.authlib.properties.Property;
 import cubing.spigot.lib.bukkit.*;
 import cubing.spigot.lib.bukkit.InventoryUtils;
-import cubing.spigot.lib.utils.Console;
+import cubing.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.*;

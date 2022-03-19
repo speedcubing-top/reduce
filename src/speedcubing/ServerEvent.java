@@ -1,13 +1,12 @@
 package speedcubing;
 
-import cubing.spigot.lib.api.MojangAPI;
-import cubing.spigot.lib.api.SessionServer;
-import cubing.spigot.lib.api.exception.APIErrorException;
+import cubing.lib.api.MojangAPI;
+import cubing.lib.api.SessionServer;
+import cubing.lib.api.exception.APIErrorException;
 import cubing.spigot.lib.bukkit.Event.ServerEventHandler;
 import cubing.spigot.lib.bukkit.Event.events.PlayInChatEvent;
 import cubing.spigot.lib.bukkit.Event.events.PlayInUseEntityEvent;
-import cubing.spigot.lib.bukkit.PlayerUtils;
-import cubing.spigot.lib.utils.Console;
+import cubing.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.connection.SocketUtils;
 import cubingserver.customEvents.SocketEvent;

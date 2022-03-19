@@ -1,8 +1,7 @@
 package speedcubing.BukkitEventListener;
 
-import cubing.spigot.lib.bukkit.api.BungeePluginMessage;
-import cubing.spigot.lib.utils.Console;
-import cubing.spigot.lib.utils.Reflections;
+import cubing.lib.utils.Console;
+import cubing.lib.utils.Reflections;
 import cubingserver.PluginMessage;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
