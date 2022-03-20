@@ -36,7 +36,7 @@ public class PlayerJoin implements Listener {
                 }, 500);
                 return;
             }
-            Reflections.setField(((CraftPlayer) player).getHandle(), "invulnerableTicks", 0);
+            ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
             int room = -1;
             for (int h = 0; h < Reduce.rooms; h++) {
                 if (Reduce.Rooms[map][h]) {
