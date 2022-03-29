@@ -201,7 +201,7 @@ public class Reduce {
                 for (int i = total; i > realindex; i--) {
                     spec.setItem(i, spec.getItem(i - 1));
                 }
-                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[0] + player.getName()).build());
+                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
                 updateSpecPage(null);
             }
         }).start();
@@ -364,7 +364,7 @@ public class Reduce {
                 for (int i = total; i > realindex; i--) {
                     spec.setItem(i, spec.getItem(i - 1));
                 }
-                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[0] + player.getName()).build());
+                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
                 updateSpecPage(null);
             }
         }
