@@ -56,7 +56,7 @@ public class ItemStackList {
 
     public void Load() {
         String[] leavespec = {"§cLeave Spectate mode", "§cLeave Spectate mode", "§cLeave Spectate mode", "§cLeave Spectate mode"};
-        String[] specitem = {"§d", "§bSpectate", "§bSpectate", "§bSpectate"};
+        String[] specitem = {"§bSpectate", "§bSpectate", "§bSpectate", "§bSpectate"};
         for (int i = 0; i < 4; i++) {
             Maps[0][0][i] = new ItemBuilder(Material.LOG).durability(3).name(StringList.mapname[0][i]).build();
             Maps[0][1][i] = new ItemBuilder(Material.BED).name(StringList.mapname[1][i]).build();
