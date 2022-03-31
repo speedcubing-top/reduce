@@ -2,8 +2,7 @@ package speedcubing.Core;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import cubing.spigot.lib.bukkit.*;
-import cubing.spigot.lib.bukkit.api.SideBarAPI;
+import cubing.lib.bukkit.*;
 import cubingserver.libs.User;
 import cubingserver.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;

@@ -2,8 +2,8 @@ package speedcubing.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import cubing.spigot.lib.bukkit.*;
-import cubing.spigot.lib.bukkit.InventoryUtils;
+import cubing.lib.bukkit.*;
+import cubing.lib.bukkit.InventoryUtils;
 import cubing.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.libs.User;

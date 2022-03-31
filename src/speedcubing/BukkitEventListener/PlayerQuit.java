@@ -1,7 +1,7 @@
 package speedcubing.BukkitEventListener;
 
 
-import cubing.spigot.lib.bukkit.PlayerUtils;
+import cubing.lib.bukkit.PlayerUtils;
 import cubing.lib.utils.Console;
 import cubingserver.speedcubingServer;
 import cubingserver.things.events.PlayerJoin;
