@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -96,7 +97,7 @@ public class Reduce {
         PlayerConnection connection = entityP.playerConnection;
         double NPCx = 500 * map + 0.5;
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
-        String[] skin = new String[]{property.getValue(),property.getSignature()};
+        String[] skin = new String[]{property.getValue(), property.getSignature()};
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));
         int EntityID = entityPlayer.getId();
@@ -369,15 +370,15 @@ public class Reduce {
         }
     }
 
-    public static void sendPackets(PlayerConnection connection, Set<PlayerConnection> connections, Packet... packet) {
-        for (Packet p : packet) {
+    public static void sendPackets(PlayerConnection connection, Set<PlayerConnection> connections, Packet<?>... packet) {
+        for (Packet<?> p : packet) {
             connection.sendPacket(p);
         }
-        for (PlayerConnection c : connections) {
-            for (Packet p : packet) {
-                c.sendPacket(p);
+        connections.forEach(a -> {
+            for (Packet<?> p : packet) {
+                a.sendPacket(p);
             }
-        }
+        });
     }
 
     public static void setSkin(Player player, EntityPlayer entityPlayer, UUID uuid, String[] skin) {
@@ -400,6 +401,11 @@ public class Reduce {
                         sendPackets(connection, spec, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
                     }
                 }, 4000);
+    }
+
+    public static void clear(UUID uuid) {
+        World world = Bukkit.getWorld("world");
+        blocks.get(uuid).forEach(a -> world.getBlockAt(a.getX(), a.getY(), a.getZ()).setType(Material.AIR));
     }
 
     public static void updateSpecPage(UUID uuid) {

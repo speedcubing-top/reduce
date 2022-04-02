@@ -39,7 +39,6 @@ public class PlayerMove implements Listener {
             int map = Reduce.PlayerMap.get(uuid);
             double NPCx = map * 500 + 0.5;
             double NPCz = Reduce.PlayerCoord.get(uuid) + 0.5;
-            World world = player.getWorld();
             Integer[] ints = Reduce.integerCache.get(uuid);
             player.getScoreboard().getTeam(StringList.ReduceSidebar[lang][1]).setSuffix("0");
             Reduce.StopDamage(uuid);
@@ -47,9 +46,7 @@ public class PlayerMove implements Listener {
             PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, NPCx - m[0], 100 + m[1], NPCz, 270, 0);
             player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][lang]);
             Reduce.BlockPlaced.put(uuid, 0);
-            for (BlockPosition b : Reduce.blocks.get(uuid)) {
-                world.getBlockAt(b.getX(), b.getY(), b.getZ()).setType(Material.AIR);
-            }
+            Reduce.clear(uuid);
             Reduce.blocks.get(uuid).clear();
             new Timer().schedule(new TimerTask() {
                 @Override

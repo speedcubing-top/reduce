@@ -143,9 +143,7 @@ public class ServerEvent {
                         str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
                         str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
                 };
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    p.sendMessage(out[User.getLang(p.getUniqueId())]);
-                }
+                Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[User.getLang(a.getUniqueId())]));
                 Console.sendColoredConsole("§7[§aChatLog§7] [§b" + player.getWorld().getName() + "§7] " + out[1]);
                 speedcubingServer.lastmsg.put(uuid, message);
             }

@@ -247,10 +247,7 @@ public class InventoryClick implements Listener {
                         Reduce.verSettings.remove(uuid);
                         Reduce.SideBar.get(uuid).cancel();
                         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, Reduce.EntityPlayers.get(uuid)));
-                        for (BlockPosition b : Reduce.blocks.get(uuid)) {
-                            world.getBlockAt(b.getX(), b.getY(), b.getZ()).setType(Material.AIR);
-                        }
-
+                        Reduce.clear(uuid);
                         Reduce.removeFromGUI(player.getName(), uuid, map, null);
                         player.closeInventory();
                         Reduce.GameStart(RawSlot, player, uuid, newroom, Reduce.Spectators.get(uuid));
@@ -338,9 +335,7 @@ public class InventoryClick implements Listener {
                         if (target.equals(uuid))
                             return;
                         if (Reduce.booleanCache.get(uuid)[3] && !isSpec) {
-                            for (PlayerConnection c : Reduce.Spectators.get(uuid)) {
-                                Reduce.quitSpec(null, c, true);
-                            }
+                            Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
                             Reduce.removeFromGUI(player.getName(), uuid, Reduce.PlayerMap.get(uuid), uuid);
                             player.closeInventory();
                         }
@@ -358,10 +353,7 @@ public class InventoryClick implements Listener {
                             Reduce.Spectators.get(target).add(connection);
                             player.setGameMode(GameMode.ADVENTURE);
                             player.setAllowFlight(true);
-                            World world = player.getWorld();
-                            for (BlockPosition b : Reduce.blocks.get(uuid)) {
-                                world.getBlockAt(b.getX(), b.getY(), b.getZ()).setType(Material.AIR);
-                            }
+                            Reduce.clear(uuid);
                             Reduce.blocks.get(uuid).clear();
                             Inventory inv = player.getInventory();
                             inv.clear();

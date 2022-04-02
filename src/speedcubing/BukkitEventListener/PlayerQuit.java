@@ -32,17 +32,12 @@ public class PlayerQuit implements Listener {
             if (spec)
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
             else {
-                for (PlayerConnection c : Reduce.Spectators.get(uuid)) {
-                    Reduce.quitSpec(null, c, true);
-                }
+                Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
                 if (Reduce.DamageTask.containsKey(uuid)) {
                     Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
                     Reduce.DamageTask.remove(uuid);
                 }
-                World world = player.getWorld();
-                for (BlockPosition b : Reduce.blocks.get(uuid)) {
-                    world.getBlockAt(b.getX(), b.getY(), b.getZ()).setType(Material.AIR);
-                }
+                Reduce.clear(uuid);
                 Reduce.blocks.remove(uuid);
             }
             int room = Reduce.coordToRoom(Reduce.PlayerCoord.get(uuid));
