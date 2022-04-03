@@ -45,7 +45,7 @@ public class BlockEditor {
             inv.setItem(i + 11, ItemStackList.blockeditor[i][lang]);
         }
         if (index >= 0)
-            inv.setItem(index + 11, ItemUtils.glow(ItemUtils.setLore(ItemStackList.blockeditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+            inv.setItem(index + 11, ItemUtils.glow(ItemUtils.setLore(ItemStackList.blockeditor[index][lang].clone(), GlobalString.selected[lang])));
         player.openInventory(inv);
     }
 
@@ -77,7 +77,7 @@ public class BlockEditor {
                             inv.setItem(i + 11, ItemStackList.sandstoneeditor[i][lang]);
                         }
                         if (set < 6)
-                            inv.setItem((set < 3) ? set + 10 : set + 11, ItemUtils.glow(ItemUtils.setLore(ItemStackList.sandstoneeditor[set][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem((set < 3) ? set + 10 : set + 11, ItemUtils.glow(ItemUtils.setLore(ItemStackList.sandstoneeditor[set][lang].clone(), GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
@@ -91,7 +91,7 @@ public class BlockEditor {
                             inv.setItem(i, ItemStackList.wooleditor[i][lang]);
                         }
                         if (index < ItemStackList.wooleditor.length && index >= 0)
-                            inv.setItem(index, ItemUtils.glow(ItemUtils.setLore(ItemStackList.wooleditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem(index, ItemUtils.glow(ItemUtils.setLore(ItemStackList.wooleditor[index][lang].clone(), GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
@@ -105,7 +105,7 @@ public class BlockEditor {
                             inv.setItem(i + 10, ItemStackList.oreblockeditor[i][lang]);
                         }
                         if (index < ItemStackList.oreblockeditor.length && index >= 0)
-                            inv.setItem(index + 10, ItemUtils.glow(ItemUtils.setLore(ItemStackList.oreblockeditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem(index + 10, ItemUtils.glow(ItemUtils.setLore(ItemStackList.oreblockeditor[index][lang].clone(),GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
@@ -119,7 +119,7 @@ public class BlockEditor {
                             inv.setItem(i + 10, ItemStackList.oreeditor[i][lang]);
                         }
                         if (index < ItemStackList.oreeditor.length && index >= 0)
-                            inv.setItem(index + 10, ItemUtils.glow(ItemUtils.setLore(ItemStackList.oreeditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem(index + 10, ItemUtils.glow(ItemUtils.setLore(ItemStackList.oreeditor[index][lang].clone(), GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
@@ -133,7 +133,7 @@ public class BlockEditor {
                             inv.setItem(i + 12, ItemStackList.quartzeditor[i][lang]);
                         }
                         if (index < ItemStackList.quartzeditor.length && index >= 0)
-                            inv.setItem(index + 12, ItemUtils.glow(ItemUtils.setLore(ItemStackList.quartzeditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem(index + 12, ItemUtils.glow(ItemUtils.setLore(ItemStackList.quartzeditor[index][lang].clone(), GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
@@ -156,7 +156,7 @@ public class BlockEditor {
                             inv.setItem(i + 5, ItemStackList.woodeditor[i][lang]);
                         }
                         if (index < ItemStackList.woodeditor.length && index >= 0)
-                            inv.setItem((index < 3 ? index + 1 : (index < 6 ? index + 2 : (index < 9 ? index + 4 : index + 5))), ItemUtils.glow(ItemUtils.setLore(ItemStackList.woodeditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem((index < 3 ? index + 1 : (index < 6 ? index + 2 : (index < 9 ? index + 4 : index + 5))), ItemUtils.glow(ItemUtils.setLore(ItemStackList.woodeditor[index][lang].clone(), GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
@@ -170,7 +170,7 @@ public class BlockEditor {
                             inv.setItem(i, ItemStackList.clayeditor[i][lang]);
                         }
                         if (index < ItemStackList.clayeditor.length && index >= 0)
-                            inv.setItem(index, ItemUtils.glow(ItemUtils.setLore(ItemStackList.clayeditor[index][lang].clone(), Collections.singletonList(GlobalString.selected[lang]))));
+                            inv.setItem(index, ItemUtils.glow(ItemUtils.setLore(ItemStackList.clayeditor[index][lang].clone(),GlobalString.selected[lang])));
                         player.openInventory(inv);
                     }
                     break;
