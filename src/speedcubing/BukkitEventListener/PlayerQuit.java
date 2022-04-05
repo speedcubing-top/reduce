@@ -29,10 +29,11 @@ public class PlayerQuit implements Listener {
         if (PlayerJoin.JoinPackets.containsKey(uuid) && Reduce.PlayerMap.containsKey(uuid)) {
             Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b disconnected.");
             boolean spec = player.getGameMode() == GameMode.ADVENTURE;
-            if (spec)
+            if (spec) {
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
-            else {
+            } else {
                 Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
+                Reduce.Spectators.get(uuid).clear();
                 if (Reduce.DamageTask.containsKey(uuid)) {
                     Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
                     Reduce.DamageTask.remove(uuid);
@@ -53,6 +54,8 @@ public class PlayerQuit implements Listener {
             Reduce.BlockPlaced.remove(uuid);
             Reduce.SideBar.get(uuid).cancel();
             Reduce.SideBar.remove(uuid);
+            Reduce.oldCoord.remove(uuid);
+            Reduce.oldMap.remove(uuid);
             Integer[] ints = Reduce.integerCache.get(uuid);
             Boolean[] bs = Reduce.booleanCache.get(uuid);
             new Thread(() -> speedcubingServer.connection.update("playersdata",

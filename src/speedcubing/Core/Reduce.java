@@ -50,6 +50,8 @@ public class Reduce {
 
     public static final Map<UUID, Integer> PlayerCoord = new HashMap<>();
     public static final Map<UUID, Integer> PlayerMap = new HashMap<>();
+    public static final Map<UUID, Integer> oldMap = new HashMap<>();
+    public static final Map<UUID, Integer> oldCoord = new HashMap<>();
 
     public static final Map<UUID, UUID> target = new HashMap<>();
     public static final Map<UUID, Set<PlayerConnection>> Spectators = new HashMap<>();
@@ -299,16 +301,21 @@ public class Reduce {
 
     //quit spec
     public static void quitSpec(Player player, PlayerConnection connection, boolean backtoarena) {
-        if (player == null)
+        boolean n = player == null;
+        if (n)
             player = connection.getPlayer().getPlayer();
         UUID uuid = player.getUniqueId();
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
         UUID targetUUID = target.get(uuid);
         Bukkit.getPlayer(targetUUID).showPlayer(player);
-        Spectators.get(targetUUID).remove(connection);
+        if (!n)
+            Spectators.get(targetUUID).remove(connection);
         target.remove(uuid);
+        connection.getPlayer().getHandle().removeAllEffects();
         if (backtoarena) {
+            PlayerCoord.put(uuid, oldCoord.get(uuid));
+            PlayerMap.put(uuid, oldMap.get(uuid));
             int map = PlayerMap.get(uuid);
             PlayerUtils.teleport(connection, map * 500 - MapLocations[map][0], 100 + MapLocations[map][1], PlayerCoord.get(uuid) + 0.5, 270, 0);
             int lang = User.getLang(uuid);
@@ -348,9 +355,9 @@ public class Reduce {
                 List<Integer> ranks = new ArrayList<>(names.keySet());
                 Collections.sort(ranks);
                 for (Integer i : ranks) {
-                    if (i < rank) {
+                    if (i < rank)
                         diffrank += names.get(i).size();
-                    } else break;
+                    else break;
                 }
                 if (!names.containsKey(rank))
                     names.put(rank, new ArrayList<>());
@@ -442,10 +449,9 @@ public class Reduce {
             specName[map].remove(User.getCode(User.getRank(uuid)));
         } else x.remove(name);
         int total = totalName.size();
-        int index = totalName.indexOf(name);
         specStorage[map].remove(uuid);
         Inventory inv = spec;
-        for (int i = index; i < total; i++) {
+        for (int i = totalName.indexOf(name); i < total; i++) {
             inv.setItem(i, inv.getItem(i + 1));
         }
         inv.setItem(total, new ItemStack(Material.AIR));

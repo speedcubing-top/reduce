@@ -11,7 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import speedcubing.List.ItemStackList;
 
-import java.util.Collections;
 import java.util.UUID;
 
 public class BlockEditor {

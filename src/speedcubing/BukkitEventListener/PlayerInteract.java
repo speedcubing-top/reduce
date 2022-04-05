@@ -3,7 +3,6 @@ package speedcubing.BukkitEventListener;
 import cubing.lib.bukkit.ItemUtils;
 import cubing.lib.utils.Console;
 import cubingserver.libs.User;
-import cubingserver.speedcubingServer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -59,17 +58,15 @@ public class PlayerInteract implements Listener {
                 break;
             case COMPASS:
                 UUID uuid = player.getUniqueId();
-                if (speedcubingServer.permissions.get(uuid).contains("spec.use")) {
-                    Inventory orig = Reduce.spec;
-                    Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[User.getLang(uuid)]);
-                    inventory.setContents(orig.getContents());
-                    if (player.getGameMode().equals(GameMode.ADVENTURE)) {
-                        int a = Reduce.totalName.indexOf(Bukkit.getPlayer(Reduce.target.get(uuid)).getName());
-                        if (a != -1)
-                            ItemUtils.glow(inventory.getItem(a));
-                    }
-                    player.openInventory(inventory);
-                } else player.sendMessage("Currently unavailable to use.");
+                Inventory orig = Reduce.spec;
+                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[User.getLang(uuid)]);
+                inventory.setContents(orig.getContents());
+                if (player.getGameMode().equals(GameMode.ADVENTURE)) {
+                    int a = Reduce.totalName.indexOf(Bukkit.getPlayer(Reduce.target.get(uuid)).getName());
+                    if (a != -1)
+                        ItemUtils.glow(inventory.getItem(a));
+                }
+                player.openInventory(inventory);
                 break;
             case SLIME_BALL:
                 //click slimeball

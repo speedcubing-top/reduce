@@ -21,6 +21,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import speedcubing.Core.BlockEditor;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
@@ -336,6 +338,7 @@ public class InventoryClick implements Listener {
                             return;
                         if (Reduce.booleanCache.get(uuid)[3] && !isSpec) {
                             Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
+                            Reduce.Spectators.get(uuid).clear();
                             Reduce.removeFromGUI(player.getName(), uuid, Reduce.PlayerMap.get(uuid), uuid);
                             player.closeInventory();
                         }
@@ -350,6 +353,8 @@ public class InventoryClick implements Listener {
                             }
                             Reduce.Spectators.get(Reduce.target.get(uuid)).remove(connection);
                         } else {
+                            Reduce.oldMap.put(uuid, Reduce.PlayerMap.get(uuid));
+                            Reduce.oldCoord.put(uuid, Reduce.PlayerCoord.get(uuid));
                             Reduce.Spectators.get(target).add(connection);
                             player.setGameMode(GameMode.ADVENTURE);
                             player.setAllowFlight(true);
@@ -368,6 +373,7 @@ public class InventoryClick implements Listener {
                         PlayerUtils.teleport(connection, map * 500 + 0.5, 100, targetcoord + 0.5, 0, 0);
                         player.closeInventory();
                         targetPlayer.hidePlayer(player);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,Integer.MAX_VALUE,1));
                         EntityPlayer entityPlayer = Reduce.EntityPlayers.get(target);
                         ((CraftPlayer) targetPlayer).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ePlayer));
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
