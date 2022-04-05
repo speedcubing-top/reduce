@@ -316,6 +316,8 @@ public class Reduce {
         if (backtoarena) {
             PlayerCoord.put(uuid, oldCoord.get(uuid));
             PlayerMap.put(uuid, oldMap.get(uuid));
+            oldCoord.remove(uuid);
+            oldMap.remove(uuid);
             int map = PlayerMap.get(uuid);
             PlayerUtils.teleport(connection, map * 500 - MapLocations[map][0], 100 + MapLocations[map][1], PlayerCoord.get(uuid) + 0.5, 270, 0);
             int lang = User.getLang(uuid);
