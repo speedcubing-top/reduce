@@ -336,7 +336,7 @@ public class InventoryClick implements Listener {
                         UUID target = Reduce.specStorage[map].get(RawSlot - front);
                         if (target.equals(uuid))
                             return;
-                        if (Reduce.booleanCache.get(uuid)[3] && !isSpec) {
+                        if (!isSpec) {
                             Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
                             Reduce.Spectators.get(uuid).clear();
                             Reduce.removeFromGUI(player.getName(), uuid, Reduce.PlayerMap.get(uuid), uuid);
@@ -355,7 +355,6 @@ public class InventoryClick implements Listener {
                         } else {
                             Reduce.oldMap.put(uuid, Reduce.PlayerMap.get(uuid));
                             Reduce.oldCoord.put(uuid, Reduce.PlayerCoord.get(uuid));
-                            Reduce.Spectators.get(target).add(connection);
                             player.setGameMode(GameMode.ADVENTURE);
                             player.setAllowFlight(true);
                             Reduce.clear(uuid);
@@ -365,6 +364,7 @@ public class InventoryClick implements Listener {
                             inv.setItem(4, ItemStackList.Spec[lang]);
                             inv.setItem(8, ItemStackList.LeaveSpec[lang]);
                         }
+                        Reduce.Spectators.get(target).add(connection);
                         int targetcoord = Reduce.PlayerCoord.get(target);
                         Player targetPlayer = Bukkit.getPlayer(target);
                         Reduce.PlayerCoord.put(uuid, targetcoord);

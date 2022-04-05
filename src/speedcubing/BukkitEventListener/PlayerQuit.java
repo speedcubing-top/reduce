@@ -70,10 +70,9 @@ public class PlayerQuit implements Listener {
                             ",reduce_spec=" + ints[8] +
                             ",reduce_npccolor=" + (bs[0] ? 1 : 0) +
                             ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
-                            ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
-                            ",reduce_allowspec=" + (bs[3] ? 1 : 0)
+                            ",reduce_npcswing=" + (bs[2] ? 1 : 0)
                     , "uuid='" + uuid + "'")).start();
-            if (!spec && bs[3])
+            if (!spec)
                 Reduce.removeFromGUI(player.getName(), uuid, map, null);
             Reduce.booleanCache.remove(uuid);
             Reduce.integerCache.remove(uuid);

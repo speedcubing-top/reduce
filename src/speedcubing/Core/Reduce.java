@@ -165,7 +165,7 @@ public class Reduce {
         connection.sendPacket(living);
         new Thread(() -> {
             if (!booleanCache.containsKey(uuid)) {
-                booleanCache.put(uuid, ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_allowspec", "uuid='" + uuid + "'")));
+                booleanCache.put(uuid, ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing", "uuid='" + uuid + "'")));
                 integerCache.put(uuid, ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec", "uuid='" + uuid + "'")));
             }
             Integer[] ints = integerCache.get(uuid);
@@ -175,37 +175,35 @@ public class Reduce {
             inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][lang]);
             inventory.setItem(ints[8], ItemStackList.Spec[lang]);
             inventory.setItem(ints[2], ItemStackList.settings[lang]);
-            if (booleanCache.get(uuid)[3]) {
-                int rank = User.getCode(User.getRank(uuid));
-                int diffmap = 0;
-                int diffrank = 0;
-                int total = totalName.size();
-                for (int i = 0; i < map; i++) {
-                    diffmap += specStorage[i].size();
-                }
-                Map<Integer, List<String>> names = specName[map];
-                List<Integer> ranks = new ArrayList<>(names.keySet());
-                Collections.sort(ranks);
-                for (Integer i : ranks) {
-                    if (i < rank)
-                        diffrank += names.get(i).size();
-                    else break;
-                }
-                if (!names.containsKey(rank))
-                    names.put(rank, new ArrayList<>());
-                List<String> same = names.get(rank);
-                same.add(player.getName());
-                Collections.sort(same);
-                int index = same.indexOf(player.getName());
-                int realindex = diffmap + diffrank + index;
-                totalName.add(realindex, player.getName());
-                specStorage[map].add(diffrank + index, uuid);
-                for (int i = total; i > realindex; i--) {
-                    spec.setItem(i, spec.getItem(i - 1));
-                }
-                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
-                updateSpecPage(null);
+            int rank = User.getCode(User.getRank(uuid));
+            int diffmap = 0;
+            int diffrank = 0;
+            int total = totalName.size();
+            for (int i = 0; i < map; i++) {
+                diffmap += specStorage[i].size();
             }
+            Map<Integer, List<String>> names = specName[map];
+            List<Integer> ranks = new ArrayList<>(names.keySet());
+            Collections.sort(ranks);
+            for (Integer i : ranks) {
+                if (i < rank)
+                    diffrank += names.get(i).size();
+                else break;
+            }
+            if (!names.containsKey(rank))
+                names.put(rank, new ArrayList<>());
+            List<String> same = names.get(rank);
+            same.add(player.getName());
+            Collections.sort(same);
+            int index = same.indexOf(player.getName());
+            int realindex = diffmap + diffrank + index;
+            totalName.add(realindex, player.getName());
+            specStorage[map].add(diffrank + index, uuid);
+            for (int i = total; i > realindex; i--) {
+                spec.setItem(i, spec.getItem(i - 1));
+            }
+            spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
+            updateSpecPage(null);
         }).start();
 
         player.updateInventory();
@@ -345,37 +343,35 @@ public class Reduce {
                     connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
                 }
             }, 4000);
-            if (booleanCache.get(uuid)[3]) {
-                int rank = User.getCode(User.getRank(uuid));
-                int diffmap = 0;
-                int diffrank = 0;
-                int total = totalName.size();
-                for (int i = 0; i < map; i++) {
-                    diffmap += specStorage[i].size();
-                }
-                Map<Integer, List<String>> names = specName[map];
-                List<Integer> ranks = new ArrayList<>(names.keySet());
-                Collections.sort(ranks);
-                for (Integer i : ranks) {
-                    if (i < rank)
-                        diffrank += names.get(i).size();
-                    else break;
-                }
-                if (!names.containsKey(rank))
-                    names.put(rank, new ArrayList<>());
-                List<String> same = names.get(rank);
-                same.add(player.getName());
-                Collections.sort(same);
-                int index = same.indexOf(player.getName());
-                int realindex = diffmap + diffrank + index;
-                totalName.add(realindex, player.getName());
-                specStorage[map].add(diffrank + index, uuid);
-                for (int i = total; i > realindex; i--) {
-                    spec.setItem(i, spec.getItem(i - 1));
-                }
-                spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
-                updateSpecPage(null);
+            int rank = User.getCode(User.getRank(uuid));
+            int diffmap = 0;
+            int diffrank = 0;
+            int total = totalName.size();
+            for (int i = 0; i < map; i++) {
+                diffmap += specStorage[i].size();
             }
+            Map<Integer, List<String>> names = specName[map];
+            List<Integer> ranks = new ArrayList<>(names.keySet());
+            Collections.sort(ranks);
+            for (Integer i : ranks) {
+                if (i < rank)
+                    diffrank += names.get(i).size();
+                else break;
+            }
+            if (!names.containsKey(rank))
+                names.put(rank, new ArrayList<>());
+            List<String> same = names.get(rank);
+            same.add(player.getName());
+            Collections.sort(same);
+            int index = same.indexOf(player.getName());
+            int realindex = diffmap + diffrank + index;
+            totalName.add(realindex, player.getName());
+            specStorage[map].add(diffrank + index, uuid);
+            for (int i = total; i > realindex; i--) {
+                spec.setItem(i, spec.getItem(i - 1));
+            }
+            spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
+            updateSpecPage(null);
         }
     }
 
