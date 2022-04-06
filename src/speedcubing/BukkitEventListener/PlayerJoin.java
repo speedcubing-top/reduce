@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import speedcubing.Core.Reduce;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class PlayerJoin implements Listener {
                 }, 500);
                 return;
             }
-            ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
+            System.out.println(Reduce.used[map]+" "+ Arrays.toString(Reduce.Rooms[map]));
             int room = -1;
             for (int h = 0; h < Reduce.rooms; h++) {
                 if (Reduce.Rooms[map][h]) {

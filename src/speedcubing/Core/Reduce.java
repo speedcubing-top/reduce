@@ -108,6 +108,7 @@ public class Reduce {
         PlayerCoord.put(uuid, coord);
         PlayerMap.put(uuid, map);
         player.setGameMode(GameMode.SURVIVAL);
+        ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
         entityPlayer.getProfile().getProperties().put("textures", new Property("textures", skin[0], skin[1]));
         entityPlayer.setLocation(NPCx, 100, coord + 0.5, 90, 0);
         EntityPlayerUtils.enableOuterLayer(entityPlayer.getDataWatcher());
