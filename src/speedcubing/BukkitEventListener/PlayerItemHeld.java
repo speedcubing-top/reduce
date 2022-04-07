@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import speedcubing.Core.Reduce;
+import speedcubing.Member;
 
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class PlayerItemHeld implements Listener {
         if (player.getLocation().getY() >= 90 && player.getGameMode() == GameMode.SURVIVAL) {
             ItemStack itemStack = player.getInventory().getItem(e.getNewSlot());
             if (itemStack != null && itemStack.getType() == Material.INK_SACK)
-                Reduce.StopDamage(player.getUniqueId());
+                Member.users.get(player.getUniqueId()).stopDamage();
         }
     }
 }

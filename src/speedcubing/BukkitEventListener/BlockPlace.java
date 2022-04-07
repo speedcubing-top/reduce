@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
+import speedcubing.Member;
 
 import java.util.UUID;
 
@@ -23,22 +24,21 @@ public class BlockPlace implements Listener {
             int x = block.getX();
             int y = block.getY();
             int z = block.getZ();
-            UUID uuid = player.getUniqueId();
-            if (y < 85 || Math.abs(z - Reduce.PlayerCoord.get(uuid)) > 150 || Math.abs(x - Reduce.PlayerMap.get(uuid) * 500) > 150)
+            Member member = Member.users.get(player.getUniqueId());
+            if (y < 85 || Math.abs(z - member.Coord) > 150 || Math.abs(x - member.Map * 500) > 150)
                 e.setCancelled(true);
             else {
-                int lang = User.getLang(uuid);
-                int a = Reduce.PlacedBlocks.get(uuid) + 1;
-                int b = Reduce.BlockPlaced.get(uuid);
-                Reduce.PlacedBlocks.put(uuid, a);
+                int a = member.PlacedBlocks + 1;
+                int b = member.BlockPlaced;
+                member.PlacedBlocks = a;
                 if (a > 32) {
-                    Reduce.PlacedBlocks.put(uuid, 0);
-                    Integer[] ints = Reduce.integerCache.get(uuid);
-                    player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][lang]);
+                    member.PlacedBlocks = 0;
+                    Integer[] ints = member.integerCache;
+                    player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
                 }
-                Reduce.blocks.get(uuid).add(new BlockPosition(x, y, z));
-                Reduce.BlockPlaced.put(uuid, b + 1);
-                player.getScoreboard().getTeam(StringList.ReduceSidebar[lang][1]).setSuffix(Integer.toString(b + 1));
+                member.blocks.add(new BlockPosition(x, y, z));
+                member.BlockPlaced = b + 1;
+                player.getScoreboard().getTeam(StringList.ReduceSidebar[member.lang][1]).setSuffix(Integer.toString(b + 1));
             }
         }
     }

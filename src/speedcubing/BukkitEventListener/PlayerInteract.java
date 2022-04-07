@@ -18,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
+import speedcubing.Member;
 
 import java.util.UUID;
 
@@ -31,38 +32,37 @@ public class PlayerInteract implements Listener {
         switch (player.getItemInHand().getType()) {
             case INK_SACK:
                 if (player.getLocation().getY() >= 90) {
-                    UUID uuid = player.getUniqueId();
-                    int lang = User.getLang(uuid);
-                    player.openInventory(ItemStackList.Settings[lang]);
-                    if (Reduce.setSkin.contains(uuid)) {
-                        player.sendMessage(StringList.InputStringCancel[lang]);
-                        Reduce.setSkin.remove(uuid);
+                    Member member = Member.users.get(player.getUniqueId());
+                    player.openInventory(ItemStackList.Settings[member.lang]);
+                    if (member.setSkin) {
+                        player.sendMessage(StringList.InputStringCancel[member.lang]);
+                        member.setSkin = false;
                     }
-                    if (Reduce.setName.contains(uuid)) {
-                        player.sendMessage(StringList.InputStringCancel2[lang]);
-                        Reduce.setName.remove(uuid);
+                    if (member.setName) {
+                        player.sendMessage(StringList.InputStringCancel2[member.lang]);
+                        member.setName = false;
                     }
-                    if (Reduce.ReachSettings.contains(uuid)) {
-                        player.sendMessage(StringList.InputStringCancel3[lang]);
-                        Reduce.ReachSettings.remove(uuid);
+                    if (member.ReachSettings) {
+                        player.sendMessage(StringList.InputStringCancel3[member.lang]);
+                        member.ReachSettings = false;
                     }
-                    if (Reduce.horSettings.contains(uuid)) {
-                        player.sendMessage(StringList.InputStringCancel4[lang]);
-                        Reduce.horSettings.remove(uuid);
+                    if (member.horSettings) {
+                        player.sendMessage(StringList.InputStringCancel4[member.lang]);
+                        member.horSettings = false;
                     }
-                    if (Reduce.verSettings.contains(uuid)) {
-                        player.sendMessage(StringList.InputStringCancel5[lang]);
-                        Reduce.verSettings.remove(uuid);
+                    if (member.verSettings) {
+                        player.sendMessage(StringList.InputStringCancel5[member.lang]);
+                        member.verSettings = false;
                     }
                 }
                 break;
             case COMPASS:
-                UUID uuid = player.getUniqueId();
+                Member member = Member.users.get(player.getUniqueId());
                 Inventory orig = Reduce.spec;
-                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[User.getLang(uuid)]);
+                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.lang]);
                 inventory.setContents(orig.getContents());
                 if (player.getGameMode().equals(GameMode.ADVENTURE)) {
-                    int a = Reduce.totalName.indexOf(Bukkit.getPlayer(Reduce.target.get(uuid)).getName());
+                    int a = Reduce.totalName.indexOf(Bukkit.getPlayer(member.target).getName());
                     if (a != -1)
                         ItemUtils.glow(inventory.getItem(a));
                 }

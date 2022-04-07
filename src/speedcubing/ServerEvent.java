@@ -32,7 +32,7 @@ public class ServerEvent {
     public void socketEvent(SocketEvent e) {
         String[] rs = e.rs;
         if (rs != null && rs[0].equals("d")) {
-            Reduce.PlayerMap.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
+            Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
             SocketUtils.sendData(25576 - Bukkit.getPort() % 2, "d|" + rs[1], 100);
         }
     }
@@ -55,9 +55,10 @@ public class ServerEvent {
         Player player = e.player;
         String message = e.packet.a();
         UUID uuid = player.getUniqueId();
-        if (Reduce.setSkin.contains(uuid)) {
+        Member member = Member.users.get(uuid);
+        if (member.setSkin) {
             if (message.contains(" ") || message.length() > 16)
-                player.sendMessage(GlobalString.invalidName[User.getLang(uuid)]);
+                player.sendMessage(GlobalString.invalidName[member.lang]);
             else {
                 String id;
                 try {
@@ -68,56 +69,56 @@ public class ServerEvent {
                 if (id.equals("invalidName"))
                     player.sendMessage("invalid name \"" + message + "\"");
                 else {
-                    Reduce.setSkin.remove(uuid);
+                    member.setSkin = false;
                     String finalId = id;
                     new Thread(() -> {
-                        EntityPlayer entityPlayer = Reduce.EntityPlayers.get(uuid);
+                        EntityPlayer entityPlayer = member.EntityPlayers;
                         if (entityPlayer != null)
-                            Reduce.setSkin(player, entityPlayer, uuid, SessionServer.getSkin(finalId));
+                            member.setSkin(player, entityPlayer, SessionServer.getSkin(finalId));
                     }).start();
                 }
             }
             return;
-        } else if (Reduce.setName.contains(uuid)) {
-            EntityArmorStand stand = Reduce.Holo.get(uuid);
+        } else if (member.setName) {
+            EntityArmorStand stand = member.Holo;
             stand.setCustomName(ChatColor.translateAlternateColorCodes('&', message));
-            Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, Reduce.Spectators.get(uuid), new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
-            Reduce.setName.remove(uuid);
+            Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
+            member.setName = false;
             return;
-        } else if (Reduce.ReachSettings.contains(uuid)) {
+        } else if (member.ReachSettings) {
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 25000)
                     player.sendMessage("the number is too large / small !");
                 else {
-                    Reduce.ReachSettings.remove(uuid);
-                    Reduce.integerCache.get(uuid)[5] = x;
+                    member.ReachSettings = false;
+                    member.integerCache[5] = x;
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
             }
             return;
-        } else if (Reduce.horSettings.contains(uuid)) {
+        } else if (member.horSettings) {
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
                     player.sendMessage("the number is too large / small !");
                 else {
-                    Reduce.horSettings.remove(uuid);
-                    Reduce.integerCache.get(uuid)[6] = x;
+                    member.horSettings = false;
+                    member.integerCache[6] = x;
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
             return;
-        } else if (Reduce.verSettings.contains(uuid)) {
+        } else if (member.verSettings) {
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
                     player.sendMessage("the number is too large / small !");
                 else {
-                    Reduce.verSettings.remove(uuid);
-                    Reduce.integerCache.get(uuid)[7] = x;
+                    member.verSettings = false;
+                    member.integerCache[7] = x;
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
@@ -127,10 +128,10 @@ public class ServerEvent {
         long time = System.currentTimeMillis();
         boolean spam = PlayerJoin.Canspam.contains(uuid);
         if (!spam && time - speedcubingServer.spam.get(uuid) < 500)
-            player.sendMessage(GlobalString.spam[User.getLang(uuid)]);
+            player.sendMessage(GlobalString.spam[member.lang]);
         else if (message.charAt(0) != '/') {
             if (!spam && speedcubingServer.lastmsg.get(uuid).equals(message))
-                player.sendMessage(GlobalString.samemsg[User.getLang(uuid)]);
+                player.sendMessage(GlobalString.samemsg[member.lang]);
             else {
                 String[] formats = User.getFormat(User.getRank(uuid));
                 String text = formats[0] + player.getName();
@@ -154,24 +155,25 @@ public class ServerEvent {
         PacketPlayInUseEntity packet = e.packet;
         if (packet.a().equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && player.getNoDamageTicks() < player.getMaximumNoDamageTicks() / 2 && player.getGameMode().equals(GameMode.SURVIVAL)) {
             UUID uuid = player.getUniqueId();
+            Member member = Member.users.get(uuid);
             ItemStack hand = player.getItemInHand();
-            Boolean[] bs = Reduce.booleanCache.get(uuid);
+            Boolean[] bs = member.booleanCache;
             EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
             PlayerConnection connection = entityplayer.playerConnection;
-            Set<PlayerConnection> spec = Reduce.Spectators.get(uuid);
-            int map = Reduce.PlayerMap.get(uuid);
-            if ((hand == null || hand.getType() != Material.INK_SACK) && !Reduce.DamageTask.containsKey(uuid)) {
-                Reduce.DamageTask.put(uuid, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
+            Set<PlayerConnection> spec = member.Spectators;
+            int map = member.Map;
+            if ((hand == null || hand.getType() != Material.INK_SACK) && member.task == -1) {
+                member.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
                     Location location = player.getLocation();
                     double xDiff = location.getX() - map * 500 - 0.5;
-                    double zDiff = location.getZ() - Reduce.PlayerCoord.get(uuid) - 0.5;
+                    double zDiff = location.getZ() - member.Coord - 0.5;
                     double yDiff = player.getEyeLocation().getY() - 101.62;
-                    Integer[] settings = Reduce.integerCache.get(uuid);
+                    Integer[] settings = member.integerCache;
                     if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * settings[5] / 1000) {
                         double[] value = configcache.ReduceKB;
                         double hor = player.isOnGround() ? value[0] : value[2];
                         double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
-                        PacketPlayOutAnimation animation = new PacketPlayOutAnimation(Reduce.EntityPlayers.get(uuid), (byte) 0);
+                        PacketPlayOutAnimation animation = new PacketPlayOutAnimation(member.EntityPlayers, (byte) 0);
                         double x = xDiff * hor / horizontalDistance * settings[6] / 1000;
                         double y = (player.isOnGround() ? value[1] : value[3]) * settings[7] / 1000;
                         double z = zDiff * hor / horizontalDistance * settings[6] / 1000;
@@ -186,18 +188,18 @@ public class ServerEvent {
                                 new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1),
                                 animation,
                                 new PacketPlayOutAnimation(entityplayer, 1));
-                        if (Reduce.booleanCache.get(uuid)[2])
+                        if (member.booleanCache[2])
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                                if (Reduce.Spectators.containsKey(uuid))
+                                if (member.Spectators != null)
                                     Reduce.sendPackets(connection, spec, animation);
                             }, 5);
                     }
-                }, 0, 10));
+                }, 0, 10);
             }
             if (bs[1])
-                Reduce.sendPackets(connection, spec, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), map * 250 + 0.5, 101.62, Reduce.PlayerCoord.get(uuid) + 0.5, 1, 1));
+                Reduce.sendPackets(connection, spec, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), map * 250 + 0.5, 101.62, member.Coord + 0.5, 1, 1));
             if (bs[0])
-                Reduce.sendPackets(connection, spec, new PacketPlayOutAnimation(Reduce.EntityPlayers.get(uuid), (byte) 1));
+                Reduce.sendPackets(connection, spec, new PacketPlayOutAnimation(member.EntityPlayers, (byte) 1));
             player.setNoDamageTicks(20);
         }
     }

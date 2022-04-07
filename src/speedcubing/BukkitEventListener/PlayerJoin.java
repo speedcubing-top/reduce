@@ -6,7 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import speedcubing.Core.Reduce;
+import speedcubing.Member;
 
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -18,7 +20,7 @@ public class PlayerJoin implements Listener {
         Player player = e.getPlayer();
         if (player.isOnline()) {
             UUID uuid = player.getUniqueId();
-            Integer map = Reduce.PlayerMap.get(uuid);
+            Integer map = Reduce.mapCache.get(uuid);
             if (map == null || Reduce.used[map] == Reduce.rooms) {
                 if (map == null)
                     player.sendMessage("Error in the connection.");
@@ -27,7 +29,6 @@ public class PlayerJoin implements Listener {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        Reduce.PlayerMap.remove(uuid);
                         PluginMessage.switchServer(player, "lobby");
                     }
                 }, 500);
@@ -39,8 +40,9 @@ public class PlayerJoin implements Listener {
                         break;
                     }
                 }
+                Reduce.mapCache.remove(uuid);
                 player.sendMessage("§4Keep in mind that the Spectator System is still under development.");
-                Reduce.GameStart(map, player, uuid, room, null);
+                new Member(player, map, room,null,null,new HashSet<>());
             }
         }
     }

@@ -28,6 +28,7 @@ import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
+import speedcubing.Member;
 
 import java.util.Collections;
 import java.util.Timer;
@@ -51,13 +52,12 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 10: {
-                            UUID uuid = player.getUniqueId();
-                            int lang = User.getLang(uuid);
-                            Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[lang]);
-                            String[] reach = StringList.ReachLore[lang];
-                            String[] hor = StringList.HorLore[lang];
-                            String[] ver = StringList.VerLore[lang];
-                            Integer[] cache = Reduce.integerCache.get(uuid);
+                            Member member = Member.users.get(player.getUniqueId());
+                            Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[member.lang]);
+                            String[] reach = StringList.ReachLore[member.lang];
+                            String[] hor = StringList.HorLore[member.lang];
+                            String[] ver = StringList.VerLore[member.lang];
+                            Integer[] cache = member.integerCache;
                             inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3], reach[4]).build());
                             inv.setItem(13, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3], hor[4]).build());
                             inv.setItem(15, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4]).build());
@@ -65,43 +65,40 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 11: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = User.getLang(uuid);
                             Inventory inv = player.getInventory();
-                            player.openInventory(ItemStackList.InventoryKitEditor[lang]);
-                            InventoryUtils.fillItem(inv, 9, 36, Reduce.Invalid[lang]);
-                            Reduce.kitedit.add(uuid);
+                            player.openInventory(ItemStackList.InventoryKitEditor[member.lang]);
+                            InventoryUtils.fillItem(inv, 9, 36, Reduce.Invalid[member.lang]);
+                            member.kitedit = true;
                         }
                         break;
                         case 12:
                             BlockEditor.createMainPage(player);
                             break;
                         case 13: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = User.getLang(uuid);
-                            int x = Reduce.integerCache.get(uuid)[3];
-                            Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[lang]);
+                            int x = member.integerCache[3];
+                            Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[member.lang]);
                             for (int i = 0; i < 6; i++) {
-                                inv.setItem(i + 10, ItemStackList.stickeditor[0][i][lang]);
+                                inv.setItem(i + 10, ItemStackList.stickeditor[0][i][member.lang]);
                             }
-                            org.bukkit.inventory.ItemStack selected = ItemStackList.stickeditor[1][x][lang];
+                            org.bukkit.inventory.ItemStack selected = ItemStackList.stickeditor[1][x][member.lang];
                             inv.setItem(x + 10, selected);
                             player.openInventory(inv);
                         }
                         break;
                         case 14: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = User.getLang(uuid);
-                            int map = Reduce.PlayerMap.get(uuid);
-                            Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[lang]);
-                            inv.setItem(0, ItemStackList.Maps[0][0][lang]);
-                            inv.setItem(1, ItemStackList.Maps[0][1][lang]);
-                            inv.setItem(2, ItemStackList.Maps[0][2][lang]);
-                            inv.setItem(3, ItemStackList.Maps[0][3][lang]);
-                            inv.setItem(map, ItemStackList.Maps[1][map][lang]);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.lang]);
+                            ItemStack[][] stacks = ItemStackList.Maps[0];
+                            inv.setItem(0, stacks[0][member.lang]);
+                            inv.setItem(1, stacks[1][member.lang]);
+                            inv.setItem(2, stacks[2][member.lang]);
+                            inv.setItem(3, stacks[3][member.lang]);
+                            inv.setItem(member.Map, ItemStackList.Maps[1][member.Map][member.lang]);
                             player.openInventory(inv);
                         }
                         break;
@@ -118,15 +115,14 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 16: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = User.getLang(uuid);
-                            Boolean[] bs = Reduce.booleanCache.get(uuid);
-                            org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][lang];
-                            ItemStack s2 = ItemStackList.preferButton[1][lang];
-                            Inventory inv = Bukkit.createInventory(ItemStackList.PreferHolder, 36, StringList.prefedit[lang]);
+                            Boolean[] bs = member.booleanCache;
+                            org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][member.lang];
+                            ItemStack s2 = ItemStackList.preferButton[1][member.lang];
+                            Inventory inv = Bukkit.createInventory(ItemStackList.PreferHolder, 36, StringList.prefedit[member.lang]);
                             for (int i = 0; i < 3; i++) {
-                                inv.setItem(i + 12, ItemStackList.prefereditor[i][lang]);
+                                inv.setItem(i + 12, ItemStackList.prefereditor[i][member.lang]);
                             }
                             inv.setItem(21, bs[0] ? s1 : s2);
                             inv.setItem(22, bs[1] ? s1 : s2);
@@ -143,8 +139,9 @@ public class InventoryClick implements Listener {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             if (e.getCursor().getType() == Material.AIR) {
-                                player.sendMessage(GlobalString.SavedSettings[User.getLang(uuid)]);
-                                Integer[] reduce = Reduce.integerCache.get(uuid);
+                                Member member = Member.users.get(uuid);
+                                player.sendMessage(GlobalString.SavedSettings[member.lang]);
+                                Integer[] reduce = member.integerCache;
                                 Inventory inv = player.getInventory();
                                 for (int i = 0; i < 9; i++) {
                                     ItemStack stack = inv.getItem(i);
@@ -159,7 +156,7 @@ public class InventoryClick implements Listener {
                                             reduce[0] = i;
                                     }
                                 }
-                                Reduce.kitedit.remove(uuid);
+                                member.kitedit = false;
                                 player.closeInventory();
                                 InventoryUtils.fillItem(player.getInventory(), 9, 36, new ItemStack(Material.AIR));
                                 player.updateInventory();
@@ -184,48 +181,47 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 21: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            boolean b = Reduce.booleanCache.get(uuid)[0];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][User.getLang(uuid)]);
-                            Reduce.booleanCache.get(uuid)[0] = !b;
+                            boolean b = member.booleanCache[0];
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
+                            member.booleanCache[0] = !b;
                         }
                         break;
                         case 22: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            boolean b = Reduce.booleanCache.get(uuid)[1];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][User.getLang(uuid)]);
-                            Reduce.booleanCache.get(uuid)[1] = !b;
+                            boolean b = member.booleanCache[1];
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
+                            member.booleanCache[1] = !b;
                         }
                         break;
                         case 23: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            boolean b = Reduce.booleanCache.get(uuid)[2];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][User.getLang(uuid)]);
-                            Reduce.booleanCache.get(uuid)[2] = !b;
+                            boolean b = member.booleanCache[2];
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
+                            member.booleanCache[2] = !b;
                         }
                         break;
                     }
                 } else if (holder == ItemStackList.StickSkinHolder) {
                     e.setCancelled(true);
                     if (RawSlot >= 10 && RawSlot <= 15) {
-                        UUID uuid = player.getUniqueId();
-                        int lang = User.getLang(uuid);
+                        Member member = Member.users.get(player.getUniqueId());
                         int x = RawSlot - 10;
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-                        Reduce.integerCache.get(uuid)[3] = x;
+                        member.integerCache[3] = x;
                         player.closeInventory();
-                        player.sendMessage(GlobalString.SavedSettings[lang]);
-                        player.getInventory().setItem(Reduce.integerCache.get(uuid)[0], ItemStackList.Sticks[x][lang]);
+                        player.sendMessage(GlobalString.SavedSettings[member.lang]);
+                        player.getInventory().setItem(member.integerCache[0], ItemStackList.Sticks[x][member.lang]);
                     }
                 } else if (holder == ItemStackList.MapHolder) {
                     e.setCancelled(true);
-                    UUID uuid = player.getUniqueId();
-                    if (RawSlot < Reduce.maptypes && RawSlot != Reduce.PlayerMap.get(uuid)) { //swap map
+                    Member member = Member.users.get(player.getUniqueId());
+                    if (RawSlot < Reduce.maptypes && RawSlot != member.Map) { //swap map
                         if (Reduce.used[RawSlot] == Reduce.rooms) {
-                            player.sendMessage(GlobalString.NoEnoughServers[User.getLang(uuid)]);
+                            player.sendMessage(GlobalString.NoEnoughServers[member.lang]);
                             return;
                         }
                         int newroom = -1;
@@ -235,27 +231,26 @@ public class InventoryClick implements Listener {
                                 break;
                             }
                         }
-                        int map = Reduce.PlayerMap.get(uuid);
-                        int coord = Reduce.PlayerCoord.get(uuid);
+                        int map = member.Map;
+                        int coord = member.Coord;
                         int oldroom = Reduce.coordToRoom(coord);
                         World world = player.getWorld();
                         world.getChunkAt(new Location(world, 500 * map + 0.5, 100, coord + 0.5)).load();
-                        if (Reduce.DamageTask.containsKey(uuid)) {
-                            Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
-                            Reduce.DamageTask.remove(uuid);
+                        if (member.task != -1) {
+                            Bukkit.getScheduler().cancelTask(member.task);
+                            member.task = -1;
                         }
-                        Reduce.setSkin.remove(uuid);
-                        Reduce.setName.remove(uuid);
-                        Reduce.ReachSettings.remove(uuid);
-                        Reduce.horSettings.remove(uuid);
-                        Reduce.verSettings.remove(uuid);
-                        Reduce.SideBar.get(uuid).cancel();
-                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, Reduce.EntityPlayers.get(uuid)));
-                        Reduce.clear(uuid);
-                        Reduce.blocks.get(uuid).clear();
-                        Reduce.removeFromGUI(player.getName(), uuid, map, null);
+                        member.setSkin = false;
+                        member.setName = false;
+                        member.ReachSettings = false;
+                        member.horSettings = false;
+                        member.verSettings = false;
+                        member.SideBar.cancel();
+                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.EntityPlayers));
+                        member.clearBlocks();
+                        Reduce.removeFromGUI(player.getName(), player.getUniqueId(), map, null);
                         player.closeInventory();
-                        Reduce.GameStart(RawSlot, player, uuid, newroom, Reduce.Spectators.get(uuid));
+                        new Member(player,RawSlot,newroom,member.booleanCache,member.integerCache,member.Spectators);
                         Reduce.used[map] -= 1;
                         Reduce.Rooms[map][oldroom] = true;
                     }
@@ -263,32 +258,32 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 10: {
-                            UUID uuid = player.getUniqueId();
-                            player.sendMessage(StringList.InputString[User.getLang(uuid)]);
+                            Member member = Member.users.get(player.getUniqueId());
+                            player.sendMessage(StringList.InputString[member.lang]);
                             player.closeInventory();
-                            Reduce.setSkin.add(uuid);
+                            member.setSkin = true;
                         }
                         break;
                         case 11: {
-                            UUID uuid = player.getUniqueId();
-                            EntityPlayer entityPlayer = Reduce.EntityPlayers.get(uuid);
+                            Member member = Member.users.get(player.getUniqueId());
+                            EntityPlayer entityPlayer = member.EntityPlayers;
                             Property property = ((CraftPlayer) player).getProfile().getProperties().get("textures").iterator().next();
-                            Reduce.setSkin(player, entityPlayer, uuid, new String[]{property.getValue(), property.getSignature()});
+                            member.setSkin(player, entityPlayer, new String[]{property.getValue(), property.getSignature()});
                             player.closeInventory();
                         }
                         break;
                         case 13: {
-                            UUID uuid = player.getUniqueId();
-                            player.sendMessage(StringList.InputString2[User.getLang(uuid)]);
+                            Member member = Member.users.get(player.getUniqueId());
+                            player.sendMessage(StringList.InputString2[member.lang]);
                             player.closeInventory();
-                            Reduce.setName.add(uuid);
+                            member.setName = true;
                         }
                         break;
                         case 14: {
-                            UUID uuid = player.getUniqueId();
-                            EntityArmorStand stand = Reduce.Holo.get(uuid);
+                            Member member = Member.users.get(player.getUniqueId());
+                            EntityArmorStand stand = member.Holo;
                             stand.setCustomName("§6" + cubingserver.config.SERVERIP);
-                            Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, Reduce.Spectators.get(uuid), new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
+                            Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
                             player.closeInventory();
                         }
                         break;
@@ -297,24 +292,24 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 11: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput2[User.getLang(uuid)]);
-                            Reduce.ReachSettings.add(uuid);
+                            player.sendMessage(StringList.veloinput2[member.lang]);
+                            member.ReachSettings = true;
                         }
                         break;
                         case 13: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput[User.getLang(uuid)]);
-                            Reduce.horSettings.add(uuid);
+                            player.sendMessage(StringList.veloinput[member.lang]);
+                            member.horSettings = true;
                         }
                         break;
                         case 15: {
-                            UUID uuid = player.getUniqueId();
+                            Member member = Member.users.get(player.getUniqueId());
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput[User.getLang(uuid)]);
-                            Reduce.verSettings.add(uuid);
+                            player.sendMessage(StringList.veloinput[member.lang]);
+                            member.verSettings = true;
                         }
                         break;
                     }
@@ -324,7 +319,8 @@ public class InventoryClick implements Listener {
                         //join spectate
                         UUID uuid = player.getUniqueId();
                         boolean isSpec = player.getGameMode() == GameMode.ADVENTURE;
-                        if (isSpec && Reduce.totalName.get(RawSlot).equals(Bukkit.getPlayer(Reduce.target.get(uuid)).getName()))
+                        Member member = Member.users.get(uuid);
+                        if (isSpec && Reduce.totalName.get(RawSlot).equals(Bukkit.getPlayer(member.target).getName()))
                             return;
                         int map = 0;
                         int front = 0;
@@ -337,42 +333,40 @@ public class InventoryClick implements Listener {
                         }
                         UUID target = Reduce.specStorage[map].get(RawSlot - front);
                         if (!target.equals(uuid)) {
-                            int lang = User.getLang(uuid);
                             EntityPlayer ePlayer = ((CraftPlayer) player).getHandle();
                             PlayerConnection connection = ePlayer.playerConnection;
                             if (isSpec) {
-                                if (Reduce.DamageTask.containsKey(uuid)) {
-                                    Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
-                                    Reduce.DamageTask.remove(uuid);
+                                if (member.task != -1) {
+                                    Bukkit.getScheduler().cancelTask(member.task);
+                                    member.task = -1;
                                 }
-                                Reduce.Spectators.get(Reduce.target.get(uuid)).remove(connection);
+                                Member.users.get(member.target).Spectators.remove(connection);
                             } else {
-                                Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
-                                Reduce.Spectators.get(uuid).clear();
-                                Reduce.removeFromGUI(player.getName(), uuid, Reduce.PlayerMap.get(uuid), uuid);
+                                member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
+                                member.Spectators.clear();
+                                Reduce.removeFromGUI(player.getName(), uuid, member.Map, uuid);
                                 player.closeInventory();
-                                Reduce.oldMap.put(uuid, Reduce.PlayerMap.get(uuid));
-                                Reduce.oldCoord.put(uuid, Reduce.PlayerCoord.get(uuid));
+                                member.oldMap = member.Map;
+                                member.oldCoord = member.Coord;
                                 player.setGameMode(GameMode.ADVENTURE);
                                 player.setAllowFlight(true);
-                                Reduce.clear(uuid);
-                                Reduce.blocks.get(uuid).clear();
+                                member.clearBlocks();
                                 Inventory inv = player.getInventory();
                                 inv.clear();
-                                inv.setItem(4, ItemStackList.Spec[lang]);
-                                inv.setItem(8, ItemStackList.LeaveSpec[lang]);
+                                inv.setItem(4, ItemStackList.Spec[member.lang]);
+                                inv.setItem(8, ItemStackList.LeaveSpec[member.lang]);
                             }
-                            Reduce.Spectators.get(target).add(connection);
-                            int targetcoord = Reduce.PlayerCoord.get(target);
+                            Member targetMember = Member.users.get(target);
+                            targetMember.Spectators.add(connection);
                             Player targetPlayer = Bukkit.getPlayer(target);
-                            Reduce.PlayerCoord.put(uuid, targetcoord);
-                            Reduce.PlayerMap.put(uuid, map);
-                            Reduce.target.put(uuid, target);
-                            PlayerUtils.teleport(connection, map * 500 + 0.5, 100, targetcoord + 0.5, 0, 0);
+                            member.Coord = targetMember.Coord;
+                            member.Map = map;
+                            member.target = target;
+                            PlayerUtils.teleport(connection, map * 500 + 0.5, 100, targetMember.Coord + 0.5, 0, 0);
                             player.closeInventory();
                             targetPlayer.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-                            EntityPlayer entityPlayer = Reduce.EntityPlayers.get(target);
+                            EntityPlayer entityPlayer = targetMember.EntityPlayers;
                             ((CraftPlayer) targetPlayer).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ePlayer));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
                                 connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
@@ -382,7 +376,7 @@ public class InventoryClick implements Listener {
                                 connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
                                 connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
                                 connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
-                                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(Reduce.Holo.get(target)));
+                                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(targetMember.Holo));
                             }, 1);
                             new Timer().schedule(new TimerTask() {
                                 @Override
@@ -391,25 +385,25 @@ public class InventoryClick implements Listener {
                                 }
                             }, 4000);
 
-                            if (Reduce.setSkin.contains(uuid)) {
-                                player.sendMessage(StringList.InputStringCancel[lang]);
-                                Reduce.setSkin.remove(uuid);
+                            if (member.setSkin) {
+                                player.sendMessage(StringList.InputStringCancel[member.lang]);
+                                member.setSkin = false;
                             }
-                            if (Reduce.setName.contains(uuid)) {
-                                player.sendMessage(StringList.InputStringCancel2[lang]);
-                                Reduce.setName.remove(uuid);
+                            if (member.setName) {
+                                player.sendMessage(StringList.InputStringCancel2[member.lang]);
+                                member.setName = false;
                             }
-                            if (Reduce.ReachSettings.contains(uuid)) {
-                                player.sendMessage(StringList.InputStringCancel3[lang]);
-                                Reduce.ReachSettings.remove(uuid);
+                            if (member.ReachSettings) {
+                                player.sendMessage(StringList.InputStringCancel3[member.lang]);
+                                member.ReachSettings = false;
                             }
-                            if (Reduce.horSettings.contains(uuid)) {
-                                player.sendMessage(StringList.InputStringCancel4[lang]);
-                                Reduce.horSettings.remove(uuid);
+                            if (member.horSettings) {
+                                player.sendMessage(StringList.InputStringCancel4[member.lang]);
+                                member.horSettings = false;
                             }
-                            if (Reduce.verSettings.contains(uuid)) {
-                                player.sendMessage(StringList.InputStringCancel5[lang]);
-                                Reduce.verSettings.remove(uuid);
+                            if (member.verSettings) {
+                                player.sendMessage(StringList.InputStringCancel5[member.lang]);
+                                member.verSettings = false;
                             }
                         }
                     }

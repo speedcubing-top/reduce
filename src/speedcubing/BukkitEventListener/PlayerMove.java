@@ -1,13 +1,9 @@
 package speedcubing.BukkitEventListener;
 
 import cubing.lib.bukkit.PlayerUtils;
-import cubingserver.libs.User;
-import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,44 +12,41 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
+import speedcubing.Member;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 public class PlayerMove implements Listener {
     @EventHandler
     public void PlayerMoveEvent(PlayerMoveEvent e) {
         Player player = e.getPlayer();
         Location to = e.getTo();
-        UUID uuid = player.getUniqueId();
+        Member member = Member.users.get(player.getUniqueId());
         if (player.getGameMode() == GameMode.ADVENTURE) {
-            if (Math.abs(to.getZ() - Reduce.PlayerCoord.get(uuid) - 0.5) > 149.5 || Math.abs(to.getX() - Reduce.PlayerMap.get(uuid) * 500 - 0.5) > 149.5)
+            if (Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5)
                 player.teleport(e.getFrom());
             else if (to.getY() < 85)
-                PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, Reduce.PlayerMap.get(uuid) * 500 + 0.5, 100, Reduce.PlayerCoord.get(uuid) + 0.5, 0, 0);
+                PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, member.Map * 500 + 0.5, 100, member.Coord + 0.5, 0, 0);
         } else if (player.getGameMode() == GameMode.SURVIVAL)
-            Reduce.Aim(player, Reduce.Spectators.get(uuid));
-        if (to.getY() < 85 || Math.abs(to.getZ() - Reduce.PlayerCoord.get(uuid) - 0.5) > 149.5 || Math.abs(to.getX() - Reduce.PlayerMap.get(uuid) * 500 - 0.5) > 149.5) {
-            int lang = User.getLang(uuid);
-            int map = Reduce.PlayerMap.get(uuid);
+            member.Aim(player);
+        if (to.getY() < 85 || Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5) {
+            int map = member.Map;
             double NPCx = map * 500 + 0.5;
-            double NPCz = Reduce.PlayerCoord.get(uuid) + 0.5;
-            Integer[] ints = Reduce.integerCache.get(uuid);
-            player.getScoreboard().getTeam(StringList.ReduceSidebar[lang][1]).setSuffix("0");
-            Reduce.StopDamage(uuid);
+            double NPCz = member.Coord + 0.5;
+            player.getScoreboard().getTeam(StringList.ReduceSidebar[member.lang][1]).setSuffix("0");
+            member.stopDamage();
             int[] m = Reduce.MapLocations[map];
             PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, NPCx - m[0], 100 + m[1], NPCz, 270, 0);
-            player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][lang]);
-            Reduce.BlockPlaced.put(uuid, 0);
-            Reduce.clear(uuid);
-            Reduce.blocks.get(uuid).clear();
+            player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.lang]);
+            member.BlockPlaced = 0;
+            member.clearBlocks();
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    EntityPlayer entityPlayer = Reduce.EntityPlayers.get(uuid);
+                    EntityPlayer entityPlayer = member.EntityPlayers;
                     if (entityPlayer != null)
-                        Reduce.teleport(NPCx, 100, NPCz, 90, 0, ((CraftPlayer) player).getHandle().playerConnection, uuid, Reduce.Spectators.get(uuid));
+                        member.teleport(NPCx, 100, NPCz, 90, 0, ((CraftPlayer) player).getHandle().playerConnection);
                 }
             }, 50);
         }

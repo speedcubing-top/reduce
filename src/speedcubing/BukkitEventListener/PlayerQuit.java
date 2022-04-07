@@ -2,7 +2,6 @@ package speedcubing.BukkitEventListener;
 
 
 import cubing.lib.bukkit.PlayerUtils;
-import cubing.lib.utils.Console;
 import cubingserver.speedcubingServer;
 import cubingserver.things.events.PlayerJoin;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
@@ -15,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import speedcubing.Core.Reduce;
+import speedcubing.Member;
 
 import java.util.UUID;
 
@@ -23,40 +23,22 @@ public class PlayerQuit implements Listener {
     public void PlayerQuitEvent(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-        if (PlayerJoin.JoinPackets.containsKey(uuid) && Reduce.PlayerMap.containsKey(uuid)) {
+        if (PlayerJoin.JoinPackets.containsKey(uuid) && !Reduce.mapCache.containsKey(uuid)) {
             boolean spec = player.getGameMode() == GameMode.ADVENTURE;
-            int room = Reduce.coordToRoom(Reduce.PlayerCoord.get(uuid));
-            int map = Reduce.PlayerMap.get(uuid);
+            Member member = Member.users.get(uuid);
             if (spec) {
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
-                int oldMap = Reduce.oldMap.get(uuid);
-                Reduce.used[oldMap] -= 1;
-                Reduce.Rooms[oldMap][Reduce.coordToRoom(Reduce.oldCoord.get(uuid))] = true;
+                Reduce.used[member.oldMap] -= 1;
+                Reduce.Rooms[member.oldMap][Reduce.coordToRoom(member.oldCoord)] = true;
             } else {
-                Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
-                Reduce.Spectators.get(uuid).clear();
-                if (Reduce.DamageTask.containsKey(uuid)) {
-                    Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
-                    Reduce.DamageTask.remove(uuid);
-                }
-                Reduce.clear(uuid);
-                Reduce.blocks.remove(uuid);
+                member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
+                member.Spectators.clear();
+                if (member.task != -1)
+                    Bukkit.getScheduler().cancelTask(member.task);
+                member.clearBlocks();
             }
-            Reduce.Spectators.remove(uuid);
-            Reduce.Holo.remove(uuid);
-            Reduce.PlacedBlocks.remove(uuid);
-            Reduce.setSkin.remove(uuid);
-            Reduce.setName.remove(uuid);
-            Reduce.ReachSettings.remove(uuid);
-            Reduce.horSettings.remove(uuid);
-            Reduce.verSettings.remove(uuid);
-            Reduce.BlockPlaced.remove(uuid);
-            Reduce.SideBar.get(uuid).cancel();
-            Reduce.SideBar.remove(uuid);
-            Reduce.oldCoord.remove(uuid);
-            Reduce.oldMap.remove(uuid);
-            Integer[] ints = Reduce.integerCache.get(uuid);
-            Boolean[] bs = Reduce.booleanCache.get(uuid);
+            Integer[] ints = member.integerCache;
+            Boolean[] bs = member.booleanCache;
             new Thread(() -> speedcubingServer.connection.update("playersdata",
                     "reduce_stick=" + ints[0] +
                             ",reduce_block=" + ints[1] +
@@ -72,18 +54,14 @@ public class PlayerQuit implements Listener {
                             ",reduce_npcswing=" + (bs[2] ? 1 : 0)
                     , "uuid='" + uuid + "'")).start();
             if (!spec) {
-                Reduce.removeFromGUI(player.getName(), uuid, map, null);
-                Reduce.used[map] -= 1;
-                Reduce.Rooms[map][room] = true;
+                Reduce.removeFromGUI(player.getName(), uuid, member.Map, null);
+                Reduce.used[member.Map] -= 1;
+                Reduce.Rooms[member.Map][Reduce.coordToRoom(member.Coord)] = true;
             }
-            Reduce.booleanCache.remove(uuid);
-            Reduce.integerCache.remove(uuid);
             PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, Reduce.EntityPlayers.get(uuid)));
-            Reduce.EntityPlayers.remove(uuid);
-            Reduce.PlayerMap.remove(uuid);
-            Reduce.PlayerCoord.remove(uuid);
+            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.EntityPlayers));
             PlayerUtils.teleport(connection, 0.5, 1000, 0.5, 0, 0);
-        }
+            Member.users.remove(uuid);
+        } else Reduce.mapCache.remove(uuid);
     }
 }
