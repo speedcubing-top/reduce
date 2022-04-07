@@ -7,7 +7,6 @@ import cubing.lib.bukkit.Event.ServerEventHandler;
 import cubing.lib.bukkit.Event.events.PlayInChatEvent;
 import cubing.lib.bukkit.Event.events.PlayInUseEntityEvent;
 import cubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
-import cubing.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.connection.SocketUtils;
 import cubingserver.customEvents.SocketEvent;
@@ -73,9 +72,8 @@ public class ServerEvent {
                     String finalId = id;
                     new Thread(() -> {
                         EntityPlayer entityPlayer = Reduce.EntityPlayers.get(uuid);
-                        if (entityPlayer == null)
-                            return;
-                        Reduce.setSkin(player, entityPlayer, uuid, SessionServer.getSkin(finalId));
+                        if (entityPlayer != null)
+                            Reduce.setSkin(player, entityPlayer, uuid, SessionServer.getSkin(finalId));
                     }).start();
                 }
             }
@@ -144,7 +142,6 @@ public class ServerEvent {
                         str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
                 };
                 Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[User.getLang(a.getUniqueId())]));
-                Console.sendColoredConsole("§7[§aChatLog§7] [§b" + player.getWorld().getName() + "§7] " + out[1]);
                 speedcubingServer.lastmsg.put(uuid, message);
             }
         } else e.setCancelled(false);

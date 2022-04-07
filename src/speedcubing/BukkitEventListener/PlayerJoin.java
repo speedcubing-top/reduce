@@ -1,16 +1,12 @@
 package speedcubing.BukkitEventListener;
 
-import cubing.lib.utils.Console;
-import cubing.lib.utils.Reflections;
 import cubingserver.PluginMessage;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import speedcubing.Core.Reduce;
 
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -35,19 +31,17 @@ public class PlayerJoin implements Listener {
                         PluginMessage.switchServer(player, "lobby");
                     }
                 }, 500);
-                return;
-            }
-            System.out.println(Reduce.used[map]+" "+ Arrays.toString(Reduce.Rooms[map]));
-            int room = -1;
-            for (int h = 0; h < Reduce.rooms; h++) {
-                if (Reduce.Rooms[map][h]) {
-                    room = h;
-                    break;
+            } else {
+                int room = -1;
+                for (int h = 0; h < Reduce.rooms; h++) {
+                    if (Reduce.Rooms[map][h]) {
+                        room = h;
+                        break;
+                    }
                 }
+                player.sendMessage("§4Keep in mind that the Spectator System is still under development.");
+                Reduce.GameStart(map, player, uuid, room, null);
             }
-            player.sendMessage("§4Keep in mind that the Spectator System is still under development.");
-            Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b joined in §aroom=" + room + ",map=" + map);
-            Reduce.GameStart(map, player, uuid, room, null);
         }
     }
 }

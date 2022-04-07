@@ -5,13 +5,10 @@ import cubing.lib.bukkit.PlayerUtils;
 import cubing.lib.utils.Console;
 import cubingserver.speedcubingServer;
 import cubingserver.things.events.PlayerJoin;
-import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,10 +24,14 @@ public class PlayerQuit implements Listener {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
         if (PlayerJoin.JoinPackets.containsKey(uuid) && Reduce.PlayerMap.containsKey(uuid)) {
-            Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b disconnected.");
             boolean spec = player.getGameMode() == GameMode.ADVENTURE;
+            int room = Reduce.coordToRoom(Reduce.PlayerCoord.get(uuid));
+            int map = Reduce.PlayerMap.get(uuid);
             if (spec) {
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
+                int oldMap = Reduce.oldMap.get(uuid);
+                Reduce.used[oldMap] -= 1;
+                Reduce.Rooms[oldMap][Reduce.coordToRoom(Reduce.oldCoord.get(uuid))] = true;
             } else {
                 Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
                 Reduce.Spectators.get(uuid).clear();
@@ -41,8 +42,6 @@ public class PlayerQuit implements Listener {
                 Reduce.clear(uuid);
                 Reduce.blocks.remove(uuid);
             }
-            int room = Reduce.coordToRoom(Reduce.PlayerCoord.get(uuid));
-            int map = Reduce.PlayerMap.get(uuid);
             Reduce.Spectators.remove(uuid);
             Reduce.Holo.remove(uuid);
             Reduce.PlacedBlocks.remove(uuid);
@@ -72,16 +71,17 @@ public class PlayerQuit implements Listener {
                             ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
                             ",reduce_npcswing=" + (bs[2] ? 1 : 0)
                     , "uuid='" + uuid + "'")).start();
-            if (!spec)
+            if (!spec) {
                 Reduce.removeFromGUI(player.getName(), uuid, map, null);
+                Reduce.used[map] -= 1;
+                Reduce.Rooms[map][room] = true;
+            }
             Reduce.booleanCache.remove(uuid);
             Reduce.integerCache.remove(uuid);
             PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, Reduce.EntityPlayers.get(uuid)));
             Reduce.EntityPlayers.remove(uuid);
             Reduce.PlayerMap.remove(uuid);
-            Reduce.used[map] -= 1;
-            Reduce.Rooms[map][room] = true;
             Reduce.PlayerCoord.remove(uuid);
             PlayerUtils.teleport(connection, 0.5, 1000, 0.5, 0, 0);
         }

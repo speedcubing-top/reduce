@@ -2,9 +2,9 @@ package speedcubing.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import cubing.lib.bukkit.*;
 import cubing.lib.bukkit.InventoryUtils;
-import cubing.lib.utils.Console;
+import cubing.lib.bukkit.ItemBuilder;
+import cubing.lib.bukkit.PlayerUtils;
 import cubingserver.StringList.GlobalString;
 import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.*;
@@ -29,7 +29,10 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 public class InventoryClick implements Listener {
 
@@ -222,7 +225,6 @@ public class InventoryClick implements Listener {
                     UUID uuid = player.getUniqueId();
                     if (RawSlot < Reduce.maptypes && RawSlot != Reduce.PlayerMap.get(uuid)) { //swap map
                         if (Reduce.used[RawSlot] == Reduce.rooms) {
-                            Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b swapped to map §a" + RawSlot);
                             player.sendMessage(GlobalString.NoEnoughServers[User.getLang(uuid)]);
                             return;
                         }
@@ -250,6 +252,7 @@ public class InventoryClick implements Listener {
                         Reduce.SideBar.get(uuid).cancel();
                         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, Reduce.EntityPlayers.get(uuid)));
                         Reduce.clear(uuid);
+                        Reduce.blocks.get(uuid).clear();
                         Reduce.removeFromGUI(player.getName(), uuid, map, null);
                         player.closeInventory();
                         Reduce.GameStart(RawSlot, player, uuid, newroom, Reduce.Spectators.get(uuid));
@@ -318,7 +321,6 @@ public class InventoryClick implements Listener {
                 } else if (holder == ItemStackList.SpecHolder) {
                     e.setCancelled(true);
                     if (RawSlot < Reduce.totalName.size()) {
-                        Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b clicked §a" + RawSlot);
                         //join spectate
                         UUID uuid = player.getUniqueId();
                         boolean isSpec = player.getGameMode() == GameMode.ADVENTURE;
@@ -334,84 +336,81 @@ public class InventoryClick implements Listener {
                             map += 1;
                         }
                         UUID target = Reduce.specStorage[map].get(RawSlot - front);
-                        if (target.equals(uuid))
-                            return;
-                        if (!isSpec) {
-                            Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
-                            Reduce.Spectators.get(uuid).clear();
-                            Reduce.removeFromGUI(player.getName(), uuid, Reduce.PlayerMap.get(uuid), uuid);
+                        if (!target.equals(uuid)) {
+                            int lang = User.getLang(uuid);
+                            EntityPlayer ePlayer = ((CraftPlayer) player).getHandle();
+                            PlayerConnection connection = ePlayer.playerConnection;
+                            if (isSpec) {
+                                if (Reduce.DamageTask.containsKey(uuid)) {
+                                    Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
+                                    Reduce.DamageTask.remove(uuid);
+                                }
+                                Reduce.Spectators.get(Reduce.target.get(uuid)).remove(connection);
+                            } else {
+                                Reduce.Spectators.get(uuid).forEach(a -> Reduce.quitSpec(null, a, true));
+                                Reduce.Spectators.get(uuid).clear();
+                                Reduce.removeFromGUI(player.getName(), uuid, Reduce.PlayerMap.get(uuid), uuid);
+                                player.closeInventory();
+                                Reduce.oldMap.put(uuid, Reduce.PlayerMap.get(uuid));
+                                Reduce.oldCoord.put(uuid, Reduce.PlayerCoord.get(uuid));
+                                player.setGameMode(GameMode.ADVENTURE);
+                                player.setAllowFlight(true);
+                                Reduce.clear(uuid);
+                                Reduce.blocks.get(uuid).clear();
+                                Inventory inv = player.getInventory();
+                                inv.clear();
+                                inv.setItem(4, ItemStackList.Spec[lang]);
+                                inv.setItem(8, ItemStackList.LeaveSpec[lang]);
+                            }
+                            Reduce.Spectators.get(target).add(connection);
+                            int targetcoord = Reduce.PlayerCoord.get(target);
+                            Player targetPlayer = Bukkit.getPlayer(target);
+                            Reduce.PlayerCoord.put(uuid, targetcoord);
+                            Reduce.PlayerMap.put(uuid, map);
+                            Reduce.target.put(uuid, target);
+                            PlayerUtils.teleport(connection, map * 500 + 0.5, 100, targetcoord + 0.5, 0, 0);
                             player.closeInventory();
-                        }
+                            targetPlayer.hidePlayer(player);
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+                            EntityPlayer entityPlayer = Reduce.EntityPlayers.get(target);
+                            ((CraftPlayer) targetPlayer).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ePlayer));
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
+                                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
+                                connection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayer));
+                                connection.sendPacket(new PacketPlayOutEntityHeadRotation(entityPlayer, (byte) 64));
+                                connection.sendPacket(new PacketPlayOutEntityEquipment(entityPlayer.getId(), 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
+                                connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
+                                connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
+                                connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
+                                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(Reduce.Holo.get(target)));
+                            }, 1);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                                }
+                            }, 4000);
 
-                        int lang = User.getLang(uuid);
-                        EntityPlayer ePlayer = ((CraftPlayer) player).getHandle();
-                        PlayerConnection connection = ePlayer.playerConnection;
-                        if (isSpec) {
-                            if (Reduce.DamageTask.containsKey(uuid)) {
-                                Bukkit.getScheduler().cancelTask(Reduce.DamageTask.get(uuid));
-                                Reduce.DamageTask.remove(uuid);
+                            if (Reduce.setSkin.contains(uuid)) {
+                                player.sendMessage(StringList.InputStringCancel[lang]);
+                                Reduce.setSkin.remove(uuid);
                             }
-                            Reduce.Spectators.get(Reduce.target.get(uuid)).remove(connection);
-                        } else {
-                            Reduce.oldMap.put(uuid, Reduce.PlayerMap.get(uuid));
-                            Reduce.oldCoord.put(uuid, Reduce.PlayerCoord.get(uuid));
-                            player.setGameMode(GameMode.ADVENTURE);
-                            player.setAllowFlight(true);
-                            Reduce.clear(uuid);
-                            Reduce.blocks.get(uuid).clear();
-                            Inventory inv = player.getInventory();
-                            inv.clear();
-                            inv.setItem(4, ItemStackList.Spec[lang]);
-                            inv.setItem(8, ItemStackList.LeaveSpec[lang]);
-                        }
-                        Reduce.Spectators.get(target).add(connection);
-                        int targetcoord = Reduce.PlayerCoord.get(target);
-                        Player targetPlayer = Bukkit.getPlayer(target);
-                        Reduce.PlayerCoord.put(uuid, targetcoord);
-                        Reduce.PlayerMap.put(uuid, map);
-                        Reduce.target.put(uuid, target);
-                        PlayerUtils.teleport(connection, map * 500 + 0.5, 100, targetcoord + 0.5, 0, 0);
-                        player.closeInventory();
-                        targetPlayer.hidePlayer(player);
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,Integer.MAX_VALUE,1));
-                        EntityPlayer entityPlayer = Reduce.EntityPlayers.get(target);
-                        ((CraftPlayer) targetPlayer).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ePlayer));
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                            connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
-                            connection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayer));
-                            connection.sendPacket(new PacketPlayOutEntityHeadRotation(entityPlayer, (byte) 64));
-                            connection.sendPacket(new PacketPlayOutEntityEquipment(entityPlayer.getId(), 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
-                            connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
-                            connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
-                            connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
-                            connection.sendPacket(new PacketPlayOutSpawnEntityLiving(Reduce.Holo.get(target)));
-                        }, 1);
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                            if (Reduce.setName.contains(uuid)) {
+                                player.sendMessage(StringList.InputStringCancel2[lang]);
+                                Reduce.setName.remove(uuid);
                             }
-                        }, 4000);
-
-                        if (Reduce.setSkin.contains(uuid)) {
-                            player.sendMessage(StringList.InputStringCancel[lang]);
-                            Reduce.setSkin.remove(uuid);
-                        }
-                        if (Reduce.setName.contains(uuid)) {
-                            player.sendMessage(StringList.InputStringCancel2[lang]);
-                            Reduce.setName.remove(uuid);
-                        }
-                        if (Reduce.ReachSettings.contains(uuid)) {
-                            player.sendMessage(StringList.InputStringCancel3[lang]);
-                            Reduce.ReachSettings.remove(uuid);
-                        }
-                        if (Reduce.horSettings.contains(uuid)) {
-                            player.sendMessage(StringList.InputStringCancel4[lang]);
-                            Reduce.horSettings.remove(uuid);
-                        }
-                        if (Reduce.verSettings.contains(uuid)) {
-                            player.sendMessage(StringList.InputStringCancel5[lang]);
-                            Reduce.verSettings.remove(uuid);
+                            if (Reduce.ReachSettings.contains(uuid)) {
+                                player.sendMessage(StringList.InputStringCancel3[lang]);
+                                Reduce.ReachSettings.remove(uuid);
+                            }
+                            if (Reduce.horSettings.contains(uuid)) {
+                                player.sendMessage(StringList.InputStringCancel4[lang]);
+                                Reduce.horSettings.remove(uuid);
+                            }
+                            if (Reduce.verSettings.contains(uuid)) {
+                                player.sendMessage(StringList.InputStringCancel5[lang]);
+                                Reduce.verSettings.remove(uuid);
+                            }
                         }
                     }
                 } else BlockEditor.select(holder, e, RawSlot, player);

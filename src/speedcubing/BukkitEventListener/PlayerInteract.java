@@ -70,7 +70,6 @@ public class PlayerInteract implements Listener {
                 break;
             case SLIME_BALL:
                 //click slimeball
-                Console.sendColoredConsole("§8[§bReduce§8] §a " + player.getName() + "§b interact at SlimeBall.");
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, true);
                 break;
         }
