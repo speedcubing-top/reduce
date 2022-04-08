@@ -226,8 +226,8 @@ public class Member {
         else if (x == NPCx)
             yaw = zDiff > 0 ? 0 : 180;
         else {
-            float s = (float) (Math.atan(Math.abs(xDiff) / Math.abs(zDiff)) * 180 / Math.PI);
-            yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : (xDiff > 0 ? 180 + s : 180 - s);
+            float s = (float) Math.toDegrees(Math.atan(Math.abs(xDiff) / Math.abs(zDiff)));
+            yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : 180 + (xDiff > 0 ? s : - s);
         }
         double y = player.getEyeLocation().getY() - 101.62;
         double l = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
@@ -236,7 +236,7 @@ public class Member {
                 100,
                 NPCz,
                 yaw,
-                (l == 0) ? 270 : (y == 0 ? 0 : 360 - (float) (Math.atan(y / l) * 180 / Math.PI)),
+                (l == 0) ? 270 : (y == 0 ? 0 : 360 - (float) Math.toDegrees(Math.atan(y / l))),
                 ((CraftPlayer) player).getHandle().playerConnection);
     }
 
