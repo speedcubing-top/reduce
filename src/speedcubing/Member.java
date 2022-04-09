@@ -115,35 +115,7 @@ public class Member {
             inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][lang]);
             inventory.setItem(integerCache[8], ItemStackList.Spec[lang]);
             inventory.setItem(integerCache[2], ItemStackList.settings[lang]);
-            int rank = User.getCode(User.getRank(uuid));
-            int diffmap = 0;
-            int diffrank = 0;
-            int total = Reduce.totalName.size();
-            for (int i = 0; i < map; i++) {
-                diffmap += Reduce.specStorage[i].size();
-            }
-            Map<Integer, List<String>> names = Reduce.specName[map];
-            List<Integer> ranks = new ArrayList<>(names.keySet());
-            Collections.sort(ranks);
-            for (Integer i : ranks) {
-                if (i < rank)
-                    diffrank += names.get(i).size();
-                else break;
-            }
-            if (!names.containsKey(rank))
-                names.put(rank, new ArrayList<>());
-            List<String> same = names.get(rank);
-            same.add(player.getName());
-            Collections.sort(same);
-            int index = same.indexOf(player.getName());
-            int realindex = diffmap + diffrank + index;
-            Reduce.totalName.add(realindex, player.getName());
-            Reduce.specStorage[map].add(diffrank + index, uuid);
-            for (int i = total; i > realindex; i--) {
-                Reduce.spec.setItem(i, Reduce.spec.getItem(i - 1));
-            }
-            Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
-            Reduce.updateSpecPage(null);
+            Reduce.b(map, player);
         }).start();
 
         player.updateInventory();
@@ -227,7 +199,7 @@ public class Member {
             yaw = zDiff > 0 ? 0 : 180;
         else {
             float s = (float) Math.toDegrees(Math.atan(Math.abs(xDiff) / Math.abs(zDiff)));
-            yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : 180 + (xDiff > 0 ? s : - s);
+            yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : 180 + (xDiff > 0 ? s : -s);
         }
         double y = player.getEyeLocation().getY() - 101.62;
         double l = Math.sqrt(xDiff * xDiff + zDiff * zDiff);

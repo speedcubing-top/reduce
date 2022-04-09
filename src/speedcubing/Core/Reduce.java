@@ -67,8 +67,7 @@ public class Reduce {
         boolean n = player == null;
         if (n)
             player = connection.getPlayer().getPlayer();
-        UUID uuid = player.getUniqueId();
-        Member member = Member.users.get(uuid);
+        Member member = Member.users.get(player.getUniqueId());
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
         Bukkit.getPlayer(member.target).showPlayer(player);
@@ -79,14 +78,13 @@ public class Reduce {
             member.Coord = member.oldCoord;
             member.Map = member.oldMap;
             PlayerUtils.teleport(connection, member.Map * 500 - MapLocations[member.Map][0], 100 + MapLocations[member.Map][1], member.Coord + 0.5, 270, 0);
-            int lang = User.getLang(uuid);
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
-            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][lang]);
-            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][lang]);
-            inventory.setItem(ints[8], ItemStackList.Spec[lang]);
-            inventory.setItem(ints[2], ItemStackList.settings[lang]);
+            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.lang]);
+            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
+            inventory.setItem(ints[8], ItemStackList.Spec[member.lang]);
+            inventory.setItem(ints[2], ItemStackList.settings[member.lang]);
             EntityPlayer entityPlayer = member.EntityPlayers;
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
                 connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
@@ -104,36 +102,42 @@ public class Reduce {
                     connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
                 }
             }, 4000);
-            int rank = User.getCode(User.getRank(uuid));
-            int diffmap = 0;
-            int diffrank = 0;
-            int total = totalName.size();
-            for (int i = 0; i < member.Map; i++) {
-                diffmap += specStorage[i].size();
-            }
-            Map<Integer, List<String>> names = specName[member.Map];
-            List<Integer> ranks = new ArrayList<>(names.keySet());
-            Collections.sort(ranks);
-            for (Integer i : ranks) {
-                if (i < rank)
-                    diffrank += names.get(i).size();
-                else break;
-            }
-            if (!names.containsKey(rank))
-                names.put(rank, new ArrayList<>());
-            List<String> same = names.get(rank);
-            same.add(player.getName());
-            Collections.sort(same);
-            int index = same.indexOf(player.getName());
-            int realindex = diffmap + diffrank + index;
-            totalName.add(realindex, player.getName());
-            specStorage[member.Map].add(diffrank + index, uuid);
-            for (int i = total; i > realindex; i--) {
-                spec.setItem(i, spec.getItem(i - 1));
-            }
-            spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][member.Map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + player.getName()).build());
-            updateSpecPage(null);
+            b(member.Map, player);
         }
+    }
+
+    public static void b(int map, Player player) {
+        UUID uuid = player.getUniqueId();
+        int rank = User.getCode(User.getRank(uuid));
+        int diffmap = 0;
+        int diffrank = 0;
+        int total = totalName.size();
+        for (int i = 0; i < map; i++) {
+            diffmap += specStorage[i].size();
+        }
+        Map<Integer, List<String>> names = specName[map];
+        List<Integer> ranks = new ArrayList<>(names.keySet());
+        Collections.sort(ranks);
+        for (Integer i : ranks) {
+            if (i < rank)
+                diffrank += names.get(i).size();
+            else break;
+        }
+        if (!names.containsKey(rank))
+            names.put(rank, new ArrayList<>());
+        List<String> same = names.get(rank);
+        String name = player.getName();
+        same.add(name);
+        Collections.sort(same);
+        int index = same.indexOf(name);
+        int realindex = diffmap + diffrank + index;
+        totalName.add(realindex, name);
+        specStorage[map].add(diffrank + index, uuid);
+        for (int i = total; i > realindex; i--) {
+            spec.setItem(i, spec.getItem(i - 1));
+        }
+        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + name).build());
+        updateSpecPage(null);
     }
 
     public static void sendPackets(PlayerConnection connection, Set<PlayerConnection> connections, Packet<?>... packet) {
@@ -149,39 +153,26 @@ public class Reduce {
 
 
     public static void updateSpecPage(UUID uuid) {
-        if (uuid == null) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder) {
-                    Member m = Member.users.get(p.getUniqueId());
-                    Inventory orig = spec;
-                    Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.lang]);
-                    inv1.setContents(orig.getContents());
-                    if (p.getGameMode() == GameMode.ADVENTURE)
-                        ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(m.target).getName())));
-                    Bukkit.getScheduler().runTask(Main.getPlugin(Main.class), () -> p.openInventory(inv1));
-                }
-            }
-        } else {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                UUID id = p.getUniqueId();
-                if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !uuid.equals(id)) {
-                    Inventory orig = spec;
-                    Member m = Member.users.get(id);
-                    Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.lang]);
-                    inv1.setContents(orig.getContents());
-                    if (p.getGameMode() == GameMode.ADVENTURE)
-                        ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(m.target).getName())));
-                    Bukkit.getScheduler().runTask(Main.getPlugin(Main.class), () -> p.openInventory(inv1));
-                }
+        boolean notnull = uuid != null;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            UUID id = p.getUniqueId();
+            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && uuid.equals(id))) {
+                Member m = Member.users.get(id);
+                Inventory orig = spec;
+                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.lang]);
+                inv1.setContents(orig.getContents());
+                if (p.getGameMode() == GameMode.ADVENTURE)
+                    ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(m.target).getName())));
+                Bukkit.getScheduler().runTask(Main.getPlugin(Main.class), () -> p.openInventory(inv1));
             }
         }
     }
 
     public static void removeFromGUI(String name, UUID uuid, int map, UUID ignored) {
         List<String> x = specName[map].get(User.getCode(User.getRank(uuid)));
-        if (x.size() == 1) {
+        if (x.size() == 1)
             specName[map].remove(User.getCode(User.getRank(uuid)));
-        } else x.remove(name);
+        else x.remove(name);
         int total = totalName.size();
         specStorage[map].remove(uuid);
         Inventory inv = spec;
