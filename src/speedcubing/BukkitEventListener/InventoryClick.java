@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import cubing.lib.bukkit.InventoryUtils;
 import cubing.lib.bukkit.ItemBuilder;
 import cubing.lib.bukkit.PlayerUtils;
+import cubing.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.*;
@@ -30,10 +31,7 @@ import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
 
-import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 
 public class InventoryClick implements Listener {
 
@@ -248,9 +246,13 @@ public class InventoryClick implements Listener {
                         member.SideBar.cancel();
                         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.EntityPlayers));
                         member.clearBlocks();
-                        Reduce.removeFromGUI(player.getName(), player.getUniqueId(), map, null);
+                        Reduce.removeFromGUI(player,  map, null);
+                        Console.sendColoredConsole("§bd §6" + player.getName()  + " " + map + " " + null);
+                        Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specName));
+                        Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specStorage));
+                        Console.sendColoredConsole("§c" + Reduce.totalName);
                         player.closeInventory();
-                        new Member(player,RawSlot,newroom,member.booleanCache,member.integerCache,member.Spectators);
+                        new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators);
                         Reduce.used[map] -= 1;
                         Reduce.Rooms[map][oldroom] = true;
                     }
@@ -344,7 +346,11 @@ public class InventoryClick implements Listener {
                             } else {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
-                                Reduce.removeFromGUI(player.getName(), uuid, member.Map, uuid);
+                                Reduce.removeFromGUI(player, member.Map, uuid);
+                                Console.sendColoredConsole("§be §6" + player.getName() + " " + member.Map + " " + uuid);
+                                Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specName));
+                                Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specStorage));
+                                Console.sendColoredConsole("§c" + Reduce.totalName);
                                 player.closeInventory();
                                 member.oldMap = member.Map;
                                 member.oldCoord = member.Coord;

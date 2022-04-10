@@ -1,25 +1,19 @@
 package speedcubing.Core;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import cubing.lib.bukkit.*;
+import cubing.lib.bukkit.ItemBuilder;
+import cubing.lib.bukkit.ItemUtils;
+import cubing.lib.bukkit.PlayerUtils;
+import cubing.lib.utils.Console;
 import cubingserver.libs.User;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
@@ -103,6 +97,10 @@ public class Reduce {
                 }
             }, 4000);
             b(member.Map, player);
+            Console.sendColoredConsole("§ba §6" + member.Map + " " + player.getName());
+            Console.sendColoredConsole("§c" + Arrays.toString(specName));
+            Console.sendColoredConsole("§c" + Arrays.toString(specStorage));
+            Console.sendColoredConsole("§c" + totalName);
         }
     }
 
@@ -168,18 +166,20 @@ public class Reduce {
         }
     }
 
-    public static void removeFromGUI(String name, UUID uuid, int map, UUID ignored) {
-        List<String> x = specName[map].get(User.getCode(User.getRank(uuid)));
+    public static void removeFromGUI(Player player, int map, UUID ignored) {
+        String name = player.getName();
+        UUID uuid = player.getUniqueId();
+        int code = User.getCode(User.getRank(uuid));
+        List<String> x = specName[map].get(code);
         if (x.size() == 1)
-            specName[map].remove(User.getCode(User.getRank(uuid)));
+            specName[map].remove(code);
         else x.remove(name);
         int total = totalName.size();
         specStorage[map].remove(uuid);
-        Inventory inv = spec;
         for (int i = totalName.indexOf(name); i < total; i++) {
-            inv.setItem(i, inv.getItem(i + 1));
+            spec.setItem(i, spec.getItem(i + 1));
         }
-        inv.setItem(total, new ItemStack(Material.AIR));
+        spec.setItem(total, new ItemStack(Material.AIR));
         totalName.remove(name);
         updateSpecPage(ignored);
     }

@@ -6,6 +6,7 @@ import cubing.lib.bukkit.EntityPlayerUtils;
 import cubing.lib.bukkit.ItemBuilder;
 import cubing.lib.bukkit.PlayerUtils;
 import cubing.lib.bukkit.SideBarAPI;
+import cubing.lib.utils.Console;
 import cubingserver.libs.User;
 import cubingserver.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
@@ -116,6 +117,10 @@ public class Member {
             inventory.setItem(integerCache[8], ItemStackList.Spec[lang]);
             inventory.setItem(integerCache[2], ItemStackList.settings[lang]);
             Reduce.b(map, player);
+            Console.sendColoredConsole("§bb §6"+map+" "+player.getName());
+            Console.sendColoredConsole("§c"+Arrays.toString(Reduce.specName));
+            Console.sendColoredConsole("§c"+Arrays.toString(Reduce.specStorage));
+            Console.sendColoredConsole("§c"+Reduce.totalName);
         }).start();
 
         player.updateInventory();

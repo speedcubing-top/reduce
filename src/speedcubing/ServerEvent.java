@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import speedcubing.All.configcache;
 import speedcubing.Core.Reduce;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,9 +32,10 @@ public class ServerEvent {
     @ServerEventHandler
     public void socketEvent(SocketEvent e) {
         String[] rs = e.rs;
+        System.out.println(Arrays.toString(rs));
         if (rs != null && rs[0].equals("d")) {
-            Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
-            SocketUtils.sendData(25576 - Bukkit.getPort() % 2, "d|" + rs[1], 100);
+            Reduce.mapCache.put(UUID.fromString(rs[1]), rs[2].equals("?") ? -1 : Integer.parseInt(rs[2]));
+            SocketUtils.sendData(25568 - Bukkit.getPort() % 2, "d|" + rs[1], 100);
         }
     }
 

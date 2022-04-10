@@ -2,6 +2,7 @@ package speedcubing.BukkitEventListener;
 
 
 import cubing.lib.bukkit.PlayerUtils;
+import cubing.lib.utils.Console;
 import cubingserver.speedcubingServer;
 import cubingserver.things.events.PlayerJoin;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
@@ -12,18 +13,25 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.Member;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class PlayerQuit implements Listener {
     @EventHandler
+    public void dww(PlayerKickEvent e){
+        Console.sendColoredConsole("§4KICK");
+    }
+    @EventHandler
     public void PlayerQuitEvent(PlayerQuitEvent e) {
+        Console.sendColoredConsole("§4QUIT");
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-        if (PlayerJoin.JoinPackets.containsKey(uuid) && !Reduce.mapCache.containsKey(uuid)) {
+        if (PlayerJoin.JoinPackets.containsKey(uuid) && Member.users.containsKey(uuid)) {
             boolean spec = player.getGameMode() == GameMode.ADVENTURE;
             Member member = Member.users.get(uuid);
             if (spec) {
@@ -54,7 +62,11 @@ public class PlayerQuit implements Listener {
                             ",reduce_npcswing=" + (bs[2] ? 1 : 0)
                     , "uuid='" + uuid + "'")).start();
             if (!spec) {
-                Reduce.removeFromGUI(player.getName(), uuid, member.Map, null);
+                Reduce.removeFromGUI(player, member.Map, null);
+                Console.sendColoredConsole("§bc §6"+player.getName()+" "+member.Map+" "+null);
+                Console.sendColoredConsole("§c"+ Arrays.toString(Reduce.specName));
+                Console.sendColoredConsole("§c"+Arrays.toString(Reduce.specStorage));
+                Console.sendColoredConsole("§c"+Reduce.totalName);
                 Reduce.used[member.Map] -= 1;
                 Reduce.Rooms[member.Map][Reduce.coordToRoom(member.Coord)] = true;
             }
