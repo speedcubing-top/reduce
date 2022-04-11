@@ -13,7 +13,6 @@ import cubingserver.customEvents.SocketEvent;
 import cubingserver.customEvents.UDPEvent;
 import cubingserver.libs.User;
 import cubingserver.speedcubingServer;
-import cubingserver.things.events.PlayerJoin;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
@@ -53,12 +52,12 @@ public class ServerEvent {
 
     @ServerEventHandler
     public void PlayInChatEvent(PlayInChatEvent e) {
-        e.setCancelled(true);
         Player player = e.player;
         String message = e.packet.a();
         UUID uuid = player.getUniqueId();
         Member member = Member.users.get(uuid);
         if (member.setSkin) {
+            e.setCancelled(true);
             if (message.contains(" ") || message.length() > 16)
                 player.sendMessage(GlobalString.invalidName[member.lang]);
             else {
@@ -78,16 +77,18 @@ public class ServerEvent {
                         if (entityPlayer != null)
                             member.setSkin(player, entityPlayer, SessionServer.getSkin(finalId));
                     }).start();
+                    speedcubingServer.node(false,uuid);
                 }
             }
-            return;
         } else if (member.setName) {
+            e.setCancelled(true);
             EntityArmorStand stand = member.Holo;
             stand.setCustomName(ChatColor.translateAlternateColorCodes('&', message));
             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
             member.setName = false;
-            return;
+            speedcubingServer.node(false,uuid);
         } else if (member.ReachSettings) {
+            e.setCancelled(true);
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 25000)
@@ -95,12 +96,13 @@ public class ServerEvent {
                 else {
                     member.ReachSettings = false;
                     member.integerCache[5] = x;
+                    speedcubingServer.node(false,uuid);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
             }
-            return;
         } else if (member.horSettings) {
+            e.setCancelled(true);
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
@@ -108,12 +110,13 @@ public class ServerEvent {
                 else {
                     member.horSettings = false;
                     member.integerCache[6] = x;
+                    speedcubingServer.node(false,uuid);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
-            return;
         } else if (member.verSettings) {
+            e.setCancelled(true);
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
@@ -121,34 +124,25 @@ public class ServerEvent {
                 else {
                     member.verSettings = false;
                     member.integerCache[7] = x;
+                    speedcubingServer.node(false,uuid);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
-            return;
         }
-        long time = System.currentTimeMillis();
-        boolean spam = PlayerJoin.Canspam.contains(uuid);
-        if (!spam && time - speedcubingServer.spam.get(uuid) < 500)
-            player.sendMessage(GlobalString.spam[member.lang]);
-        else if (message.charAt(0) != '/') {
-            if (!spam && speedcubingServer.lastmsg.get(uuid).equals(message))
-                player.sendMessage(GlobalString.samemsg[member.lang]);
-            else {
-                String[] formats = User.getFormat(User.getRank(uuid));
-                String text = formats[0] + player.getName();
-                String[] str = GlobalString.MessageFormat[0];
-                String[] out = new String[]{
-                        str[0].replace("%text%", text).replace("%text2%", formats[2] + message),
-                        str[1].replace("%text%", text).replace("%text2%", formats[2] + message),
-                        str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
-                        str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
-                };
-                Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[User.getLang(a.getUniqueId())]));
-                speedcubingServer.lastmsg.put(uuid, message);
-            }
-        } else e.setCancelled(false);
-        speedcubingServer.spam.put(uuid, time);
+        if (message.charAt(0) != '/') {
+            e.setCancelled(true);
+            String[] formats = User.getFormat(User.getRank(uuid));
+            String text = formats[0] + player.getName();
+            String[] str = GlobalString.MessageFormat[0];
+            String[] out = new String[]{
+                    str[0].replace("%text%", text).replace("%text2%", formats[2] + message),
+                    str[1].replace("%text%", text).replace("%text2%", formats[2] + message),
+                    str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
+                    str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
+            };
+            Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[User.getLang(a.getUniqueId())]));
+        }
     }
 
     @ServerEventHandler
