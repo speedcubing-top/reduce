@@ -8,6 +8,7 @@ import cubing.lib.bukkit.PlayerUtils;
 import cubing.lib.utils.Console;
 import cubingserver.StringList.GlobalString;
 import cubingserver.libs.User;
+import cubingserver.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -264,6 +265,7 @@ public class InventoryClick implements Listener {
                             player.sendMessage(StringList.InputString[member.lang]);
                             player.closeInventory();
                             member.setSkin = true;
+                            speedcubingServer.node(true,player.getUniqueId());
                         }
                         break;
                         case 11: {
@@ -279,6 +281,7 @@ public class InventoryClick implements Listener {
                             player.sendMessage(StringList.InputString2[member.lang]);
                             player.closeInventory();
                             member.setName = true;
+                            speedcubingServer.node(true,player.getUniqueId());
                         }
                         break;
                         case 14: {
@@ -298,6 +301,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput2[member.lang]);
                             member.ReachSettings = true;
+                            speedcubingServer.node(true,player.getUniqueId());
                         }
                         break;
                         case 13: {
@@ -305,6 +309,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.horSettings = true;
+                            speedcubingServer.node(true,player.getUniqueId());
                         }
                         break;
                         case 15: {
@@ -312,6 +317,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.verSettings = true;
+                            speedcubingServer.node(true,player.getUniqueId());
                         }
                         break;
                     }

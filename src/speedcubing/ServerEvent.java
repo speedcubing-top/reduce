@@ -77,7 +77,7 @@ public class ServerEvent {
                         if (entityPlayer != null)
                             member.setSkin(player, entityPlayer, SessionServer.getSkin(finalId));
                     }).start();
-                    speedcubingServer.node(false,uuid);
+                    speedcubingServer.node(false, uuid);
                 }
             }
         } else if (member.setName) {
@@ -86,7 +86,7 @@ public class ServerEvent {
             stand.setCustomName(ChatColor.translateAlternateColorCodes('&', message));
             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
             member.setName = false;
-            speedcubingServer.node(false,uuid);
+            speedcubingServer.node(false, uuid);
         } else if (member.ReachSettings) {
             e.setCancelled(true);
             try {
@@ -96,7 +96,7 @@ public class ServerEvent {
                 else {
                     member.ReachSettings = false;
                     member.integerCache[5] = x;
-                    speedcubingServer.node(false,uuid);
+                    speedcubingServer.node(false, uuid);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
@@ -110,7 +110,7 @@ public class ServerEvent {
                 else {
                     member.horSettings = false;
                     member.integerCache[6] = x;
-                    speedcubingServer.node(false,uuid);
+                    speedcubingServer.node(false, uuid);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
@@ -124,13 +124,12 @@ public class ServerEvent {
                 else {
                     member.verSettings = false;
                     member.integerCache[7] = x;
-                    speedcubingServer.node(false,uuid);
+                    speedcubingServer.node(false, uuid);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
-        }
-        if (message.charAt(0) != '/') {
+        } else if (message.charAt(0) != '/') {
             e.setCancelled(true);
             String[] formats = User.getFormat(User.getRank(uuid));
             String text = formats[0] + player.getName();
