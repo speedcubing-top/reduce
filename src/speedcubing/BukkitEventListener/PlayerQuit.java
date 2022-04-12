@@ -33,7 +33,7 @@ public class PlayerQuit implements Listener {
         UUID uuid = player.getUniqueId();
         if (PlayerJoin.JoinPackets.containsKey(uuid) && Member.users.containsKey(uuid)) {
             boolean spec = player.getGameMode() == GameMode.ADVENTURE;
-            Member member = Member.users.get(uuid);
+            Member member = Member.getMember(uuid);
             if (spec) {
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
                 Reduce.used[member.oldMap] -= 1;

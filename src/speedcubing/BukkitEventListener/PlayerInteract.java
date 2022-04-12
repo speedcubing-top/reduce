@@ -32,7 +32,7 @@ public class PlayerInteract implements Listener {
         switch (player.getItemInHand().getType()) {
             case INK_SACK:
                 if (player.getLocation().getY() >= 90) {
-                    Member member = Member.users.get(player.getUniqueId());
+                    Member member = Member.getMember(player.getUniqueId());
                     player.openInventory(ItemStackList.Settings[member.lang]);
                     if (member.setSkin) {
                         player.sendMessage(StringList.InputStringCancel[member.lang]);
@@ -57,7 +57,7 @@ public class PlayerInteract implements Listener {
                 }
                 break;
             case COMPASS:
-                Member member = Member.users.get(player.getUniqueId());
+                Member member = Member.getMember(player.getUniqueId());
                 Inventory orig = Reduce.spec;
                 Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.lang]);
                 inventory.setContents(orig.getContents());

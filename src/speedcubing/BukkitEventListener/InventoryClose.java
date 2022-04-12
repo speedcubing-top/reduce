@@ -16,7 +16,7 @@ public class InventoryClose implements Listener {
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
-        Member member = Member.users.get(player.getUniqueId());
+        Member member = Member.getMember(player.getUniqueId());
         if (e.getInventory().getHolder() == ItemStackList.KitEditorHolder && member.kitedit) {
             member.kitedit = false;
             player.sendMessage(GlobalString.UnSavedSettings[member.lang]);

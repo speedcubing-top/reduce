@@ -22,7 +22,7 @@ public class PlayerMove implements Listener {
     public void PlayerMoveEvent(PlayerMoveEvent e) {
         Player player = e.getPlayer();
         Location to = e.getTo();
-        Member member = Member.users.get(player.getUniqueId());
+        Member member = Member.getMember(player.getUniqueId());
         if (player.getGameMode() == GameMode.ADVENTURE) {
             if (Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5)
                 player.teleport(e.getFrom());

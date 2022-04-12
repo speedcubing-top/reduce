@@ -51,7 +51,7 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 10: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[member.lang]);
                             String[] reach = StringList.ReachLore[member.lang];
                             String[] hor = StringList.HorLore[member.lang];
@@ -64,7 +64,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 11: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             Inventory inv = player.getInventory();
                             player.openInventory(ItemStackList.InventoryKitEditor[member.lang]);
@@ -76,7 +76,7 @@ public class InventoryClick implements Listener {
                             BlockEditor.createMainPage(player);
                             break;
                         case 13: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             int x = member.integerCache[3];
                             Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[member.lang]);
@@ -89,7 +89,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 14: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.lang]);
                             ItemStack[][] stacks = ItemStackList.Maps[0];
@@ -114,7 +114,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 16: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             Boolean[] bs = member.booleanCache;
                             org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][member.lang];
@@ -138,7 +138,7 @@ public class InventoryClick implements Listener {
                             UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             if (e.getCursor().getType() == Material.AIR) {
-                                Member member = Member.users.get(uuid);
+                                Member member = Member.getMember(uuid);
                                 player.sendMessage(GlobalString.SavedSettings[member.lang]);
                                 Integer[] reduce = member.integerCache;
                                 Inventory inv = player.getInventory();
@@ -180,7 +180,7 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 21: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = member.booleanCache[0];
                             e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
@@ -188,7 +188,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 22: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = member.booleanCache[1];
                             e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
@@ -196,7 +196,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 23: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = member.booleanCache[2];
                             e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
@@ -207,7 +207,7 @@ public class InventoryClick implements Listener {
                 } else if (holder == ItemStackList.StickSkinHolder) {
                     e.setCancelled(true);
                     if (RawSlot >= 10 && RawSlot <= 15) {
-                        Member member = Member.users.get(player.getUniqueId());
+                        Member member = Member.getMember(player.getUniqueId());
                         int x = RawSlot - 10;
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
                         member.integerCache[3] = x;
@@ -217,7 +217,7 @@ public class InventoryClick implements Listener {
                     }
                 } else if (holder == ItemStackList.MapHolder) {
                     e.setCancelled(true);
-                    Member member = Member.users.get(player.getUniqueId());
+                    Member member = Member.getMember(player.getUniqueId());
                     if (RawSlot < Reduce.maptypes && RawSlot != member.Map) { //swap map
                         if (Reduce.used[RawSlot] == Reduce.rooms) {
                             player.sendMessage(GlobalString.NoEnoughServers[member.lang]);
@@ -261,7 +261,7 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 10: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.sendMessage(StringList.InputString[member.lang]);
                             player.closeInventory();
                             member.setSkin = true;
@@ -269,7 +269,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 11: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             EntityPlayer entityPlayer = member.EntityPlayers;
                             Property property = ((CraftPlayer) player).getProfile().getProperties().get("textures").iterator().next();
                             member.setSkin(player, entityPlayer, new String[]{property.getValue(), property.getSignature()});
@@ -277,7 +277,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 13: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.sendMessage(StringList.InputString2[member.lang]);
                             player.closeInventory();
                             member.setName = true;
@@ -285,7 +285,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 14: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             EntityArmorStand stand = member.Holo;
                             stand.setCustomName("§6" + cubingserver.config.SERVERIP);
                             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
@@ -297,7 +297,7 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 11: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput2[member.lang]);
                             member.ReachSettings = true;
@@ -305,7 +305,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 13: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.horSettings = true;
@@ -313,7 +313,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 15: {
-                            Member member = Member.users.get(player.getUniqueId());
+                            Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.verSettings = true;
@@ -327,7 +327,7 @@ public class InventoryClick implements Listener {
                         //join spectate
                         UUID uuid = player.getUniqueId();
                         boolean isSpec = player.getGameMode() == GameMode.ADVENTURE;
-                        Member member = Member.users.get(uuid);
+                        Member member = Member.getMember(uuid);
                         if (isSpec && Reduce.totalName.get(RawSlot).equals(Bukkit.getPlayer(member.target).getName()))
                             return;
                         int map = 0;
@@ -348,7 +348,7 @@ public class InventoryClick implements Listener {
                                     Bukkit.getScheduler().cancelTask(member.task);
                                     member.task = -1;
                                 }
-                                Member.users.get(member.target).Spectators.remove(connection);
+                                Member.getMember(member.target).Spectators.remove(connection);
                             } else {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
@@ -368,7 +368,7 @@ public class InventoryClick implements Listener {
                                 inv.setItem(4, ItemStackList.Spec[member.lang]);
                                 inv.setItem(8, ItemStackList.LeaveSpec[member.lang]);
                             }
-                            Member targetMember = Member.users.get(target);
+                            Member targetMember = Member.getMember(target);
                             targetMember.Spectators.add(connection);
                             Player targetPlayer = Bukkit.getPlayer(target);
                             member.Coord = targetMember.Coord;

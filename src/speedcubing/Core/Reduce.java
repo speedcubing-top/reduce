@@ -61,12 +61,12 @@ public class Reduce {
         boolean n = player == null;
         if (n)
             player = connection.getPlayer().getPlayer();
-        Member member = Member.users.get(player.getUniqueId());
+        Member member = Member.getMember(player.getUniqueId());
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
         Bukkit.getPlayer(member.target).showPlayer(player);
         if (!n)
-            Member.users.get(member.target).Spectators.remove(connection);
+            Member.getMember(member.target).Spectators.remove(connection);
         connection.getPlayer().getHandle().removeAllEffects();
         if (backtoarena) {
             member.Coord = member.oldCoord;
@@ -155,7 +155,7 @@ public class Reduce {
         for (Player p : Bukkit.getOnlinePlayers()) {
             UUID id = p.getUniqueId();
             if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && uuid.equals(id))) {
-                Member m = Member.users.get(id);
+                Member m = Member.getMember(id);
                 Inventory orig = spec;
                 Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.lang]);
                 inv1.setContents(orig.getContents());

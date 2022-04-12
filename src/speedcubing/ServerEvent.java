@@ -55,7 +55,7 @@ public class ServerEvent {
         Player player = e.player;
         String message = e.packet.a();
         UUID uuid = player.getUniqueId();
-        Member member = Member.users.get(uuid);
+        Member member = Member.getMember(uuid);
         if (member.setSkin) {
             e.setCancelled(true);
             if (message.contains(" ") || message.length() > 16)
@@ -150,7 +150,7 @@ public class ServerEvent {
         PacketPlayInUseEntity packet = e.packet;
         if (packet.a().equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && player.getNoDamageTicks() < player.getMaximumNoDamageTicks() / 2 && player.getGameMode().equals(GameMode.SURVIVAL)) {
             UUID uuid = player.getUniqueId();
-            Member member = Member.users.get(uuid);
+            Member member = Member.getMember(uuid);
             ItemStack hand = player.getItemInHand();
             Boolean[] bs = member.booleanCache;
             EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();

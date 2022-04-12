@@ -24,7 +24,7 @@ public class BlockPlace implements Listener {
             int x = block.getX();
             int y = block.getY();
             int z = block.getZ();
-            Member member = Member.users.get(player.getUniqueId());
+            Member member = Member.getMember(player.getUniqueId());
             if (y < 85 || Math.abs(z - member.Coord) > 150 || Math.abs(x - member.Map * 500) > 150)
                 e.setCancelled(true);
             else {

@@ -19,7 +19,7 @@ public class PlayerItemHeld implements Listener {
         if (player.getLocation().getY() >= 90 && player.getGameMode() == GameMode.SURVIVAL) {
             ItemStack itemStack = player.getInventory().getItem(e.getNewSlot());
             if (itemStack != null && itemStack.getType() == Material.INK_SACK)
-                Member.users.get(player.getUniqueId()).stopDamage();
+                Member.getMember(player.getUniqueId()).stopDamage();
         }
     }
 }

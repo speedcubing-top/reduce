@@ -31,7 +31,10 @@ import speedcubing.List.StringList;
 import java.util.*;
 
 public class Member {
-    public static Map<UUID, Member> users = new HashMap<>();
+    public static final Map<UUID, Member> users = new HashMap<>();
+    public static Member getMember(UUID uuid){
+        return users.get(uuid);
+    }
     public EntityArmorStand Holo;
     public EntityPlayer EntityPlayers;
     public int task = -1;
@@ -94,7 +97,7 @@ public class Member {
         this.Spectators = Spectators;
         this.EntityPlayers = entityPlayer;
         for (PlayerConnection c : Spectators) {
-            Member m = Member.users.get(c.getPlayer().getPlayer().getUniqueId());
+            Member m = getMember(c.getPlayer().getPlayer().getUniqueId());
             m.Map = map;
             m.Coord = coord;
             PlayerUtils.teleport(c, locx, locy, locz, 270, 0);
