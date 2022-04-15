@@ -8,7 +8,6 @@ import cubing.lib.bukkit.Event.events.PlayInChatEvent;
 import cubing.lib.bukkit.Event.events.PlayInUseEntityEvent;
 import cubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
 import cubingserver.StringList.GlobalString;
-import cubingserver.connection.SocketUtils;
 import cubingserver.customEvents.SocketEvent;
 import cubingserver.customEvents.UDPEvent;
 import cubingserver.libs.User;
@@ -34,7 +33,7 @@ public class ServerEvent {
         System.out.println(Arrays.toString(rs));
         if (rs != null && rs[0].equals("d")) {
             Reduce.mapCache.put(UUID.fromString(rs[1]), rs[2].equals("?") ? -1 : Integer.parseInt(rs[2]));
-            SocketUtils.sendData(25568 - Bukkit.getPort() % 2, "d|" + rs[1], 100);
+            speedcubingServer.tcp.send(25568 - Bukkit.getPort() % 2, "d|" + rs[1]);
         }
     }
 
