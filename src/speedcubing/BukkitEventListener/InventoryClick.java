@@ -2,13 +2,14 @@ package speedcubing.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import cubing.lib.bukkit.InventoryUtils;
-import cubing.lib.bukkit.ItemBuilder;
-import cubing.lib.bukkit.PlayerUtils;
-import cubing.lib.utils.Console;
-import cubingserver.StringList.GlobalString;
-import cubingserver.libs.User;
-import cubingserver.speedcubingServer;
+import speedcubing.server.config;
+import speedcubing.lib.bukkit.InventoryUtils;
+import speedcubing.lib.bukkit.ItemBuilder;
+import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.utils.Console;
+import speedcubing.server.StringList.GlobalString;
+import speedcubing.server.libs.User;
+import speedcubing.server.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -287,7 +288,7 @@ public class InventoryClick implements Listener {
                         case 14: {
                             Member member = Member.getMember(player.getUniqueId());
                             EntityArmorStand stand = member.Holo;
-                            stand.setCustomName("§6" + cubingserver.config.SERVERIP);
+                            stand.setCustomName("§6" + config.SERVERIP);
                             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
                             player.closeInventory();
                         }

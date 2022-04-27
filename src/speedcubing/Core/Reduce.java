@@ -1,10 +1,10 @@
 package speedcubing.Core;
 
-import cubing.lib.bukkit.ItemBuilder;
-import cubing.lib.bukkit.ItemUtils;
-import cubing.lib.bukkit.PlayerUtils;
-import cubing.lib.utils.Console;
-import cubingserver.libs.User;
+import speedcubing.lib.bukkit.ItemBuilder;
+import speedcubing.lib.bukkit.ItemUtils;
+import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.utils.Console;
+import speedcubing.server.libs.User;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;

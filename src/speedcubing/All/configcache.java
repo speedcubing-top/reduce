@@ -1,7 +1,7 @@
 package speedcubing.All;
 
-import cubingserver.StringList.GlobalString;
-import cubingserver.libs.User;
+import speedcubing.server.StringList.GlobalString;
+import speedcubing.server.libs.User;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import speedcubing.Main;

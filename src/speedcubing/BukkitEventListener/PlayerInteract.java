@@ -1,8 +1,8 @@
 package speedcubing.BukkitEventListener;
 
-import cubing.lib.bukkit.ItemUtils;
-import cubing.lib.utils.Console;
-import cubingserver.libs.User;
+import speedcubing.lib.bukkit.ItemUtils;
+import speedcubing.lib.utils.Console;
+import speedcubing.server.libs.User;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;

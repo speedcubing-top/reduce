@@ -1,10 +1,10 @@
 package speedcubing.BukkitEventListener;
 
 
-import cubing.lib.bukkit.PlayerUtils;
-import cubing.lib.utils.Console;
-import cubingserver.speedcubingServer;
-import cubingserver.things.events.PlayerJoin;
+import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.utils.Console;
+import speedcubing.server.speedcubingServer;
+import speedcubing.server.things.events.PlayerJoin;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Bukkit;

@@ -1,6 +1,6 @@
 package speedcubing.BukkitEventListener;
 
-import cubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.bukkit.PlayerUtils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

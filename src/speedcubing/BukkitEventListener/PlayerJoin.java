@@ -1,6 +1,6 @@
 package speedcubing.BukkitEventListener;
 
-import cubingserver.PluginMessage;
+import speedcubing.server.PluginMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,8 +1,8 @@
 package speedcubing.BukkitEventListener;
 
 
-import cubing.lib.bukkit.InventoryUtils;
-import cubingserver.StringList.GlobalString;
+import speedcubing.lib.bukkit.InventoryUtils;
+import speedcubing.server.StringList.GlobalString;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
