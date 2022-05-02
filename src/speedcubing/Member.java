@@ -2,14 +2,6 @@ package speedcubing;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import speedcubing.lib.bukkit.EntityPlayerUtils;
-import speedcubing.lib.bukkit.ItemBuilder;
-import speedcubing.lib.bukkit.PlayerUtils;
-import speedcubing.lib.bukkit.SideBarAPI;
-import speedcubing.lib.utils.Console;
-import speedcubing.server.libs.User;
-import speedcubing.server.config;
-import speedcubing.server.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -28,14 +20,23 @@ import org.bukkit.scoreboard.Scoreboard;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
+import speedcubing.lib.bukkit.EntityPlayerUtils;
+import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.bukkit.SideBarAPI;
+import speedcubing.lib.bukkit.WorldUtils;
+import speedcubing.server.config;
+import speedcubing.server.libs.User;
+import speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
 public class Member {
     public static final Map<UUID, Member> users = new HashMap<>();
-    public static Member getMember(UUID uuid){
+
+    public static Member getMember(UUID uuid) {
         return users.get(uuid);
     }
+
     public EntityArmorStand Holo;
     public EntityPlayer EntityPlayers;
     public int task = -1;
@@ -60,30 +61,30 @@ public class Member {
     public int lang;
 
     public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
+        int mX = 500 * map;
+        int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
+        WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
+        WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());
         UUID uuid = player.getUniqueId();
         boolean first = a == null;
-        if (first)
-            this.lang = User.getLang(uuid);
-        int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         PlayerConnection connection = entityP.playerConnection;
-        double NPCx = 500 * map + 0.5;
+        if (first)
+            this.lang = User.getLang(uuid);
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
         String[] skin = new String[]{property.getValue(), property.getSignature()};
-        WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));
         int EntityID = entityPlayer.getId();
-        Reduce.Rooms[map][room] = false;
-        Reduce.used[map] += 1;
+        Reduce.setRoom(map, room, false);
         this.Coord = coord;
         this.Map = map;
         player.setGameMode(GameMode.SURVIVAL);
         ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
         entityPlayer.getProfile().getProperties().put("textures", new Property("textures", skin[0], skin[1]));
-        entityPlayer.setLocation(NPCx, 100, coord + 0.5, 90, 0);
+        entityPlayer.setLocation(mX + 0.5, 100, coord + 0.5, 90, 0);
         EntityPlayerUtils.enableOuterLayer(entityPlayer.getDataWatcher());
         player.getInventory().setHeldItemSlot(0);
-        double locx = NPCx - Reduce.MapLocations[map][0];
+        double locx = mX + 0.5 - Reduce.MapLocations[map][0];
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         PlayerUtils.teleport(connection, locx, locy, locz, 270, 0);
@@ -93,7 +94,7 @@ public class Member {
         holo.setInvisible(true);
         holo.n(true);
         holo.setCustomName("§6" + config.SERVERIP);
-        holo.setLocation(NPCx, 101.85, coord + 0.5, 0, 0);
+        holo.setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
         this.Holo = holo;
         this.Spectators = Spectators;
         this.EntityPlayers = entityPlayer;
@@ -121,10 +122,6 @@ public class Member {
             inventory.setItem(integerCache[8], ItemStackList.Spec[lang]);
             inventory.setItem(integerCache[2], ItemStackList.settings[lang]);
             Reduce.b(map, player);
-            Console.sendColoredConsole("§bb §6"+map+" "+player.getName());
-            Console.sendColoredConsole("§c"+Arrays.toString(Reduce.specName));
-            Console.sendColoredConsole("§c"+Arrays.toString(Reduce.specStorage));
-            Console.sendColoredConsole("§c"+Reduce.totalName);
         }).start();
 
         player.updateInventory();

@@ -1,10 +1,10 @@
 package speedcubing.All;
 
-import speedcubing.server.StringList.GlobalString;
-import speedcubing.server.libs.User;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import speedcubing.Main;
+import speedcubing.server.StringList.GlobalString;
+import speedcubing.server.libs.User;
 
 import java.util.ArrayList;
 import java.util.List;

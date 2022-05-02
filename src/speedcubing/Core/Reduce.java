@@ -1,10 +1,5 @@
 package speedcubing.Core;
 
-import speedcubing.lib.bukkit.ItemBuilder;
-import speedcubing.lib.bukkit.ItemUtils;
-import speedcubing.lib.bukkit.PlayerUtils;
-import speedcubing.lib.utils.Console;
-import speedcubing.server.libs.User;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -18,18 +13,20 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
+import speedcubing.lib.bukkit.ItemBuilder;
+import speedcubing.lib.bukkit.ItemUtils;
+import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.server.libs.User;
 
 import java.util.*;
 
 public class Reduce {
     public static final int maptypes = 4;
-    public static final int rooms = 11;
     public static final int[][] MapLocations = {{2, 0}, {1, 0}, {0, 4}, {1, 0}};
 
     public static final ScoreboardTeam NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
 
-    public static final boolean[][] Rooms = new boolean[maptypes][rooms];
-    public static final int[] used = new int[maptypes];
+    public static final List<Boolean>[] Rooms = new List[maptypes];
     public static final Map<UUID, Integer> mapCache = new HashMap<>();
     public static final ItemStack[] Invalid = new ItemStack[4];
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
@@ -43,12 +40,9 @@ public class Reduce {
             Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i]).build();
         }
         for (int i = 0; i < maptypes; i++) {
-            used[i] = 0;
             specStorage[i] = new ArrayList<>();
             specName[i] = new HashMap<>();
-            for (int j = 0; j < rooms; j++) {
-                Rooms[i][j] = true;
-            }
+            Rooms[i] = new ArrayList<>();
         }
     }
 
@@ -97,10 +91,6 @@ public class Reduce {
                 }
             }, 4000);
             b(member.Map, player);
-            Console.sendColoredConsole("§ba §6" + member.Map + " " + player.getName());
-            Console.sendColoredConsole("§c" + Arrays.toString(specName));
-            Console.sendColoredConsole("§c" + Arrays.toString(specStorage));
-            Console.sendColoredConsole("§c" + totalName);
         }
     }
 
@@ -182,5 +172,11 @@ public class Reduce {
         spec.setItem(total, new ItemStack(Material.AIR));
         totalName.remove(name);
         updateSpecPage(ignored);
+    }
+
+    public static void setRoom(int map, int room, boolean value) {
+        Rooms[map].set(room - 1, value);
+        if (value && room == Rooms[map].size())
+            Rooms[map].remove(room - 1);
     }
 }

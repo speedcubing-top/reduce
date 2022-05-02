@@ -1,15 +1,11 @@
 package speedcubing.BukkitEventListener;
 
-import speedcubing.lib.bukkit.ItemUtils;
-import speedcubing.lib.utils.Console;
-import speedcubing.server.libs.User;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -19,15 +15,12 @@ import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Member;
-
-import java.util.UUID;
+import speedcubing.lib.bukkit.ItemUtils;
 
 public class PlayerInteract implements Listener {
 
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent e) {
-        e.setUseInteractedBlock(Event.Result.DENY);
-        e.setUseItemInHand(Event.Result.ALLOW);
         Player player = e.getPlayer();
         switch (player.getItemInHand().getType()) {
             case INK_SACK:

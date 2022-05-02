@@ -2,14 +2,6 @@ package speedcubing.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import speedcubing.server.config;
-import speedcubing.lib.bukkit.InventoryUtils;
-import speedcubing.lib.bukkit.ItemBuilder;
-import speedcubing.lib.bukkit.PlayerUtils;
-import speedcubing.lib.utils.Console;
-import speedcubing.server.StringList.GlobalString;
-import speedcubing.server.libs.User;
-import speedcubing.server.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -32,8 +24,19 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
+import speedcubing.lib.bukkit.InventoryUtils;
+import speedcubing.lib.bukkit.ItemBuilder;
+import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.bukkit.WorldUtils;
+import speedcubing.server.StringList.GlobalString;
+import speedcubing.server.config;
+import speedcubing.server.libs.User;
+import speedcubing.server.speedcubingServer;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 public class InventoryClick implements Listener {
 
@@ -220,14 +223,12 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     Member member = Member.getMember(player.getUniqueId());
                     if (RawSlot < Reduce.maptypes && RawSlot != member.Map) { //swap map
-                        if (Reduce.used[RawSlot] == Reduce.rooms) {
-                            player.sendMessage(GlobalString.NoEnoughServers[member.lang]);
-                            return;
-                        }
                         int newroom = -1;
-                        for (int h = 0; h < Reduce.rooms; h++) {
-                            if (Reduce.Rooms[RawSlot][h]) {
-                                newroom = h;
+                        for (int h = 0; h < Integer.MAX_VALUE; h++) {
+                            if (Reduce.Rooms[RawSlot].size() == h)
+                                Reduce.Rooms[RawSlot].add(true);
+                            if (Reduce.Rooms[RawSlot].get(h)) {
+                                newroom = h + 1;
                                 break;
                             }
                         }
@@ -246,17 +247,14 @@ public class InventoryClick implements Listener {
                         member.horSettings = false;
                         member.verSettings = false;
                         member.SideBar.cancel();
-                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.EntityPlayers));
+                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(member.Holo.getId()));
+                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(member.EntityPlayers.getId()));
                         member.clearBlocks();
-                        Reduce.removeFromGUI(player,  map, null);
-                        Console.sendColoredConsole("§bd §6" + player.getName()  + " " + map + " " + null);
-                        Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specName));
-                        Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specStorage));
-                        Console.sendColoredConsole("§c" + Reduce.totalName);
+                        Reduce.removeFromGUI(player, map, null);
                         player.closeInventory();
                         new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators);
-                        Reduce.used[map] -= 1;
-                        Reduce.Rooms[map][oldroom] = true;
+                        Reduce.setRoom(map, oldroom, true);
+                        WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }
                 } else if (holder == ItemStackList.SkinHolder) {
                     e.setCancelled(true);
@@ -266,7 +264,7 @@ public class InventoryClick implements Listener {
                             player.sendMessage(StringList.InputString[member.lang]);
                             player.closeInventory();
                             member.setSkin = true;
-                            speedcubingServer.node(true,player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId());
                         }
                         break;
                         case 11: {
@@ -282,7 +280,7 @@ public class InventoryClick implements Listener {
                             player.sendMessage(StringList.InputString2[member.lang]);
                             player.closeInventory();
                             member.setName = true;
-                            speedcubingServer.node(true,player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId());
                         }
                         break;
                         case 14: {
@@ -302,7 +300,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput2[member.lang]);
                             member.ReachSettings = true;
-                            speedcubingServer.node(true,player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId());
                         }
                         break;
                         case 13: {
@@ -310,7 +308,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.horSettings = true;
-                            speedcubingServer.node(true,player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId());
                         }
                         break;
                         case 15: {
@@ -318,7 +316,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.verSettings = true;
-                            speedcubingServer.node(true,player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId());
                         }
                         break;
                     }
@@ -354,10 +352,6 @@ public class InventoryClick implements Listener {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
                                 Reduce.removeFromGUI(player, member.Map, uuid);
-                                Console.sendColoredConsole("§be §6" + player.getName() + " " + member.Map + " " + uuid);
-                                Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specName));
-                                Console.sendColoredConsole("§c" + Arrays.toString(Reduce.specStorage));
-                                Console.sendColoredConsole("§c" + Reduce.totalName);
                                 player.closeInventory();
                                 member.oldMap = member.Map;
                                 member.oldCoord = member.Coord;

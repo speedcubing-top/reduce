@@ -30,7 +30,6 @@ public class ServerEvent {
     @ServerEventHandler
     public void socketEvent(SocketEvent e) {
         String[] rs = e.rs;
-        System.out.println(Arrays.toString(rs));
         if (rs != null && rs[0].equals("d")) {
             Reduce.mapCache.put(UUID.fromString(rs[1]), rs[2].equals("?") ? -1 : Integer.parseInt(rs[2]));
             speedcubingServer.tcp.send(25568 - Bukkit.getPort() % 2, "d|" + rs[1]);
