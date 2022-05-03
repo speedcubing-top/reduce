@@ -29,8 +29,7 @@ public class PlayerJoin implements Listener {
                     }
                 }, 500);
                 return;
-            } else if (map == -1)
-                map = 0;
+            }
             int room = -1;
             for (int h = 0; h < Integer.MAX_VALUE; h++) {
                 if (Reduce.Rooms[map].size() == h)

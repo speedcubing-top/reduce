@@ -1,17 +1,5 @@
 package speedcubing;
 
-import speedcubing.lib.api.MojangAPI;
-import speedcubing.lib.api.SessionServer;
-import speedcubing.lib.api.exception.APIErrorException;
-import speedcubing.spigot.Event.ServerEventHandler;
-import speedcubing.spigot.Event.events.PlayInChatEvent;
-import speedcubing.spigot.Event.events.PlayInUseEntityEvent;
-import speedcubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
-import speedcubing.server.StringList.GlobalString;
-import speedcubing.server.events.SocketEvent;
-import speedcubing.server.events.UDPEvent;
-import speedcubing.server.libs.User;
-import speedcubing.server.speedcubingServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
@@ -21,8 +9,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import speedcubing.All.configcache;
 import speedcubing.Core.Reduce;
+import speedcubing.lib.api.MojangAPI;
+import speedcubing.lib.api.SessionServer;
+import speedcubing.lib.api.exception.APIErrorException;
+import speedcubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
+import speedcubing.server.StringList.GlobalString;
+import speedcubing.server.events.SocketEvent;
+import speedcubing.server.events.UDPEvent;
+import speedcubing.server.libs.User;
+import speedcubing.server.speedcubingServer;
+import speedcubing.spigot.Event.ServerEventHandler;
+import speedcubing.spigot.Event.events.PlayInChatEvent;
+import speedcubing.spigot.Event.events.PlayInUseEntityEvent;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,7 +30,7 @@ public class ServerEvent {
     public void socketEvent(SocketEvent e) {
         String[] rs = e.rs;
         if (rs != null && rs[0].equals("d")) {
-            Reduce.mapCache.put(UUID.fromString(rs[1]), rs[2].equals("?") ? -1 : Integer.parseInt(rs[2]));
+            Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
             speedcubingServer.tcp.send(25568 - Bukkit.getPort() % 2, "d|" + rs[1]);
         }
     }
