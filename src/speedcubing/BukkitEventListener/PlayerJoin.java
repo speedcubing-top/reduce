@@ -40,7 +40,6 @@ public class PlayerJoin implements Listener {
                 }
             }
             Reduce.mapCache.remove(uuid);
-            player.sendMessage("§4Keep in mind that the Spectator System is still under development.");
             new Member(player, map, room, null, null, new HashSet<>());
         }
     }

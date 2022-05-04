@@ -14,9 +14,7 @@ public class BlockBreak implements Listener {
     @EventHandler
     public void BlockBreakEvent(BlockBreakEvent e) {
         Player player = e.getPlayer();
-        System.out.println("B");
         if (player.getGameMode() == GameMode.SURVIVAL) {
-            System.out.println("A");
             Block block = e.getBlock();
             Member member = Member.getMember(player.getUniqueId());
             BlockPosition position = new BlockPosition(block.getX(), block.getY(), block.getZ());
