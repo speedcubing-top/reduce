@@ -180,11 +180,9 @@ public class ServerEvent {
                                 new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1),
                                 animation,
                                 new PacketPlayOutAnimation(entityplayer, 1));
-                        if (member.booleanCache[2])
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                                if (member.Spectators != null)
-                                    Reduce.sendPackets(connection, spec, animation);
-                            }, 5);
+                        if (member.booleanCache[2] && member.Spectators != null)
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () ->
+                                    Reduce.sendPackets(connection, spec, animation), 5);
                     }
                 }, 0, 10);
             }
