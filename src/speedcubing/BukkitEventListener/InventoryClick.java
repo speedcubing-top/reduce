@@ -28,9 +28,8 @@ import speedcubing.lib.bukkit.InventoryUtils;
 import speedcubing.lib.bukkit.ItemBuilder;
 import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.WorldUtils;
-import speedcubing.server.StringList.GlobalString;
 import speedcubing.server.config;
-import speedcubing.server.libs.User;
+import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
 
 import java.util.Collections;
@@ -107,7 +106,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 15: {
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = User.getLang(player.getUniqueId());
+                            int lang = Member.getMember(player.getUniqueId()).lang;
                             Inventory inv = Bukkit.createInventory(ItemStackList.SkinHolder, 27, StringList.title[lang]);
                             inv.setItem(10, new ItemBuilder(Material.SIGN).name(StringList.input[lang]).build());
                             inv.setItem(11, new ItemBuilder(Material.SKULL_ITEM).durability(3).name(StringList.own[lang]).owner(player.getName()).build());

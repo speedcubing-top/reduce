@@ -17,6 +17,7 @@ import speedcubing.lib.bukkit.ItemBuilder;
 import speedcubing.lib.bukkit.ItemUtils;
 import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.server.libs.User;
+import speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
@@ -96,7 +97,7 @@ public class Reduce {
 
     public static void b(int map, Player player) {
         UUID uuid = player.getUniqueId();
-        int rank = User.getCode(User.getRank(uuid));
+        int rank = speedcubingServer.getCode(Member.getMember(uuid).rank);
         int diffmap = 0;
         int diffrank = 0;
         int total = totalName.size();
@@ -124,7 +125,7 @@ public class Reduce {
         for (int i = total; i > realindex; i--) {
             spec.setItem(i, spec.getItem(i - 1));
         }
-        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(User.getFormat(User.getRank(uuid))[1] + name).build());
+        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(Member.getMember(uuid).rank)[1] + name).build());
         updateSpecPage(null);
     }
 
@@ -159,7 +160,7 @@ public class Reduce {
     public static void removeFromGUI(Player player, int map, UUID ignored) {
         String name = player.getName();
         UUID uuid = player.getUniqueId();
-        int code = User.getCode(User.getRank(uuid));
+        int code = speedcubingServer.getCode(Member.getMember(uuid).rank);
         List<String> x = specName[map].get(code);
         if (x.size() == 1)
             specName[map].remove(code);

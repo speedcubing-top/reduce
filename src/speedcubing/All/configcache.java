@@ -3,15 +3,15 @@ package speedcubing.All;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import speedcubing.Main;
-import speedcubing.server.StringList.GlobalString;
-import speedcubing.server.libs.User;
+import speedcubing.Member;
+import speedcubing.server.libs.GlobalString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class configcache implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        commandSender.sendMessage(GlobalString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : User.getLang(((Player) commandSender).getUniqueId())]);
+        commandSender.sendMessage(GlobalString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : Member.getMember(((Player) commandSender).getUniqueId()).lang]);
         reload();
         return true;
     }

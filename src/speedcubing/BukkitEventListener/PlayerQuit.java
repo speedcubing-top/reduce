@@ -14,7 +14,7 @@ import speedcubing.Core.Reduce;
 import speedcubing.Member;
 import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.WorldUtils;
-import speedcubing.server.things.events.PlayerJoin;
+import speedcubing.server.listeners.PlayerJoin;
 import speedcubing.server.speedcubingServer;
 
 import java.util.UUID;

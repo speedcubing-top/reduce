@@ -30,7 +30,7 @@ import speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
-public class Member {
+public class Member extends User{
     public static final Map<UUID, Member> users = new HashMap<>();
 
     public static Member getMember(UUID uuid) {
@@ -58,7 +58,6 @@ public class Member {
     public boolean kitedit = false;
     public Boolean[] booleanCache;
     public Integer[] integerCache;
-    public int lang;
 
     public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
         int mX = 500 * map;
@@ -69,8 +68,6 @@ public class Member {
         boolean first = a == null;
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         PlayerConnection connection = entityP.playerConnection;
-        if (first)
-            this.lang = User.getLang(uuid);
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
         String[] skin = new String[]{property.getValue(), property.getSignature()};
         EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));

@@ -13,10 +13,9 @@ import speedcubing.lib.api.MojangAPI;
 import speedcubing.lib.api.SessionServer;
 import speedcubing.lib.api.exception.APIErrorException;
 import speedcubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
-import speedcubing.server.StringList.GlobalString;
 import speedcubing.server.events.SocketEvent;
 import speedcubing.server.events.UDPEvent;
-import speedcubing.server.libs.User;
+import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
 import speedcubing.spigot.Event.ServerEventHandler;
 import speedcubing.spigot.Event.events.PlayInChatEvent;
@@ -41,7 +40,7 @@ public class ServerEvent {
         if (rs[0].equals("o") && rs[1].equals("1")) {
             speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
             for (Player p : Bukkit.getOnlinePlayers()) {
-                int lang = User.getLang(p.getUniqueId());
+                int lang = Member.getMember(p.getUniqueId()).lang;
                 ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][lang], GlobalString.LobbyTabList[1][lang].replace("%int%", rs[2])));
             }
         }
@@ -128,7 +127,7 @@ public class ServerEvent {
             }
         } else if (message.charAt(0) != '/') {
             e.setCancelled(true);
-            String[] formats = User.getFormat(User.getRank(uuid));
+            String[] formats = speedcubingServer.getFormat(Member.getMember(uuid).rank);
             String text = formats[0] + player.getName();
             String[] str = GlobalString.MessageFormat[0];
             String[] out = new String[]{
@@ -137,7 +136,7 @@ public class ServerEvent {
                     str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
                     str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
             };
-            Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[User.getLang(a.getUniqueId())]));
+            Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[Member.getMember(a.getUniqueId()).lang]));
         }
     }
 
@@ -169,11 +168,10 @@ public class ServerEvent {
                         double x = xDiff * hor / horizontalDistance * settings[6] / 1000;
                         double y = (player.isOnGround() ? value[1] : value[3]) * settings[7] / 1000;
                         double z = zDiff * hor / horizontalDistance * settings[6] / 1000;
-                        if (speedcubingServer.velocities.containsKey(uuid)) {
-                            Double[] d = speedcubingServer.velocities.get(uuid);
-                            x = x * d[0];
-                            y = y * d[1];
-                            z = z * d[0];
+                        if (member.velocities != null) {
+                            x = x * member.velocities[0];
+                            y = y * member.velocities[1];
+                            z = z * member.velocities[0];
                         }
                         connection.sendPacket(new PacketPlayOutEntityVelocity(player.getEntityId(), x, y, z));
                         Reduce.sendPackets(connection, spec,

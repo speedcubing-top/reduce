@@ -2,7 +2,7 @@ package speedcubing.List;
 
 import speedcubing.lib.bukkit.InventoryUtils;
 import speedcubing.lib.bukkit.ItemBuilder;
-import speedcubing.server.StringList.GlobalString;
+import speedcubing.server.libs.GlobalString;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
