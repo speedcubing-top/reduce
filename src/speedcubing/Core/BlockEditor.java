@@ -1,8 +1,5 @@
 package speedcubing.Core;
 
-import speedcubing.lib.bukkit.ItemUtils;
-import speedcubing.server.libs.GlobalString;
-import speedcubing.server.libs.User;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -11,6 +8,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import speedcubing.List.ItemStackList;
 import speedcubing.Member;
+import speedcubing.lib.bukkit.ItemUtils;
+import speedcubing.server.libs.GlobalString;
 
 import java.util.UUID;
 

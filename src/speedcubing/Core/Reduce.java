@@ -16,7 +16,6 @@ import speedcubing.Member;
 import speedcubing.lib.bukkit.ItemBuilder;
 import speedcubing.lib.bukkit.ItemUtils;
 import speedcubing.lib.bukkit.PlayerUtils;
-import speedcubing.server.libs.User;
 import speedcubing.server.speedcubingServer;
 
 import java.util.*;
@@ -91,13 +90,13 @@ public class Reduce {
                     connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
                 }
             }, 4000);
-            b(member.Map, player);
+            b(member.Map, player, member);
         }
     }
 
-    public static void b(int map, Player player) {
+    public static void b(int map, Player player, Member member) {
         UUID uuid = player.getUniqueId();
-        int rank = speedcubingServer.getCode(Member.getMember(uuid).rank);
+        int rank = speedcubingServer.getCode(member.rank);
         int diffmap = 0;
         int diffrank = 0;
         int total = totalName.size();
@@ -125,7 +124,8 @@ public class Reduce {
         for (int i = total; i > realindex; i--) {
             spec.setItem(i, spec.getItem(i - 1));
         }
-        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(Member.getMember(uuid).rank)[1] + name).build());
+        System.out.println(member.rank);
+        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.rank)[1] + name).build());
         updateSpecPage(null);
     }
 

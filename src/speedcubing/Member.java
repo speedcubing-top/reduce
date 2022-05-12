@@ -30,7 +30,7 @@ import speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
-public class Member extends User{
+public class Member extends User {
     public static final Map<UUID, Member> users = new HashMap<>();
 
     public static Member getMember(UUID uuid) {
@@ -60,11 +60,12 @@ public class Member extends User{
     public Integer[] integerCache;
 
     public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
+        UUID uuid = player.getUniqueId();
+        super.init(this, uuid);
         int mX = 500 * map;
         int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());
-        UUID uuid = player.getUniqueId();
         boolean first = a == null;
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         PlayerConnection connection = entityP.playerConnection;
@@ -118,7 +119,7 @@ public class Member extends User{
             inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][lang]);
             inventory.setItem(integerCache[8], ItemStackList.Spec[lang]);
             inventory.setItem(integerCache[2], ItemStackList.settings[lang]);
-            Reduce.b(map, player);
+            Reduce.b(map, player, this);
         }).start();
 
         player.updateInventory();
