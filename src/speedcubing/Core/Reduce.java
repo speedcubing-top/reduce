@@ -124,7 +124,6 @@ public class Reduce {
         for (int i = total; i > realindex; i--) {
             spec.setItem(i, spec.getItem(i - 1));
         }
-        System.out.println(member.rank);
         spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.rank)[1] + name).build());
         updateSpecPage(null);
     }
