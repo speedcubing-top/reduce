@@ -48,14 +48,14 @@ public class Member extends User {
     public int oldCoord;
     public UUID target;
     public Set<PlayerConnection> Spectators;
-    public int PlacedBlocks = 0;
-    public int BlockPlaced = 0;
-    public boolean horSettings = false;
-    public boolean verSettings = false;
-    public boolean ReachSettings = false;
-    public boolean setSkin = false;
-    public boolean setName = false;
-    public boolean kitedit = false;
+    public int PlacedBlocks;
+    public int BlockPlaced;
+    public boolean horSettings;
+    public boolean verSettings;
+    public boolean ReachSettings;
+    public boolean setSkin;
+    public boolean setName;
+    public boolean kitedit;
     public Boolean[] booleanCache;
     public Integer[] integerCache;
 
