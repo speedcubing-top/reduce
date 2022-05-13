@@ -40,8 +40,8 @@ public class ServerEvent {
         if (rs[0].equals("o") && rs[1].equals("1")) {
             speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
             for (Player p : Bukkit.getOnlinePlayers()) {
-                int lang = Member.getMember(p.getUniqueId()).lang;
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][lang], GlobalString.LobbyTabList[1][lang].replace("%int%", rs[2])));
+                Member m = Member.getMember(p.getUniqueId());
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][m.lang], GlobalString.LobbyTabList[1][m.lang].replace("%int%", rs[2])));
             }
         }
     }
