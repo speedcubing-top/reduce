@@ -14,7 +14,6 @@ import speedcubing.lib.api.SessionServer;
 import speedcubing.lib.api.exception.APIErrorException;
 import speedcubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
 import speedcubing.server.events.SocketEvent;
-import speedcubing.server.events.UDPEvent;
 import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
 import speedcubing.spigot.Event.ServerEventHandler;
@@ -28,21 +27,20 @@ public class ServerEvent {
     @ServerEventHandler
     public void socketEvent(SocketEvent e) {
         String[] rs = e.rs;
-        if (rs != null && rs[0].equals("d")) {
-            Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
-            speedcubingServer.tcp.send(25568 - Bukkit.getPort() % 2, "d|" + rs[1]);
-        }
-    }
-
-    @ServerEventHandler
-    public void UDPEvent(UDPEvent e) {
-        String[] rs = e.rs;
-        if (rs[0].equals("o") && rs[1].equals("1")) {
-            speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                Member m = Member.getMember(p.getUniqueId());
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][m.lang], GlobalString.LobbyTabList[1][m.lang].replace("%int%", rs[2])));
-            }
+        switch (rs[0]) {
+            case "d":
+                Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
+                speedcubingServer.tcp.send(25568 - Bukkit.getPort() % 2, "d|" + rs[1]);
+                break;
+            case "o":
+                if (rs[1].equals("1")) {
+                    speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        Member m = Member.getMember(p.getUniqueId());
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][m.lang], GlobalString.LobbyTabList[1][m.lang].replace("%int%", rs[2])));
+                    }
+                }
+                break;
         }
     }
 
