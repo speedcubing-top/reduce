@@ -263,7 +263,7 @@ public class InventoryClick implements Listener {
                             player.sendMessage(StringList.InputString[member.lang]);
                             player.closeInventory();
                             member.setSkin = true;
-                            speedcubingServer.node(true, player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
                         case 11: {
@@ -279,7 +279,7 @@ public class InventoryClick implements Listener {
                             player.sendMessage(StringList.InputString2[member.lang]);
                             player.closeInventory();
                             member.setName = true;
-                            speedcubingServer.node(true, player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
                         case 14: {
@@ -299,7 +299,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput2[member.lang]);
                             member.ReachSettings = true;
-                            speedcubingServer.node(true, player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
                         case 13: {
@@ -307,7 +307,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.horSettings = true;
-                            speedcubingServer.node(true, player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
                         case 15: {
@@ -315,7 +315,7 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.verSettings = true;
-                            speedcubingServer.node(true, player.getUniqueId());
+                            speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
                     }
