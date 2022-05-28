@@ -229,13 +229,13 @@ public class ServerEvent {
             if (player.getLocation().getY() < 99) {
                 return 0;
             } else
-                return 0.43;
+                return 0.44;
         }
         if (member.kb == 1)
             if (player.getLocation().getY() < 99) {
                 return 0;
             } else
-                return 0.40;
+                return 0.41;
         if (member.kb == 2)
             return 0;
         return -1;
