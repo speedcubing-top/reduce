@@ -3,7 +3,7 @@ package speedcubing.List;
 import speedcubing.server.config;
 
 public class StringList {
-   public static String[] spec = {"§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu"};
+    public static String[] spec = {"§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu"};
 
     public static String[][] mapname = {
             {"§6Oneline", "§6Oneline", "§6Oneline", "§6Oneline"},
@@ -75,6 +75,7 @@ public class StringList {
     };
 
     public static final String[] npchitsettings = {"§bHit Settings", "§bHit Settings", "§bHit Settings", "§bHit Settings"};
+    public static final String[] def = {"§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack"};
 
     public static String[][] ReachLore = {
             {"§bReach Distance Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},

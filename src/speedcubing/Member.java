@@ -58,6 +58,7 @@ public class Member extends User {
     public boolean kitedit;
     public Boolean[] booleanCache;
     public Integer[] integerCache;
+    public int kb;
 
     public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
         UUID uuid = player.getUniqueId();
@@ -111,7 +112,7 @@ public class Member extends User {
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutSpawnEntityLiving(holo));
         new Thread(() -> {
-            booleanCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing", "uuid='" + uuid + "'")) : a;
+            booleanCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "uuid='" + uuid + "'")) : a;
             integerCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec", "uuid='" + uuid + "'")) : b;
             Inventory inventory = player.getInventory();
             inventory.clear();

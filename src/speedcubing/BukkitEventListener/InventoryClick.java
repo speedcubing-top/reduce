@@ -61,8 +61,9 @@ public class InventoryClick implements Listener {
                             String[] ver = StringList.VerLore[member.lang];
                             Integer[] cache = member.integerCache;
                             inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3], reach[4]).build());
-                            inv.setItem(13, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3], hor[4]).build());
-                            inv.setItem(15, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4]).build());
+                            inv.setItem(12, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3], hor[4]).build());
+                            inv.setItem(13, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4]).build());
+                            inv.setItem(15, new ItemBuilder(Material.FEATHER).name(StringList.def[member.lang]).lore(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on").build());
                             player.openInventory(inv);
                         }
                         break;
@@ -302,7 +303,7 @@ public class InventoryClick implements Listener {
                             speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
-                        case 13: {
+                        case 12: {
                             Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
@@ -310,12 +311,18 @@ public class InventoryClick implements Listener {
                             speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
                         }
                         break;
-                        case 15: {
+                        case 13: {
                             Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
                             member.verSettings = true;
                             speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
+                        }
+                        break;
+                        case 15: {
+                            Member member = Member.getMember(player.getUniqueId());
+                            player.closeInventory();
+                            member.booleanCache[3] = !member.booleanCache[3];
                         }
                         break;
                     }

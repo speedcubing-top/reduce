@@ -171,6 +171,8 @@ public class ServerEvent {
                             y = y * member.velocities[1];
                             z = z * member.velocities[0];
                         }
+                        if (member.booleanCache[3])
+                            y = gettheKb(player, member);
                         connection.sendPacket(new PacketPlayOutEntityVelocity(player.getEntityId(), x, y, z));
                         Reduce.sendPackets(connection, spec,
                                 new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1),
@@ -188,5 +190,25 @@ public class ServerEvent {
                 Reduce.sendPackets(connection, spec, new PacketPlayOutAnimation(member.EntityPlayers, (byte) 1));
             player.setNoDamageTicks(20);
         }
+    }
+
+    public double gettheKb(Player player, Member member) {
+        member.kb++;
+        if (member.kb == 3 || player.isOnGround())
+            member.kb = 0;
+        if (member.kb == 0) {
+            if (player.getLocation().getY() < 99) {
+                return 0;
+            } else
+                return 0.43;
+        }
+        if (member.kb == 1)
+            if (player.getLocation().getY() < 99) {
+                return 0;
+            } else
+                return 0.35;
+        if (member.kb == 2)
+            return 0;
+        return -1;
     }
 }

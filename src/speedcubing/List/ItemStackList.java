@@ -143,7 +143,7 @@ public class ItemStackList {
             String[][] prefs = {
                     {"§6NPC damage color", "§6NPC damage color", "§6NPC damage color", "§6NPC damage color"},
                     {"§6NPC damage sound", "§6NPC damage sound", "§6NPC damage sound", "§6NPC damage sound"},
-                    {"§6NPC spam swing", "§6NPC spam swing", "§6NPC spam swing", "§6NPC spam swing"}
+                    {"§6NPC keep swinging", "§6NPC keep swinging", "§6NPC keep swinging", "§6NPC keep swinging"}
             };
             String[] active = {"§aActivated", "§aActivated", "§aActivated", "§aActivated"};
             String[] deactive = {"§cDeactivated", "§cDeactivated", "§cDeactivated", "§cDeactivated"};
