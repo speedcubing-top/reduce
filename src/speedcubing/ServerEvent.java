@@ -81,6 +81,34 @@ public class ServerEvent {
             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
             member.setName = false;
             speedcubingServer.node(false, uuid, member.tcpPort);
+        } else if (member.ReachSettings2) {
+            e.setCancelled(true);
+            try {
+                int x = (int) (Double.parseDouble(message) * 1000);
+                if (x < 0 || x > 25000)
+                    player.sendMessage("the number is too large / small !");
+                else {
+                    member.ReachSettings2 = false;
+                    member.integerCache[9] = x;
+                    speedcubingServer.node(false, uuid, member.tcpPort);
+                }
+            } catch (Exception exception) {
+                player.sendMessage("Invalid format! (0.000 ~ 25.000)");
+            }
+        } else if (member.horSettings2) {
+            e.setCancelled(true);
+            try {
+                int x = (int) (Double.parseDouble(message) * 1000);
+                if (x < 0 || x > 5000)
+                    player.sendMessage("the number is too large / small !");
+                else {
+                    member.horSettings2 = false;
+                    member.integerCache[10] = x;
+                    speedcubingServer.node(false, uuid, member.tcpPort);
+                }
+            } catch (Exception exception) {
+                player.sendMessage("Invalid format! (0.000 ~ 5.000)");
+            }
         } else if (member.ReachSettings) {
             e.setCancelled(true);
             try {
@@ -158,21 +186,22 @@ public class ServerEvent {
                     double zDiff = location.getZ() - member.Coord - 0.5;
                     double yDiff = player.getEyeLocation().getY() - 101.62;
                     Integer[] settings = member.integerCache;
-                    if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * settings[5] / 1000) {
+                    boolean vanillaKB = member.booleanCache[3];
+                    if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * settings[vanillaKB ? 9 : 5] / 1000) {
                         double[] value = configcache.ReduceKB;
                         double hor = player.isOnGround() ? value[0] : value[2];
                         double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
                         PacketPlayOutAnimation animation = new PacketPlayOutAnimation(member.EntityPlayers, (byte) 0);
-                        double x = xDiff * hor / horizontalDistance * settings[6] / 1000;
+                        double x = xDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
                         double y = (player.isOnGround() ? value[1] : value[3]) * settings[7] / 1000;
-                        double z = zDiff * hor / horizontalDistance * settings[6] / 1000;
+                        double z = zDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
+                        if (vanillaKB)
+                            y = gettheKb(player, member);
                         if (member.velocities != null) {
                             x = x * member.velocities[0];
                             y = y * member.velocities[1];
                             z = z * member.velocities[0];
                         }
-                        if (member.booleanCache[3])
-                            y = gettheKb(player, member);
                         connection.sendPacket(new PacketPlayOutEntityVelocity(player.getEntityId(), x, y, z));
                         Reduce.sendPackets(connection, spec,
                                 new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1),
@@ -200,13 +229,13 @@ public class ServerEvent {
             if (player.getLocation().getY() < 99) {
                 return 0;
             } else
-                return 0.43;
+                return 0.44;
         }
         if (member.kb == 1)
             if (player.getLocation().getY() < 99) {
                 return 0;
             } else
-                return 0.35;
+                return 0.41;
         if (member.kb == 2)
             return 0;
         return -1;

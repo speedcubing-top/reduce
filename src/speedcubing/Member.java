@@ -51,8 +51,10 @@ public class Member extends User {
     public int PlacedBlocks;
     public int BlockPlaced;
     public boolean horSettings;
+    public boolean horSettings2;
     public boolean verSettings;
     public boolean ReachSettings;
+    public boolean ReachSettings2;
     public boolean setSkin;
     public boolean setName;
     public boolean kitedit;
@@ -113,7 +115,7 @@ public class Member extends User {
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutSpawnEntityLiving(holo));
         new Thread(() -> {
             booleanCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "uuid='" + uuid + "'")) : a;
-            integerCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec", "uuid='" + uuid + "'")) : b;
+            integerCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "uuid='" + uuid + "'")) : b;
             Inventory inventory = player.getInventory();
             inventory.clear();
             inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][lang]);
@@ -181,6 +183,7 @@ public class Member extends User {
     }
 
     public void teleport(double x, double y, double z, float yaw, float pitch, PlayerConnection connection) {
+        EntityPlayers.setLocation(x, y, z, yaw, pitch);
         int id = EntityPlayers.getId();
         Reduce.sendPackets(connection, Spectators,
                 new PacketPlayOutEntityTeleport(id, MathHelper.floor(x * 32), MathHelper.floor(y * 32), MathHelper.floor(z * 32), (byte) ((int) (yaw * 256 / 360)), (byte) ((int) (pitch * 256 / 360)), true),
@@ -206,7 +209,7 @@ public class Member extends User {
             float s = (float) Math.toDegrees(Math.atan(Math.abs(xDiff) / Math.abs(zDiff)));
             yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : 180 + (xDiff > 0 ? s : -s);
         }
-        double y = player.getEyeLocation().getY() - 101.62;
+        double y = player.getEyeLocation().getY() - (EntityPlayers.locY + 1.62);
         double l = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
         teleport(
                 NPCx,

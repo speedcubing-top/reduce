@@ -78,26 +78,26 @@ public class StringList {
     public static final String[] def = {"§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack"};
 
     public static String[][] ReachLore = {
-            {"§bReach Distance Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bReach Distance Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bReach Distance Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bReach Distance Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"}
+            {"§bReach Distance Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"},
+            {"§bReach Distance Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"},
+            {"§bReach Distance Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"},
+            {"§bReach Distance Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"}
     };
 
 
     public static String[][] HorLore = {
-            {"§bHorizontal Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bHorizontal Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bHorizontal Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bHorizontal Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"}
+            {"§bHorizontal Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"},
+            {"§bHorizontal Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"},
+            {"§bHorizontal Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"},
+            {"§bHorizontal Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§e %kb2%", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: Vanilla"}
     };
 
 
     public static String[][] VerLore = {
-            {"§bVertical Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bVertical Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bVertical Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"},
-            {"§bVertical Kb Multiplier", "", "§dCurrent:§e %kb%", "", "§cdefault: 1.000"}
+            {"§bVertical Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§c DISABLED", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: DISABLED"},
+            {"§bVertical Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§c DISABLED", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: DISABLED"},
+            {"§bVertical Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§c DISABLED", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: DISABLED"},
+            {"§bVertical Kb Multiplier", "", "§dNormal:§e %kb%", "§dVanilla:§c DISABLED", "", "§cdefault: 1.000", "", "§aLeft: Normal§8 , §cRight: DISABLED"}
     };
 
     public static String[] veloinput = {"§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)"};

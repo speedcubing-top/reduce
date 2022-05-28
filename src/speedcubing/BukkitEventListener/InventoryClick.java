@@ -60,9 +60,9 @@ public class InventoryClick implements Listener {
                             String[] hor = StringList.HorLore[member.lang];
                             String[] ver = StringList.VerLore[member.lang];
                             Integer[] cache = member.integerCache;
-                            inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3], reach[4]).build());
-                            inv.setItem(12, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3], hor[4]).build());
-                            inv.setItem(13, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4]).build());
+                            inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3].replace("%kb2%",String.format("%.3f", cache[9] / 1000D)), reach[4], reach[5], reach[6], reach[7]).build());
+                            inv.setItem(12, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)),  hor[3].replace("%kb2%",String.format("%.3f", cache[10] / 1000D)), hor[4], hor[5], hor[6], hor[7]).build());
+                            inv.setItem(13, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4], ver[5], ver[6], ver[7]).build());
                             inv.setItem(15, new ItemBuilder(Material.FEATHER).name(StringList.def[member.lang]).lore(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on").build());
                             player.openInventory(inv);
                         }
@@ -243,6 +243,8 @@ public class InventoryClick implements Listener {
                         }
                         member.setSkin = false;
                         member.setName = false;
+                        member.ReachSettings2 = false;
+                        member.horSettings2 = false;
                         member.ReachSettings = false;
                         member.horSettings = false;
                         member.verSettings = false;
@@ -298,25 +300,43 @@ public class InventoryClick implements Listener {
                         case 11: {
                             Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput2[member.lang]);
-                            member.ReachSettings = true;
                             speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
+                            player.sendMessage(StringList.veloinput2[member.lang]);
+                            switch (e.getAction()) {
+                                case PICKUP_ALL:
+                                    member.ReachSettings = true;
+                                    break;
+                                case PICKUP_HALF:
+                                    member.ReachSettings2 = true;
+                                    break;
+                            }
                         }
                         break;
                         case 12: {
                             Member member = Member.getMember(player.getUniqueId());
                             player.closeInventory();
                             player.sendMessage(StringList.veloinput[member.lang]);
-                            member.horSettings = true;
                             speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
+                            switch (e.getAction()) {
+                                case PICKUP_ALL:
+                                    member.horSettings = true;
+                                    break;
+                                case PICKUP_HALF:
+                                    member.horSettings2 = true;
+                                    break;
+                            }
                         }
                         break;
                         case 13: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            player.closeInventory();
-                            player.sendMessage(StringList.veloinput[member.lang]);
-                            member.verSettings = true;
-                            speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
+                            switch (e.getAction()) {
+                                case PICKUP_ALL:
+                                    Member member = Member.getMember(player.getUniqueId());
+                                    player.closeInventory();
+                                    member.verSettings = true;
+                                    player.sendMessage(StringList.veloinput[member.lang]);
+                                    speedcubingServer.node(true, player.getUniqueId(), member.tcpPort);
+                                    break;
+                            }
                         }
                         break;
                         case 15: {
@@ -405,6 +425,14 @@ public class InventoryClick implements Listener {
                             if (member.setName) {
                                 player.sendMessage(StringList.InputStringCancel2[member.lang]);
                                 member.setName = false;
+                            }
+                            if (member.ReachSettings2) {
+                                player.sendMessage(StringList.InputStringCancel3[member.lang]);
+                                member.ReachSettings2 = false;
+                            }
+                            if (member.horSettings2) {
+                                player.sendMessage(StringList.InputStringCancel4[member.lang]);
+                                member.horSettings2 = false;
                             }
                             if (member.ReachSettings) {
                                 player.sendMessage(StringList.InputStringCancel3[member.lang]);
