@@ -28,11 +28,11 @@ public class ServerEvent {
     public void socketEvent(SocketEvent e) {
         String[] rs = e.rs;
         switch (rs[0]) {
-            case "d":
+            case "reduce":
                 Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
-                speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "d|" + rs[1]);
+                speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
                 break;
-            case "o":
+            case "online":
                 if (rs[1].equals("1")) {
                     speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
                     for (Player p : Bukkit.getOnlinePlayers()) {
@@ -197,7 +197,6 @@ public class ServerEvent {
                         double z = zDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
                         if (vanillaKB)
                             y = gettheKb(player, member);
-                        System.out.println(y);
                         if (member.velocities != null) {
                             x = x * member.velocities[0];
                             y = y * member.velocities[1];
