@@ -197,6 +197,7 @@ public class ServerEvent {
                         double z = zDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
                         if (vanillaKB)
                             y = gettheKb(player, member);
+                        System.out.println(y);
                         if (member.velocities != null) {
                             x = x * member.velocities[0];
                             y = y * member.velocities[1];
@@ -227,17 +228,17 @@ public class ServerEvent {
             member.kb = 0;
         if (member.kb == 0) {
             if (player.getLocation().getY() < 99) {
-                return 0;
+                return 0.01;
             } else
-                return 0.44;
+                return 0.46;
         }
         if (member.kb == 1)
             if (player.getLocation().getY() < 99) {
-                return 0;
+                return 0.01;
             } else
-                return 0.41;
+                return 0.38;
         if (member.kb == 2)
-            return 0;
+            return 0.01;
         return -1;
     }
 }
