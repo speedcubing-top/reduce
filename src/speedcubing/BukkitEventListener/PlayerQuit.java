@@ -52,6 +52,8 @@ public class PlayerQuit implements Listener {
                             ",reduce_hor=" + ints[6] +
                             ",reduce_ver=" + ints[7] +
                             ",reduce_spec=" + ints[8] +
+                            ",reduce_vanilla_reach=" + ints[9] +
+                            ",reduce_vanilla_hor=" + ints[10] +
                             ",reduce_npccolor=" + (bs[0] ? 1 : 0) +
                             ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
                             ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
