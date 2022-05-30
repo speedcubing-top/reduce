@@ -15,6 +15,7 @@ import speedcubing.lib.api.exception.APIErrorException;
 import speedcubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
 import speedcubing.server.events.SocketEvent;
 import speedcubing.server.libs.GlobalString;
+import speedcubing.server.libs.User;
 import speedcubing.server.speedcubingServer;
 import speedcubing.spigot.Event.ServerEventHandler;
 import speedcubing.spigot.Event.events.PlayInChatEvent;
@@ -36,8 +37,8 @@ public class ServerEvent {
                 if (rs[1].equals("1")) {
                     speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
                     for (Player p : Bukkit.getOnlinePlayers()) {
-                        Member m = Member.getMember(p.getUniqueId());
-                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][m.lang], GlobalString.LobbyTabList[1][m.lang].replace("%int%", rs[2])));
+                        int lang = Member.getMember(p.getUniqueId()).user.lang;
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][lang], GlobalString.LobbyTabList[1][lang].replace("%int%", rs[2])));
                     }
                 }
                 break;
@@ -53,7 +54,7 @@ public class ServerEvent {
         if (member.setSkin) {
             e.setCancelled(true);
             if (message.contains(" ") || message.length() > 16)
-                player.sendMessage(GlobalString.invalidName[member.lang]);
+                player.sendMessage(GlobalString.invalidName[member.user.lang]);
             else {
                 String id;
                 try {
@@ -71,7 +72,7 @@ public class ServerEvent {
                         if (entityPlayer != null)
                             member.setSkin(player, entityPlayer, SessionServer.getSkin(finalId));
                     }).start();
-                    speedcubingServer.node(false, uuid, member.tcpPort);
+                    speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             }
         } else if (member.setName) {
@@ -80,7 +81,7 @@ public class ServerEvent {
             stand.setCustomName(ChatColor.translateAlternateColorCodes('&', message));
             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
             member.setName = false;
-            speedcubingServer.node(false, uuid, member.tcpPort);
+            speedcubingServer.node(false, uuid, member.user.tcpPort);
         } else if (member.ReachSettings2) {
             e.setCancelled(true);
             try {
@@ -90,7 +91,7 @@ public class ServerEvent {
                 else {
                     member.ReachSettings2 = false;
                     member.integerCache[9] = x;
-                    speedcubingServer.node(false, uuid, member.tcpPort);
+                    speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
@@ -104,7 +105,7 @@ public class ServerEvent {
                 else {
                     member.horSettings2 = false;
                     member.integerCache[10] = x;
-                    speedcubingServer.node(false, uuid, member.tcpPort);
+                    speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
@@ -118,7 +119,7 @@ public class ServerEvent {
                 else {
                     member.ReachSettings = false;
                     member.integerCache[5] = x;
-                    speedcubingServer.node(false, uuid, member.tcpPort);
+                    speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
@@ -132,7 +133,7 @@ public class ServerEvent {
                 else {
                     member.horSettings = false;
                     member.integerCache[6] = x;
-                    speedcubingServer.node(false, uuid, member.tcpPort);
+                    speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
@@ -146,14 +147,14 @@ public class ServerEvent {
                 else {
                     member.verSettings = false;
                     member.integerCache[7] = x;
-                    speedcubingServer.node(false, uuid, member.tcpPort);
+                    speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             } catch (Exception exception) {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
         } else if (message.charAt(0) != '/') {
             e.setCancelled(true);
-            String[] formats = speedcubingServer.getFormat(Member.getMember(uuid).rank);
+            String[] formats = speedcubingServer.getFormat(Member.getMember(uuid).user.rank);
             String text = formats[0] + player.getName();
             String[] str = GlobalString.MessageFormat[0];
             String[] out = new String[]{
@@ -162,7 +163,7 @@ public class ServerEvent {
                     str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
                     str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
             };
-            Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[Member.getMember(a.getUniqueId()).lang]));
+            Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[Member.getMember(a.getUniqueId()).user.lang]));
         }
     }
 
@@ -195,12 +196,13 @@ public class ServerEvent {
                         double x = xDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
                         double y = (player.isOnGround() ? value[1] : value[3]) * settings[7] / 1000;
                         double z = zDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
+                        double[] velocities = member.user.velocities;
                         if (vanillaKB)
                             y = gettheKb(player, member);
-                        if (member.velocities != null) {
-                            x = x * member.velocities[0];
-                            y = y * member.velocities[1];
-                            z = z * member.velocities[0];
+                        if (velocities != null) {
+                            x = x * velocities[0];
+                            y = y * velocities[1];
+                            z = z * velocities[0];
                         }
                         connection.sendPacket(new PacketPlayOutEntityVelocity(player.getEntityId(), x, y, z));
                         Reduce.sendPackets(connection, spec,

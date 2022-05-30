@@ -36,11 +36,11 @@ public class PlayerMove implements Listener {
                 int map = member.Map;
                 double NPCx = map * 500 + 0.5;
                 double NPCz = member.Coord + 0.5;
-                player.getScoreboard().getTeam(StringList.ReduceSidebar[member.lang][1]).setSuffix("0");
+                player.getScoreboard().getTeam(StringList.ReduceSidebar[member.user.lang][1]).setSuffix("0");
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];
                 PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, NPCx - m[0], 100 + m[1], NPCz, 270, 0);
-                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.lang]);
+                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.user.lang]);
                 member.BlockPlaced = 0;
                 member.clearBlocks();
                 new Timer().schedule(new TimerTask() {

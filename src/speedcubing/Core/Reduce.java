@@ -69,10 +69,10 @@ public class Reduce {
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
-            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.lang]);
-            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
-            inventory.setItem(ints[8], ItemStackList.Spec[member.lang]);
-            inventory.setItem(ints[2], ItemStackList.settings[member.lang]);
+            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.user.lang]);
+            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
+            inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
+            inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
             EntityPlayer entityPlayer = member.EntityPlayers;
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
                 connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
@@ -96,7 +96,7 @@ public class Reduce {
 
     public static void b(int map, Player player, Member member) {
         UUID uuid = player.getUniqueId();
-        int rank = speedcubingServer.getCode(member.rank);
+        int rank = speedcubingServer.getCode(member.user.rank);
         int diffmap = 0;
         int diffrank = 0;
         int total = totalName.size();
@@ -124,7 +124,7 @@ public class Reduce {
         for (int i = total; i > realindex; i--) {
             spec.setItem(i, spec.getItem(i - 1));
         }
-        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.rank)[1] + name).build());
+        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.user.rank)[1] + name).build());
         updateSpecPage(null);
     }
 
@@ -147,7 +147,7 @@ public class Reduce {
             if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && uuid.equals(id))) {
                 Member m = Member.getMember(id);
                 Inventory orig = spec;
-                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.lang]);
+                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.user.lang]);
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
                     ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(m.target).getName())));
@@ -159,7 +159,7 @@ public class Reduce {
     public static void removeFromGUI(Player player, int map, UUID ignored) {
         String name = player.getName();
         UUID uuid = player.getUniqueId();
-        int code = speedcubingServer.getCode(Member.getMember(uuid).rank);
+        int code = speedcubingServer.getCode(Member.getMember(uuid).user.rank);
         List<String> x = specName[map].get(code);
         if (x.size() == 1)
             specName[map].remove(code);

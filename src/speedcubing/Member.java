@@ -30,13 +30,14 @@ import speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
-public class Member extends User {
+public class Member {
     public static final Map<UUID, Member> users = new HashMap<>();
 
     public static Member getMember(UUID uuid) {
         return users.get(uuid);
     }
 
+    public User user;
     public EntityArmorStand Holo;
     public EntityPlayer EntityPlayers;
     public int task = -1;
@@ -64,7 +65,7 @@ public class Member extends User {
 
     public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
         UUID uuid = player.getUniqueId();
-        super.init(this, uuid);
+        this.user = User.getUser(uuid);
         int mX = 500 * map;
         int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
@@ -118,10 +119,10 @@ public class Member extends User {
             integerCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "uuid='" + uuid + "'")) : b;
             Inventory inventory = player.getInventory();
             inventory.clear();
-            inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][lang]);
-            inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][lang]);
-            inventory.setItem(integerCache[8], ItemStackList.Spec[lang]);
-            inventory.setItem(integerCache[2], ItemStackList.settings[lang]);
+            inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
+            inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][user.lang]);
+            inventory.setItem(integerCache[8], ItemStackList.Spec[user.lang]);
+            inventory.setItem(integerCache[2], ItemStackList.settings[user.lang]);
             Reduce.b(map, player, this);
         }).start();
 
@@ -129,13 +130,13 @@ public class Member extends User {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("sidebar", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        String[] sidebar = StringList.ReduceSidebar[lang];
+        String[] sidebar = StringList.ReduceSidebar[user.lang];
         objective.setDisplayName(sidebar[8].replace("%h%", "").replace("%m%", "00:").replace("%s%", "00"));
         SideBarAPI.sidebarTeams(scoreboard, new String[][]{
                 {sidebar[7]},
                 {sidebar[6]},
                 {sidebar[5]},
-                {sidebar[4].replace("%str%", StringList.mapname[map][lang])},
+                {sidebar[4].replace("%str%", StringList.mapname[map][user.lang])},
                 {sidebar[3]},
                 {sidebar[2]},
                 {"", sidebar[1], "0"},
@@ -150,7 +151,7 @@ public class Member extends User {
             public void run() {
                 Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
                 if (objective != null)
-                    objective.setDisplayName(StringList.ReduceSidebar[lang][8]
+                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][8]
                             .replace("%h%", x / 3600 == 0 ? "" : x / 3600 + ":")
                             .replace("%m%", String.format("%02d", (x % 3600) / 60) + ":")
                             .replace("%s%", String.format("%02d", x % 60)));

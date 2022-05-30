@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Member;
+import speedcubing.server.libs.User;
 
 public class BlockPlace implements Listener {
     @EventHandler
@@ -30,11 +31,11 @@ public class BlockPlace implements Listener {
                 if (a > 32) {
                     member.PlacedBlocks = 0;
                     Integer[] ints = member.integerCache;
-                    player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
+                    player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
                 }
                 member.blocks.add(new BlockPosition(x, y, z));
                 member.BlockPlaced = b + 1;
-                player.getScoreboard().getTeam(StringList.ReduceSidebar[member.lang][1]).setSuffix(Integer.toString(b + 1));
+                player.getScoreboard().getTeam(StringList.ReduceSidebar[member.user.lang][1]).setSuffix(Integer.toString(b + 1));
             }
         }
     }

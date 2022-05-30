@@ -19,7 +19,7 @@ public class InventoryClose implements Listener {
         Member member = Member.getMember(player.getUniqueId());
         if (e.getInventory().getHolder() == ItemStackList.KitEditorHolder && member.kitedit) {
             member.kitedit = false;
-            player.sendMessage(GlobalString.UnSavedSettings[member.lang]);
+            player.sendMessage(GlobalString.UnSavedSettings[member.user.lang]);
             InventoryUtils.fillItem(player.getInventory(), 9, 36, new ItemStack(Material.AIR));
             player.updateInventory();
         }
