@@ -228,11 +228,10 @@ public class InventoryClick implements Listener {
                     Member member = Member.getMember(player.getUniqueId());
                     if (RawSlot < Reduce.maptypes && RawSlot != member.Map) { //swap map
                         int newroom = -1;
-                        for (int h = 0; h < Integer.MAX_VALUE; h++) {
-                            if (Reduce.Rooms[RawSlot].size() == h)
-                                Reduce.Rooms[RawSlot].add(true);
-                            if (Reduce.Rooms[RawSlot].get(h)) {
-                                newroom = h + 1;
+                        for (int h = 1; h < Integer.MAX_VALUE; h++) {
+                            if (!Reduce.Rooms[RawSlot].contains(h)) {
+                                Reduce.Rooms[RawSlot].add(h);
+                                newroom = h;
                                 break;
                             }
                         }
@@ -259,7 +258,7 @@ public class InventoryClick implements Listener {
                         Reduce.removeFromGUI(player, map, null);
                         player.closeInventory();
                         new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators);
-                        Reduce.setRoom(map, oldroom, true);
+                        Reduce.Rooms[map].remove(oldroom);
                         WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }
                 } else if (holder == ItemStackList.SkinHolder) {

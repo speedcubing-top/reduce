@@ -26,7 +26,7 @@ public class Reduce {
 
     public static final ScoreboardTeam NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
 
-    public static final List<Boolean>[] Rooms = new List[maptypes];
+    public static final Set<Integer>[] Rooms = new HashSet[maptypes];
     public static final Map<UUID, Integer> mapCache = new HashMap<>();
     public static final ItemStack[] Invalid = new ItemStack[4];
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
@@ -42,7 +42,7 @@ public class Reduce {
         for (int i = 0; i < maptypes; i++) {
             specStorage[i] = new ArrayList<>();
             specName[i] = new HashMap<>();
-            Rooms[i] = new ArrayList<>();
+            Rooms[i] = new HashSet<>();
         }
     }
 
@@ -172,11 +172,5 @@ public class Reduce {
         spec.setItem(total, new ItemStack(Material.AIR));
         totalName.remove(name);
         updateSpecPage(ignored);
-    }
-
-    public static void setRoom(int map, int room, boolean value) {
-        Rooms[map].set(room - 1, value);
-        if (value && room == Rooms[map].size())
-            Rooms[map].remove(room - 1);
     }
 }

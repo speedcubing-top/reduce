@@ -31,11 +31,10 @@ public class PlayerJoin implements Listener {
                 return;
             }
             int room = -1;
-            for (int h = 0; h < Integer.MAX_VALUE; h++) {
-                if (Reduce.Rooms[map].size() == h)
-                    Reduce.Rooms[map].add(true);
-                if (Reduce.Rooms[map].get(h)) {
-                    room = h + 1;
+            for (int h = 1; h < Integer.MAX_VALUE; h++) {
+                if (!Reduce.Rooms[map].contains(h)) {
+                    Reduce.Rooms[map].add(h);
+                    room = h;
                     break;
                 }
             }

@@ -31,7 +31,7 @@ public class PlayerQuit implements Listener {
             Member member = Member.getMember(uuid);
             if (spec) {
                 Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
-                Reduce.setRoom(member.oldMap, Reduce.coordToRoom(member.oldCoord), true);
+                Reduce.Rooms[member.oldMap].remove(Reduce.coordToRoom(member.oldCoord));
                 WorldUtils.fillAir(-10 + member.oldMap * 500, 90, -10 + member.oldCoord, 10 + member.oldMap * 500, 110, 10 + member.oldCoord, player.getWorld());
             } else {
                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
@@ -61,7 +61,7 @@ public class PlayerQuit implements Listener {
                     , "uuid='" + uuid + "'")).start();
             if (!spec) {
                 Reduce.removeFromGUI(player, member.Map, null);
-                Reduce.setRoom(member.Map, Reduce.coordToRoom(member.Coord), true);
+                Reduce.Rooms[member.Map].remove(Reduce.coordToRoom(member.Coord));
                 WorldUtils.fillAir(-10 + member.Map * 500, 90, -10 + member.Coord, 10 + member.Map * 500, 110, 10 + member.Coord, player.getWorld());
             }
             PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;

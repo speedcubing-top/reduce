@@ -21,12 +21,14 @@ import speedcubing.spigot.Event.ServerEventHandler;
 import speedcubing.spigot.Event.events.PlayInChatEvent;
 import speedcubing.spigot.Event.events.PlayInUseEntityEvent;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
 public class ServerEvent {
     @ServerEventHandler
     public void socketEvent(SocketEvent e) {
+        System.out.println(Arrays.toString(Reduce.Rooms));
         String[] rs = e.rs;
         switch (rs[0]) {
             case "reduce":
