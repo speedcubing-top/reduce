@@ -77,7 +77,6 @@ public class Member {
         String[] skin = new String[]{property.getValue(), property.getSignature()};
         EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));
         int EntityID = entityPlayer.getId();
-//        Reduce.setRoom(map, room, false);
         this.Coord = coord;
         this.Map = map;
         player.setGameMode(GameMode.SURVIVAL);
