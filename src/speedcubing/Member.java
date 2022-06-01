@@ -61,7 +61,9 @@ public class Member {
     public boolean kitedit;
     public Boolean[] booleanCache;
     public Integer[] integerCache;
+    public PlayerConnection connection;
     public int kb;
+    public int npckb;
 
     public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
         UUID uuid = player.getUniqueId();
@@ -72,7 +74,7 @@ public class Member {
         WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());
         boolean first = a == null;
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
-        PlayerConnection connection = entityP.playerConnection;
+        connection = entityP.playerConnection;
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
         String[] skin = new String[]{property.getValue(), property.getSignature()};
         EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));
@@ -182,18 +184,21 @@ public class Member {
         }
     }
 
-    public void teleport(double x, double y, double z, float yaw, float pitch, PlayerConnection connection) {
-        EntityPlayers.setLocation(x, y, z, yaw, pitch);
+    public void teleport(double x, double z, float yaw, float pitch) {
+        EntityPlayers.setLocation(x, EntityPlayers.locY, z, yaw, pitch);
+        updateNpcLocation();
+    }
+
+    public void updateNpcLocation() {
         int id = EntityPlayers.getId();
         Reduce.sendPackets(connection, Spectators,
-                new PacketPlayOutEntityTeleport(id, MathHelper.floor(x * 32), MathHelper.floor(y * 32), MathHelper.floor(z * 32), (byte) ((int) (yaw * 256 / 360)), (byte) ((int) (pitch * 256 / 360)), true),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(id, (byte) ((int) (yaw * 256F / 360F)), (byte) ((int) (pitch * 256F / 360F)), true),
-                new PacketPlayOutEntityHeadRotation(EntityPlayers, (byte) ((int) (yaw * 256F / 360F))));
+                new PacketPlayOutEntityTeleport(id, MathHelper.floor(EntityPlayers.locX * 32), MathHelper.floor(EntityPlayers.locY * 32), MathHelper.floor(EntityPlayers.locZ * 32), (byte) ((int) (EntityPlayers.yaw * 256 / 360)), (byte) ((int) (EntityPlayers.pitch * 256 / 360)), true),
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(id, (byte) ((int) (EntityPlayers.yaw * 256F / 360F)), (byte) ((int) (EntityPlayers.pitch * 256F / 360F)), true),
+                new PacketPlayOutEntityHeadRotation(EntityPlayers, (byte) ((int) (EntityPlayers.yaw * 256F / 360F))));
     }
 
 
-    public void Aim(Player player) {
-        Location location = player.getLocation();
+    public void Aim(Location location) {
         double x = location.getX();
         double z = location.getZ();
         double NPCx = Map * 500 + 0.5;
@@ -209,15 +214,13 @@ public class Member {
             float s = (float) Math.toDegrees(Math.atan(Math.abs(xDiff) / Math.abs(zDiff)));
             yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : 180 + (xDiff > 0 ? s : -s);
         }
-        double y = player.getEyeLocation().getY() - (EntityPlayers.locY + 1.62);
+        double y = location.getY() - EntityPlayers.locY;
         double l = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
         teleport(
                 NPCx,
-                100,
                 NPCz,
                 yaw,
-                (l == 0) ? 270 : (y == 0 ? 0 : 360 - (float) Math.toDegrees(Math.atan(y / l))),
-                ((CraftPlayer) player).getHandle().playerConnection);
+                (l == 0) ? 270 : (y == 0 ? 0 : 360 - (float) Math.toDegrees(Math.atan(y / l))));
     }
 
     public void setSkin(Player player, EntityPlayer entityPlayer, String[] skin) {
@@ -225,12 +228,11 @@ public class Member {
         GameProfile gameProfile = entityPlayer.getProfile();
         gameProfile.getProperties().removeAll("textures");
         gameProfile.getProperties().put("textures", new Property("textures", skin[0], skin[1]));
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
         Reduce.sendPackets(connection, Spectators,
                 new PacketPlayOutEntityDestroy(id),
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer),
                 new PacketPlayOutNamedEntitySpawn(entityPlayer));
-        Aim(player);
+        Aim(player.getLocation());
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutEntityEquipment(id, 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
         new Timer().schedule(
                 new TimerTask() {

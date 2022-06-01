@@ -33,5 +33,14 @@ public class Main extends JavaPlugin {
         new Reduce().Load();
         new BlockEditor().Load();
         ServerEventManager.registerListeners(new ServerEvent());
+//        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+//            for (Member m : Member.users.values()) {
+//                if (m.connection.getPlayer().getNoDamageTicks() < m.connection.getPlayer().getMaximumNoDamageTicks() / 2) {
+//                    m.EntityPlayers.move(0, -0.5, 0);
+//                    m.updateNpcLocation();
+//                }
+//            }
+//        }, 0, 1);
     }
 }
+

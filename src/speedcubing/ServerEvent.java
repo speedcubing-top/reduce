@@ -181,6 +181,8 @@ public class ServerEvent {
             PlayerConnection connection = entityplayer.playerConnection;
             Set<PlayerConnection> spec = member.Spectators;
             int map = member.Map;
+//            member.EntityPlayers.move(0, gettheKb(null, member), 0);
+//            member.updateNpcLocation();
             if ((hand == null || hand.getType() != Material.INK_SACK) && member.task == -1) {
                 member.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
                     Location location = player.getLocation();
@@ -225,22 +227,27 @@ public class ServerEvent {
     }
 
     public double gettheKb(Player player, Member member) {
-        member.kb++;
-        if (member.kb == 3 || player.isOnGround())
-            member.kb = 0;
-        if (member.kb == 0) {
-            if (player.getLocation().getY() < 99) {
-                return 0.01;
-            } else
+        if (player == null) {
+            member.npckb++;
+            if (member.npckb == 3)
+                member.npckb = 0;
+            if (member.npckb == 0)
                 return 0.46;
-        }
-        if (member.kb == 1)
-            if (player.getLocation().getY() < 99) {
-                return 0.01;
-            } else
+            if (member.npckb == 1)
                 return 0.38;
-        if (member.kb == 2)
-            return 0.01;
+            if (member.npckb == 2)
+                return 0.01;
+        } else {
+            member.kb++;
+            if (member.kb == 3 || player.isOnGround())
+                member.kb = 0;
+            if (member.kb == 0)
+                return player.getLocation().getY() < member.EntityPlayers.locY - 1 ? 0.01 : 0.46;
+            if (member.kb == 1)
+                return player.getLocation().getY() < member.EntityPlayers.locY - 1 ? 0.01 : 0.38;
+            if (member.kb == 2)
+                return 0.01;
+        }
         return -1;
     }
 }

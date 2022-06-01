@@ -31,7 +31,7 @@ public class PlayerMove implements Listener {
         } else if (player.getGameMode() == GameMode.SURVIVAL) {
             Location to = e.getTo();
             Member member = Member.getMember(player.getUniqueId());
-            member.Aim(player);
+            member.Aim(player.getLocation());
             if (to.getY() < 85 || Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5) {
                 int map = member.Map;
                 double NPCx = map * 500 + 0.5;
@@ -46,9 +46,8 @@ public class PlayerMove implements Listener {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        EntityPlayer entityPlayer = member.EntityPlayers;
-                        if (entityPlayer != null)
-                            member.teleport(NPCx, 100, NPCz, 90, 0, ((CraftPlayer) player).getHandle().playerConnection);
+                        if (member.EntityPlayers != null)
+                            member.teleport(NPCx, NPCz, 90, 0);
                     }
                 }, 50);
             }
