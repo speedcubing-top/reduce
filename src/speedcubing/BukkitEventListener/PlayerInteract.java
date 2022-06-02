@@ -47,6 +47,14 @@ public class PlayerInteract implements Listener {
                         player.sendMessage(StringList.InputStringCancel5[member.user.lang]);
                         member.verSettings = false;
                     }
+                    if (member.ReachSettings2) {
+                        player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                        member.ReachSettings2 = false;
+                    }
+                    if (member.horSettings2) {
+                        player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                        member.horSettings2 = false;
+                    }
                 }
                 break;
             case COMPASS:
