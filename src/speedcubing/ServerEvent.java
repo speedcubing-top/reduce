@@ -12,16 +12,13 @@ import speedcubing.Core.Reduce;
 import speedcubing.lib.api.MojangAPI;
 import speedcubing.lib.api.SessionServer;
 import speedcubing.lib.api.exception.APIErrorException;
-import speedcubing.lib.bukkit.packetwrapper.OutPlayerListHeaderFooter;
 import speedcubing.server.events.SocketEvent;
 import speedcubing.server.libs.GlobalString;
-import speedcubing.server.libs.User;
 import speedcubing.server.speedcubingServer;
 import speedcubing.spigot.Event.ServerEventHandler;
 import speedcubing.spigot.Event.events.PlayInChatEvent;
 import speedcubing.spigot.Event.events.PlayInUseEntityEvent;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,16 +30,6 @@ public class ServerEvent {
             case "reduce":
                 Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
                 speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
-                break;
-            case "online":
-                if (rs[1].equals("1")) {
-                    speedcubingServer.AllPlayers = Integer.parseInt(rs[2]);
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        Member member = Member.getMember(p.getUniqueId());
-                        if (member != null)
-                            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(OutPlayerListHeaderFooter.a(GlobalString.LobbyTabList[0][member.user.lang], GlobalString.LobbyTabList[1][member.user.lang].replace("%int%", rs[2])));
-                    }
-                }
                 break;
         }
     }
