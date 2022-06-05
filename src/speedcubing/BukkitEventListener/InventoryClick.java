@@ -139,7 +139,7 @@ public class InventoryClick implements Listener {
                         break;
                     }
                 } else if (holder == ItemStackList.KitEditorHolder) {
-                    if (RawSlot <= 35 || (e.getAction() == InventoryAction.PICKUP_HALF && e.getCurrentItem().getAmount() != 1))
+                    if (RawSlot < 36 || (e.getCursor().getAmount() > 1 && (e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PLACE_ONE)))
                         e.setCancelled(true);
                     switch (RawSlot) {
                         case 3:
