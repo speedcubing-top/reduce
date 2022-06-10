@@ -1,5 +1,6 @@
 package speedcubing;
 
+import speedcubing.server.speedcubingServer;
 import speedcubing.spigot.Event.ServerEventManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -33,14 +34,7 @@ public class Main extends JavaPlugin {
         new Reduce().Load();
         new BlockEditor().Load();
         ServerEventManager.registerListeners(new ServerEvent());
-//        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-//            for (Member m : Member.users.values()) {
-//                if (m.connection.getPlayer().getNoDamageTicks() < m.connection.getPlayer().getMaximumNoDamageTicks() / 2) {
-//                    m.EntityPlayers.move(0, -0.5, 0);
-//                    m.updateNpcLocation();
-//                }
-//            }
-//        }, 0, 1);
+        speedcubingServer.tcp.sendClean(25576 - Bukkit.getPort() % 2, "online|7|" + Bukkit.getOnlinePlayers().size());
     }
 }
 
