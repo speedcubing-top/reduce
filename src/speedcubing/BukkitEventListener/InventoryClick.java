@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -40,10 +41,17 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 public class InventoryClick implements Listener {
+    @EventHandler
+    public void InventoryDragEvent(InventoryDragEvent e) {
+        if (e.getCursor() != null && e.getCursor().getAmount() != 1)
+            e.setCancelled(true);
+    }
 
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e) {
         int RawSlot = e.getRawSlot();
+        if (e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PLACE_ONE)
+            e.setCancelled(true);
         if (RawSlot != -999) {
             Inventory inventory = e.getInventory();
             Player player = (Player) e.getWhoClicked();
@@ -139,7 +147,7 @@ public class InventoryClick implements Listener {
                         break;
                     }
                 } else if (holder == ItemStackList.KitEditorHolder) {
-                    if (RawSlot < 36 || (e.getCursor().getAmount() > 1 && (e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PLACE_ONE)))
+                    if (RawSlot < 36)
                         e.setCancelled(true);
                     switch (RawSlot) {
                         case 3:
