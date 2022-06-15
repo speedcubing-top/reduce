@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.Member;
-import speedcubing.server.PluginMessage;
+import speedcubing.lib.bukkit.BungeePluginMessage;
 
 import java.util.HashSet;
 import java.util.Timer;
@@ -25,7 +25,7 @@ public class PlayerJoin implements Listener {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        PluginMessage.switchServer(player, "lobby");
+                        BungeePluginMessage.switchServer(player, "lobby");
                     }
                 }, 500);
                 return;

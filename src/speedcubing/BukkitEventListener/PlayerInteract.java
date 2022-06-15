@@ -15,7 +15,7 @@ import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.ItemUtils;
+import speedcubing.lib.bukkit.inventory.ItemUtils;
 
 public class PlayerInteract implements Listener {
 

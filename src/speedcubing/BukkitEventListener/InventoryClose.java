@@ -1,8 +1,6 @@
 package speedcubing.BukkitEventListener;
 
 
-import speedcubing.lib.bukkit.InventoryUtils;
-import speedcubing.server.libs.GlobalString;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +9,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import speedcubing.List.ItemStackList;
 import speedcubing.Member;
+import speedcubing.lib.bukkit.inventory.InventoryUtils;
+import speedcubing.server.libs.GlobalString;
 
 public class InventoryClose implements Listener {
     @EventHandler

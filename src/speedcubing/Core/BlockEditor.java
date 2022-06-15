@@ -1,6 +1,5 @@
 package speedcubing.Core;
 
-import com.sun.xml.internal.ws.api.model.MEP;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -9,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import speedcubing.List.ItemStackList;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.ItemUtils;
+import speedcubing.lib.bukkit.inventory.ItemUtils;
 import speedcubing.server.libs.GlobalString;
 
 import java.util.UUID;

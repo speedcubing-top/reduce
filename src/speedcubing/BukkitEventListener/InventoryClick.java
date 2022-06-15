@@ -2,7 +2,6 @@ package speedcubing.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import com.sun.xml.internal.ws.api.model.MEP;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -26,13 +25,12 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.InventoryUtils;
-import speedcubing.lib.bukkit.ItemBuilder;
 import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.WorldUtils;
+import speedcubing.lib.bukkit.inventory.InventoryUtils;
+import speedcubing.lib.bukkit.inventory.ItemBuilder;
 import speedcubing.server.config;
 import speedcubing.server.libs.GlobalString;
-import speedcubing.server.libs.User;
 import speedcubing.server.speedcubingServer;
 
 import java.util.Collections;

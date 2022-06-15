@@ -12,10 +12,10 @@ import speedcubing.Core.Reduce;
 import speedcubing.lib.api.MojangAPI;
 import speedcubing.lib.api.SessionServer;
 import speedcubing.lib.api.exception.APIErrorException;
-import speedcubing.lib.event.LibEventHandler;
+import speedcubing.lib.bukkit.event.PlayInChatEvent;
+import speedcubing.lib.bukkit.event.PlayInUseEntityEvent;
+import speedcubing.lib.eventbus.LibEventHandler;
 import speedcubing.server.events.SocketEvent;
-import speedcubing.server.events.packet.PlayInChatEvent;
-import speedcubing.server.events.packet.PlayInUseEntityEvent;
 import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
 
@@ -41,7 +41,7 @@ public class ServerEvent {
         UUID uuid = player.getUniqueId();
         Member member = Member.getMember(uuid);
         if (member.setSkin) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             if (message.contains(" ") || message.length() > 16)
                 player.sendMessage(GlobalString.invalidName[member.user.lang]);
             else {
@@ -65,14 +65,14 @@ public class ServerEvent {
                 }
             }
         } else if (member.setName) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             EntityArmorStand stand = member.Holo;
             stand.setCustomName(ChatColor.translateAlternateColorCodes('&', message));
             Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
             member.setName = false;
             speedcubingServer.node(false, uuid, member.user.tcpPort);
         } else if (member.ReachSettings2) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 25000)
@@ -86,7 +86,7 @@ public class ServerEvent {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
             }
         } else if (member.horSettings2) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
@@ -100,7 +100,7 @@ public class ServerEvent {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
         } else if (member.ReachSettings) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 25000)
@@ -114,7 +114,7 @@ public class ServerEvent {
                 player.sendMessage("Invalid format! (0.000 ~ 25.000)");
             }
         } else if (member.horSettings) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
@@ -128,7 +128,7 @@ public class ServerEvent {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
         } else if (member.verSettings) {
-            e.setCancelled(true);
+            e.isCancelled = true;
             try {
                 int x = (int) (Double.parseDouble(message) * 1000);
                 if (x < 0 || x > 5000)
@@ -142,7 +142,7 @@ public class ServerEvent {
                 player.sendMessage("Invalid format! (0.000 ~ 5.000)");
             }
         } else if (message.charAt(0) != '/') {
-            e.setCancelled(true);
+            e.isCancelled = true;
             String[] formats = speedcubingServer.getFormat(Member.getMember(uuid).user.rank);
             String text = formats[0] + player.getName();
             String[] str = GlobalString.MessageFormat[0];

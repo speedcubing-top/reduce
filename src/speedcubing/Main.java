@@ -8,7 +8,7 @@ import speedcubing.BukkitEventListener.*;
 import speedcubing.Core.BlockEditor;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
-import speedcubing.lib.event.LibEventManager;
+import speedcubing.lib.eventbus.LibEventManager;
 import speedcubing.server.speedcubingServer;
 
 import java.util.Timer;

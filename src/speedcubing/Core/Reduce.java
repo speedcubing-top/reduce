@@ -13,9 +13,9 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.ItemBuilder;
-import speedcubing.lib.bukkit.ItemUtils;
 import speedcubing.lib.bukkit.PlayerUtils;
+import speedcubing.lib.bukkit.inventory.ItemBuilder;
+import speedcubing.lib.bukkit.inventory.ItemUtils;
 import speedcubing.server.speedcubingServer;
 
 import java.util.*;
