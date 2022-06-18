@@ -25,7 +25,7 @@ import java.util.UUID;
 public class ServerEvent {
     @LibEventHandler
     public void socketEvent(SocketEvent e) {
-        String[] rs = e.rs;
+        String[] rs = e.receive.split("\\|");
         switch (rs[0]) {
             case "reduce":
                 Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
