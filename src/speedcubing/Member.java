@@ -1,6 +1,5 @@
 package speedcubing;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang.ArrayUtils;
@@ -8,10 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -20,10 +16,11 @@ import org.bukkit.scoreboard.Scoreboard;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
-import speedcubing.lib.bukkit.EntityPlayerUtils;
 import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.SideBarAPI;
 import speedcubing.lib.bukkit.WorldUtils;
+import speedcubing.lib.bukkit.entity.Hologram;
+import speedcubing.lib.bukkit.entity.NPC;
 import speedcubing.server.config;
 import speedcubing.server.libs.User;
 import speedcubing.server.speedcubingServer;
@@ -37,9 +34,10 @@ public class Member {
         return users.get(uuid);
     }
 
+    public NPC npc;
+    public Hologram Holo;
     public User user;
-    public EntityArmorStand Holo;
-    public EntityPlayer EntityPlayers;
+    //    public EntityPlayer EntityPlayers;
     public int task = -1;
     public Set<BlockPosition> blocks = new HashSet<>();
     public TimerTask SideBar;
@@ -65,56 +63,45 @@ public class Member {
     public int kb;
     public int npckb;
 
-    public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators) {
+    public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
         UUID uuid = player.getUniqueId();
         this.user = User.getUser(uuid);
         int mX = 500 * map;
         int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
-        WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());
         boolean first = a == null;
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         connection = entityP.playerConnection;
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
-        String[] skin = new String[]{property.getValue(), property.getSignature()};
-        EntityPlayer entityPlayer = new EntityPlayer(((CraftServer) Bukkit.getServer()).getServer(), world, new GameProfile(UUID.randomUUID(), " "), new PlayerInteractManager(world));
-        int EntityID = entityPlayer.getId();
+        this.npc = new NPC(" ", UUID.randomUUID(), true)
+                .setSkin(property.getValue(), property.getSignature(), false)
+                .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0);
+        npc.listener.add(connection);
+        npc.listener.addAll(Spectators);
+        npc.spawn(90).items(ItemStackList.Sticks[0][0]);
         this.Coord = coord;
         this.Map = map;
         player.setGameMode(GameMode.SURVIVAL);
         ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
-        entityPlayer.getProfile().getProperties().put("textures", new Property("textures", skin[0], skin[1]));
-        entityPlayer.setLocation(mX + 0.5, 100, coord + 0.5, 90, 0);
-        EntityPlayerUtils.enableOuterLayer(entityPlayer.getDataWatcher());
         player.getInventory().setHeldItemSlot(0);
         double locx = mX + 0.5 - Reduce.MapLocations[map][0];
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         PlayerUtils.teleport(connection, locx, locy, locz, 270, 0);
-        EntityArmorStand holo = new EntityArmorStand(world);
-        holo.setCustomNameVisible(true);
-        holo.setGravity(true);
-        holo.setInvisible(true);
-        holo.n(true);
-        holo.setCustomName("§6" + config.SERVERIP);
-        holo.setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
-        this.Holo = holo;
+        this.Holo = new Hologram(first ? "§6" + config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0);
+        Holo.listener.add(connection);
+        Holo.listener.addAll(Spectators);
+        Holo.spawn();
         this.Spectators = Spectators;
-        this.EntityPlayers = entityPlayer;
         for (PlayerConnection c : Spectators) {
             Member m = getMember(c.getPlayer().getPlayer().getUniqueId());
             m.Map = map;
             m.Coord = coord;
             PlayerUtils.teleport(c, locx, locy, locz, 270, 0);
         }
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedEntitySpawn(entityPlayer));
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutEntityHeadRotation(entityPlayer, (byte) 64));
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutEntityEquipment(EntityID, 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
         Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutSpawnEntityLiving(holo));
         new Thread(() -> {
             booleanCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "uuid='" + uuid + "'")) : a;
             integerCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "uuid='" + uuid + "'")) : b;
@@ -165,7 +152,7 @@ public class Member {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Reduce.sendPackets(connection, e, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                Reduce.sendPackets(connection, e, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc.entityPlayer));
             }
         }, 4000);
         users.put(uuid, this);
@@ -184,20 +171,6 @@ public class Member {
         }
     }
 
-    public void teleport(double x, double z, float yaw, float pitch) {
-        EntityPlayers.setLocation(x, EntityPlayers.locY, z, yaw, pitch);
-        updateNpcLocation();
-    }
-
-    public void updateNpcLocation() {
-        int id = EntityPlayers.getId();
-        Reduce.sendPackets(connection, Spectators,
-                new PacketPlayOutEntityTeleport(id, MathHelper.floor(EntityPlayers.locX * 32), MathHelper.floor(EntityPlayers.locY * 32), MathHelper.floor(EntityPlayers.locZ * 32), (byte) ((int) (EntityPlayers.yaw * 256 / 360)), (byte) ((int) (EntityPlayers.pitch * 256 / 360)), true),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(id, (byte) ((int) (EntityPlayers.yaw * 256F / 360F)), (byte) ((int) (EntityPlayers.pitch * 256F / 360F)), true),
-                new PacketPlayOutEntityHeadRotation(EntityPlayers, (byte) ((int) (EntityPlayers.yaw * 256F / 360F))));
-    }
-
-
     public void Aim(Location location) {
         double x = location.getX();
         double z = location.getZ();
@@ -214,31 +187,25 @@ public class Member {
             float s = (float) Math.toDegrees(Math.atan(Math.abs(xDiff) / Math.abs(zDiff)));
             yaw = zDiff > 0 ? (xDiff > 0 ? 360 - s : s) : 180 + (xDiff > 0 ? s : -s);
         }
-        double y = location.getY() - EntityPlayers.locY;
+        double y = location.getY() - npc.entityPlayer.locY;
         double l = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
-        teleport(
+        npc.setLocation(
                 NPCx,
+                npc.entityPlayer.locY,
                 NPCz,
                 yaw,
-                (l == 0) ? 270 : (y == 0 ? 0 : 360 - (float) Math.toDegrees(Math.atan(y / l))));
+                (l == 0) ? 270 : (y == 0 ? 0 : 360 - (float) Math.toDegrees(Math.atan(y / l)))).updateNpcLocation();
     }
 
-    public void setSkin(Player player, EntityPlayer entityPlayer, String[] skin) {
-        int id = entityPlayer.getId();
-        GameProfile gameProfile = entityPlayer.getProfile();
-        gameProfile.getProperties().removeAll("textures");
-        gameProfile.getProperties().put("textures", new Property("textures", skin[0], skin[1]));
-        Reduce.sendPackets(connection, Spectators,
-                new PacketPlayOutEntityDestroy(id),
-                new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer),
-                new PacketPlayOutNamedEntitySpawn(entityPlayer));
+    public void setSkin(Player player, String value, String signature) {
+        npc.setSkin(value, signature, true);
         Aim(player.getLocation());
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutEntityEquipment(id, 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
+        npc.items(ItemStackList.Sticks[0][0]);
         new Timer().schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
-                        Reduce.sendPackets(connection, Spectators, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                        Reduce.sendPackets(connection, Spectators, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc.entityPlayer));
                     }
                 }, 4000);
     }

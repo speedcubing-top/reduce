@@ -57,18 +57,16 @@ public class ServerEvent {
                     member.setSkin = false;
                     String finalId = id;
                     new Thread(() -> {
-                        EntityPlayer entityPlayer = member.EntityPlayers;
-                        if (entityPlayer != null)
-                            member.setSkin(player, entityPlayer, SessionServer.getSkin(finalId));
+                        String[] a = SessionServer.getSkin(finalId);
+                        if (member.npc != null)
+                            member.setSkin(player, a[0], a[1]);
                     }).start();
                     speedcubingServer.node(false, uuid, member.user.tcpPort);
                 }
             }
         } else if (member.setName) {
             e.isCancelled = true;
-            EntityArmorStand stand = member.Holo;
-            stand.setCustomName(ChatColor.translateAlternateColorCodes('&', message));
-            Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
+            member.Holo.setName(ChatColor.translateAlternateColorCodes('&', message),true);
             member.setName = false;
             speedcubingServer.node(false, uuid, member.user.tcpPort);
         } else if (member.ReachSettings2) {
@@ -183,7 +181,6 @@ public class ServerEvent {
                         double[] value = configcache.ReduceKB;
                         double hor = player.isOnGround() ? value[0] : value[2];
                         double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
-                        PacketPlayOutAnimation animation = new PacketPlayOutAnimation(member.EntityPlayers, (byte) 0);
                         double x = xDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
                         double y = (player.isOnGround() ? value[1] : value[3]) * settings[7] / 1000;
                         double z = zDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
@@ -196,20 +193,19 @@ public class ServerEvent {
                             z = z * velocities[0];
                         }
                         connection.sendPacket(new PacketPlayOutEntityVelocity(player.getEntityId(), x, y, z));
-                        Reduce.sendPackets(connection, spec,
-                                new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1),
-                                animation,
-                                new PacketPlayOutAnimation(entityplayer, 1));
+                        member.npc.animation(0);
+                        Reduce.sendPackets(connection, spec, new PacketPlayOutAnimation(entityplayer, 1));
+                        Reduce.sendPackets(connection, spec, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1));
                         if (member.booleanCache[2] && member.Spectators != null)
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () ->
-                                    Reduce.sendPackets(connection, spec, animation), 5);
+                                    member.npc.animation(0), 5);
                     }
                 }, 0, 10);
             }
             if (bs[1])
                 Reduce.sendPackets(connection, spec, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), map * 250 + 0.5, 101.62, member.Coord + 0.5, 1, 1));
             if (bs[0])
-                Reduce.sendPackets(connection, spec, new PacketPlayOutAnimation(member.EntityPlayers, (byte) 1));
+                member.npc.animation(1);
             player.setNoDamageTicks(20);
         }
     }
@@ -230,9 +226,9 @@ public class ServerEvent {
             if (member.kb == 3 || player.isOnGround())
                 member.kb = 0;
             if (member.kb == 0)
-                return player.getLocation().getY() < member.EntityPlayers.locY - 1 ? 0.01 : 0.46;
+                return player.getLocation().getY() < member.npc.entityPlayer.locY - 1 ? 0.01 : 0.46;
             if (member.kb == 1)
-                return player.getLocation().getY() < member.EntityPlayers.locY - 1 ? 0.01 : 0.38;
+                return player.getLocation().getY() < member.npc.entityPlayer.locY - 1 ? 0.01 : 0.38;
             if (member.kb == 2)
                 return 0.01;
         }

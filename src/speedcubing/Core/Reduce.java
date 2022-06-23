@@ -4,7 +4,6 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -73,21 +72,17 @@ public class Reduce {
             inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
             inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
             inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
-            EntityPlayer entityPlayer = member.EntityPlayers;
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
-                connection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayer));
-                connection.sendPacket(new PacketPlayOutEntityHeadRotation(entityPlayer, (byte) 64));
-                connection.sendPacket(new PacketPlayOutEntityEquipment(entityPlayer.getId(), 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
+                member.npc.spawn(90).items(ItemStackList.Sticks[0][0]);
+                member.Holo.spawn();
                 connection.sendPacket(new PacketPlayOutScoreboardTeam(NoNameTag, 1));
                 connection.sendPacket(new PacketPlayOutScoreboardTeam(NoNameTag, 0));
                 connection.sendPacket(new PacketPlayOutScoreboardTeam(NoNameTag, Collections.singletonList(" "), 3));
-                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(member.Holo));
             }, 1);
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.npc.entityPlayer));
                 }
             }, 4000);
             b(member.Map, player, member);

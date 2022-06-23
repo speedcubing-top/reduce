@@ -39,7 +39,7 @@ public class PlayerJoin implements Listener {
                 }
             }
             Reduce.mapCache.remove(uuid);
-            new Member(player, map, room, null, null, new HashSet<>());
+            new Member(player, map, room, null, null, new HashSet<>(), null);
         }
     }
 }

@@ -2,12 +2,12 @@ package speedcubing.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
+import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -258,12 +258,12 @@ public class InventoryClick implements Listener {
                         member.horSettings = false;
                         member.verSettings = false;
                         member.SideBar.cancel();
-                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(member.Holo.getId()));
-                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(member.EntityPlayers.getId()));
+                        member.Holo.despawn();
+                        member.npc.despawn();
                         member.clearBlocks();
                         Reduce.removeFromGUI(player, map, null);
                         player.closeInventory();
-                        new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators);
+                        new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators,member.Holo);
                         Reduce.Rooms[map].remove(oldroom);
                         WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }
@@ -279,10 +279,8 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 11: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            EntityPlayer entityPlayer = member.EntityPlayers;
                             Property property = ((CraftPlayer) player).getProfile().getProperties().get("textures").iterator().next();
-                            member.setSkin(player, entityPlayer, new String[]{property.getValue(), property.getSignature()});
+                            Member.getMember(player.getUniqueId()).setSkin(player, property.getValue(), property.getSignature());
                             player.closeInventory();
                         }
                         break;
@@ -295,10 +293,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 14: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            EntityArmorStand stand = member.Holo;
-                            stand.setCustomName("§6" + config.SERVERIP);
-                            Reduce.sendPackets(((CraftPlayer) player).getHandle().playerConnection, member.Spectators, new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
+                            Member.getMember(player.getUniqueId()).Holo.setName("§6" + config.SERVERIP, true);
                             player.closeInventory();
                         }
                         break;
@@ -408,22 +403,18 @@ public class InventoryClick implements Listener {
                             player.closeInventory();
                             targetPlayer.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-                            EntityPlayer entityPlayer = targetMember.EntityPlayers;
                             ((CraftPlayer) targetPlayer).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ePlayer));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
-                                connection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayer));
-                                connection.sendPacket(new PacketPlayOutEntityHeadRotation(entityPlayer, (byte) 64));
-                                connection.sendPacket(new PacketPlayOutEntityEquipment(entityPlayer.getId(), 0, CraftItemStack.asNMSCopy(ItemStackList.Sticks[0][0])));
+                                targetMember.npc.spawn(90).items(ItemStackList.Sticks[0][0]);
                                 connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
                                 connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
                                 connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
-                                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(targetMember.Holo));
+                                targetMember.Holo.spawn();
                             }, 1);
                             new Timer().schedule(new TimerTask() {
                                 @Override
                                 public void run() {
-                                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, targetMember.npc.entityPlayer));
                                 }
                             }, 4000);
 

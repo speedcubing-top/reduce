@@ -1,7 +1,5 @@
 package speedcubing.BukkitEventListener;
 
-import speedcubing.lib.bukkit.PlayerUtils;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -13,6 +11,7 @@ import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Member;
+import speedcubing.lib.bukkit.PlayerUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,8 +45,8 @@ public class PlayerMove implements Listener {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        if (member.EntityPlayers != null)
-                            member.teleport(NPCx, NPCz, 90, 0);
+                        if (member.npc != null)
+                            member.npc.setLocation(NPCx, member.npc.entityPlayer.locY, NPCz, 90, 0).updateNpcLocation();
                     }
                 }, 50);
             }
