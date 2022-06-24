@@ -37,7 +37,6 @@ public class Member {
     public NPC npc;
     public Hologram Holo;
     public User user;
-    //    public EntityPlayer EntityPlayers;
     public int task = -1;
     public Set<BlockPosition> blocks = new HashSet<>();
     public TimerTask SideBar;
