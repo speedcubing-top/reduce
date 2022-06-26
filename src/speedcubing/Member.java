@@ -12,12 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.lib.bukkit.PlayerUtils;
-import speedcubing.lib.bukkit.SideBarAPI;
+import speedcubing.lib.bukkit.SideBar;
 import speedcubing.lib.bukkit.WorldUtils;
 import speedcubing.lib.bukkit.entity.Hologram;
 import speedcubing.lib.bukkit.entity.NPC;
@@ -114,23 +113,16 @@ public class Member {
         }).start();
 
         player.updateInventory();
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("sidebar", "dummy");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         String[] sidebar = StringList.ReduceSidebar[user.lang];
-        objective.setDisplayName(sidebar[8].replace("%h%", "").replace("%m%", "00:").replace("%s%", "00"));
-        SideBarAPI.sidebarTeams(scoreboard, new String[][]{
-                {sidebar[7]},
-                {sidebar[6]},
-                {sidebar[5]},
-                {sidebar[4].replace("%str%", StringList.mapname[map][user.lang])},
-                {sidebar[3]},
-                {sidebar[2]},
-                {"", sidebar[1], "0"},
-                {sidebar[0]},
-        }, new int[]{7, 6, 5, 4, 3, 2, 1, 0});
-        player.setScoreboard(scoreboard);
-
+        new SideBar(player, sidebar[0].replace("%h%", "").replace("%m%", "00:").replace("%s%", "00"))
+                .staticLine(sidebar[1], 7)
+                .staticLine(sidebar[2], 6)
+                .staticLine(sidebar[3], 5)
+                .changeableLine(sidebar[4].replace("%str%", StringList.mapname[map][user.lang]), 4)
+                .staticLine(sidebar[5], 3)
+                .staticLine(sidebar[6], 2)
+                .changeableLine(sidebar[7] + 0, 1)
+                .staticLine(sidebar[8], 0).create();
         SideBar = new TimerTask() {
             int x = 0;
 
@@ -138,7 +130,7 @@ public class Member {
             public void run() {
                 Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
                 if (objective != null)
-                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][8]
+                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][0]
                             .replace("%h%", x / 3600 == 0 ? "" : x / 3600 + ":")
                             .replace("%m%", String.format("%02d", (x % 3600) / 60) + ":")
                             .replace("%s%", String.format("%02d", x % 60)));

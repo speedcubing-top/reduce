@@ -19,10 +19,10 @@ public class StringList {
     public static final String[] mapselect = {"§6Select Map", "§6Select Map", "§6Select Map", "§6Select Map"};
     public static final String[] prefedit = {"§bPreferences", "§bPreferences", "§bPreferences", "§bPreferences"};
     public static String[][] ReduceSidebar = {
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"},
-            {"§0", "§8»§b ", "§aBlock placed:", "§2", "§8»§b %str%", "§aMap:", "§6", "§6" + config.SERVERIP, "§3Reduce §7▶§b %h%%m%%s%"}
+            {"§3Reduce §7▶§b %h%%m%%s%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
+            {"§3Reduce §7▶§b %h%%m%%s%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
+            {"§3Reduce §7▶§b %h%%m%%s%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
+            {"§3Reduce §7▶§b %h%%m%%s%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"}
     };
 
     public static String[] InputStringCancel2 = {
