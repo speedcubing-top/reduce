@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.Member;
 import speedcubing.lib.bukkit.WorldUtils;
-import speedcubing.server.listeners.PlayerJoin;
 import speedcubing.server.speedcubingServer;
 
 import java.util.UUID;
@@ -62,6 +61,7 @@ public class PlayerQuit implements Listener {
                 WorldUtils.fillAir(-10 + member.Map * 500, 90, -10 + member.Coord, 10 + member.Map * 500, 110, 10 + member.Coord, player.getWorld());
             }
             member.npc.despawn();
+            member.npc.delete();
             player.teleport(new Location(player.getWorld(), 0.5, 1000, 0.5, 0, 0));
             Member.users.remove(uuid);
         } else Reduce.mapCache.remove(uuid);
