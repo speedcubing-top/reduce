@@ -23,7 +23,7 @@ public class PlayerQuit implements Listener {
     public void PlayerQuitEvent(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-        if (PlayerJoin.JoinPackets.containsKey(uuid) && Member.users.containsKey(uuid)) {
+        if (Member.users.containsKey(uuid)) {
             boolean spec = player.getGameMode() == GameMode.ADVENTURE;
             Member member = Member.getMember(uuid);
             if (spec) {
