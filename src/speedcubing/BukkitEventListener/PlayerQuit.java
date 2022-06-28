@@ -1,9 +1,9 @@
 package speedcubing.BukkitEventListener;
 
 
-import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.WorldUtils;
 import speedcubing.server.listeners.PlayerJoin;
 import speedcubing.server.speedcubingServer;
@@ -62,9 +61,8 @@ public class PlayerQuit implements Listener {
                 Reduce.Rooms[member.Map].remove(Reduce.coordToRoom(member.Coord));
                 WorldUtils.fillAir(-10 + member.Map * 500, 90, -10 + member.Coord, 10 + member.Map * 500, 110, 10 + member.Coord, player.getWorld());
             }
-            PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
             member.npc.despawn();
-            PlayerUtils.teleport(connection, 0.5, 1000, 0.5, 0, 0);
+            player.teleport(new Location(player.getWorld(), 0.5, 1000, 0.5, 0, 0));
             Member.users.remove(uuid);
         } else Reduce.mapCache.remove(uuid);
     }

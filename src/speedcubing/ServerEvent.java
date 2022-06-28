@@ -167,8 +167,6 @@ public class ServerEvent {
             PlayerConnection connection = entityplayer.playerConnection;
             Set<PlayerConnection> spec = member.Spectators;
             int map = member.Map;
-//            member.EntityPlayers.move(0, gettheKb(null, member), 0);
-//            member.updateNpcLocation();
             if ((hand == null || hand.getType() != Material.INK_SACK) && member.task == -1) {
                 member.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
                     Location location = player.getLocation();

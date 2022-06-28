@@ -1,7 +1,10 @@
 package speedcubing;
 
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -15,7 +18,6 @@ import org.bukkit.scoreboard.Objective;
 import speedcubing.Core.Reduce;
 import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
-import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.SideBar;
 import speedcubing.lib.bukkit.WorldUtils;
 import speedcubing.lib.bukkit.entity.Hologram;
@@ -76,7 +78,8 @@ public class Member {
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0);
         npc.listener.add(connection);
         npc.listener.addAll(Spectators);
-        npc.spawn(90).items(ItemStackList.Sticks[0][0]);
+        npc.spawn().items(ItemStackList.Sticks[0][0]);
+        npc.hideNametag();
         this.Coord = coord;
         this.Map = map;
         player.setGameMode(GameMode.SURVIVAL);
@@ -85,21 +88,18 @@ public class Member {
         double locx = mX + 0.5 - Reduce.MapLocations[map][0];
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
-        PlayerUtils.teleport(connection, locx, locy, locz, 270, 0);
+        player.teleport(new Location(player.getWorld(), locx, locy, locz, 270, 0));
         this.Holo = new Hologram(first ? "§6" + config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
         Holo.spawn();
         this.Spectators = Spectators;
         for (PlayerConnection c : Spectators) {
-            Member m = getMember(c.getPlayer().getPlayer().getUniqueId());
+            Member m = getMember(c.getPlayer().getUniqueId());
             m.Map = map;
             m.Coord = coord;
-            PlayerUtils.teleport(c, locx, locy, locz, 270, 0);
+            c.getPlayer().teleport(new Location(player.getWorld(), locx, locy, locz, 270, 0));
         }
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
-        Reduce.sendPackets(connection, Spectators, new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
         new Thread(() -> {
             booleanCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectBooleans("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "uuid='" + uuid + "'")) : a;
             integerCache = first ? ArrayUtils.toObject(speedcubingServer.connection.selectInts("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "uuid='" + uuid + "'")) : b;

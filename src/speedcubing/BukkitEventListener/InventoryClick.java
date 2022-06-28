@@ -4,7 +4,6 @@ package speedcubing.BukkitEventListener;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -25,7 +24,6 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.WorldUtils;
 import speedcubing.lib.bukkit.inventory.InventoryUtils;
 import speedcubing.lib.bukkit.inventory.ItemBuilder;
@@ -33,7 +31,6 @@ import speedcubing.server.config;
 import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
 
-import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -263,7 +260,7 @@ public class InventoryClick implements Listener {
                         member.clearBlocks();
                         Reduce.removeFromGUI(player, map, null);
                         player.closeInventory();
-                        new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators,member.Holo);
+                        new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
                         Reduce.Rooms[map].remove(oldroom);
                         WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }
@@ -370,8 +367,8 @@ public class InventoryClick implements Listener {
                         }
                         UUID target = Reduce.specStorage[map].get(RawSlot - front);
                         if (!target.equals(uuid)) {
-                            EntityPlayer ePlayer = ((CraftPlayer) player).getHandle();
-                            PlayerConnection connection = ePlayer.playerConnection;
+                            EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
+                            PlayerConnection connection = entityPlayer.playerConnection;
                             if (isSpec) {
                                 if (member.task != -1) {
                                     Bukkit.getScheduler().cancelTask(member.task);
@@ -395,20 +392,20 @@ public class InventoryClick implements Listener {
                             }
                             Member targetMember = Member.getMember(target);
                             targetMember.Spectators.add(connection);
-                            Player targetPlayer = Bukkit.getPlayer(target);
                             member.Coord = targetMember.Coord;
                             member.Map = map;
                             member.target = target;
-                            PlayerUtils.teleport(connection, map * 500 + 0.5, 100, targetMember.Coord + 0.5, 0, 0);
+                            player.teleport(new Location(player.getWorld(), map * 500 + 0.5, 100, targetMember.Coord + 0.5, 0, 0));
                             player.closeInventory();
-                            targetPlayer.hidePlayer(player);
+                            Bukkit.getPlayer(target).hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-                            ((CraftPlayer) targetPlayer).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ePlayer));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                                targetMember.npc.spawn(90).items(ItemStackList.Sticks[0][0]);
-                                connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 1));
-                                connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, 0));
-                                connection.sendPacket(new PacketPlayOutScoreboardTeam(Reduce.NoNameTag, Collections.singletonList(" "), 3));
+                                targetMember.npc
+                                        .setListenerValues(connection)
+                                        .spawn()
+                                        .items(ItemStackList.Sticks[0][0])
+                                        .hideNametag()
+                                        .rollBackListenerValues();
                                 targetMember.Holo.spawn();
                             }, 1);
                             new Timer().schedule(new TimerTask() {

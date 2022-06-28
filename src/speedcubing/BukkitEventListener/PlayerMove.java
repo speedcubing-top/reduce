@@ -27,7 +27,7 @@ public class PlayerMove implements Listener {
             if (Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5)
                 player.teleport(e.getFrom());
             else if (to.getY() < 85)
-                PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, member.Map * 500 + 0.5, 100, member.Coord + 0.5, 0, 0);
+                player.teleport(new Location(player.getWorld(),member.Map * 500 + 0.5, 100, member.Coord + 0.5, 0, 0));
         } else if (player.getGameMode() == GameMode.SURVIVAL) {
             Location to = e.getTo();
             Member member = Member.getMember(player.getUniqueId());
@@ -39,7 +39,7 @@ public class PlayerMove implements Listener {
                 SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + 0, 7);
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];
-                PlayerUtils.teleport(((CraftPlayer) player).getHandle().playerConnection, NPCx - m[0], 100 + m[1], NPCz, 270, 0);
+                player.teleport(new Location(player.getWorld(), NPCx - m[0], 100 + m[1], NPCz, 270, 0));
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.user.lang]);
                 member.BlockPlaced = 0;
                 member.clearBlocks();

@@ -3,6 +3,7 @@ package speedcubing.Core;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
@@ -64,7 +65,7 @@ public class Reduce {
         if (backtoarena) {
             member.Coord = member.oldCoord;
             member.Map = member.oldMap;
-            PlayerUtils.teleport(connection, member.Map * 500 - MapLocations[member.Map][0], 100 + MapLocations[member.Map][1], member.Coord + 0.5, 270, 0);
+            player.teleport(new Location(player.getWorld(), member.Map * 500 - MapLocations[member.Map][0], 100 + MapLocations[member.Map][1], member.Coord + 0.5, 270, 0));
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
@@ -73,11 +74,9 @@ public class Reduce {
             inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
             inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                member.npc.spawn(90).items(ItemStackList.Sticks[0][0]);
+                member.npc.spawn().items(ItemStackList.Sticks[0][0]);
+                member.npc.hideNametag();
                 member.Holo.spawn();
-                connection.sendPacket(new PacketPlayOutScoreboardTeam(NoNameTag, 1));
-                connection.sendPacket(new PacketPlayOutScoreboardTeam(NoNameTag, 0));
-                connection.sendPacket(new PacketPlayOutScoreboardTeam(NoNameTag, Collections.singletonList(" "), 3));
             }, 1);
             new Timer().schedule(new TimerTask() {
                 @Override
