@@ -74,7 +74,7 @@ public class Member {
         connection = entityP.playerConnection;
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
         this.npc = new NPC(" ", null, true)
-                .setSkin(property.getValue(), property.getSignature(), false)
+                .setSkin(property.getValue(), property.getSignature())
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0);
         npc.listener.add(connection);
         npc.listener.addAll(Spectators);
@@ -189,7 +189,7 @@ public class Member {
     }
 
     public void setSkin(Player player, String value, String signature) {
-        npc.setSkin(value, signature, true);
+        npc.setSkin(value, signature);
         Aim(player.getLocation());
         npc.items(ItemStackList.Sticks[0][0]);
         new Timer().schedule(
