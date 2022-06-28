@@ -73,7 +73,7 @@ public class Member {
         EntityPlayer entityP = ((CraftPlayer) player).getHandle();
         connection = entityP.playerConnection;
         Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
-        this.npc = new NPC(" ", UUID.randomUUID(), true)
+        this.npc = new NPC(" ", null, true)
                 .setSkin(property.getValue(), property.getSignature(), false)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0);
         npc.listener.add(connection);
