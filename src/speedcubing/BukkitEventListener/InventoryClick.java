@@ -290,7 +290,7 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 14: {
-                            Member.getMember(player.getUniqueId()).Holo.setName("§6" + config.SERVERIP, true);
+                            Member.getMember(player.getUniqueId()).Holo.setName("§6" + config.SERVERIP);
                             player.closeInventory();
                         }
                         break;

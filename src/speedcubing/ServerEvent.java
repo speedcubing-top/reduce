@@ -66,7 +66,7 @@ public class ServerEvent {
             }
         } else if (member.setName) {
             e.isCancelled = true;
-            member.Holo.setName(ChatColor.translateAlternateColorCodes('&', message),true);
+            member.Holo.setName(ChatColor.translateAlternateColorCodes('&', message));
             member.setName = false;
             speedcubingServer.node(false, uuid, member.user.tcpPort);
         } else if (member.ReachSettings2) {
