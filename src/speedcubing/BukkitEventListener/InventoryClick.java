@@ -403,8 +403,6 @@ public class InventoryClick implements Listener {
                                 targetMember.npc
                                         .setListenerValues(connection)
                                         .spawn()
-                                        .items(ItemStackList.Sticks[0][0])
-                                        .hideNametag()
                                         .rollBackListenerValues();
                                 targetMember.Holo.spawn();
                             }, 1);

@@ -74,8 +74,7 @@ public class Reduce {
             inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
             inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                member.npc.spawn().items(ItemStackList.Sticks[0][0]);
-                member.npc.hideNametag();
+                member.npc.spawn();
                 member.Holo.spawn();
             }, 1);
             new Timer().schedule(new TimerTask() {
