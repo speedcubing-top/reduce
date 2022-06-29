@@ -24,18 +24,18 @@ public class PlayerMove implements Listener {
         if (player.getGameMode() == GameMode.ADVENTURE) {
             Location to = e.getTo();
             Member member = Member.getMember(player.getUniqueId());
-            if (Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5)
+            if (Math.abs(to.getZ() - member.coord - 0.5) > 149.5 || Math.abs(to.getX() - member.map * 500 - 0.5) > 149.5)
                 player.teleport(e.getFrom());
             else if (to.getY() < 85)
-                player.teleport(new Location(player.getWorld(),member.Map * 500 + 0.5, 100, member.Coord + 0.5, 0, 0));
+                player.teleport(new Location(player.getWorld(),member.map * 500 + 0.5, 100, member.coord + 0.5, 0, 0));
         } else if (player.getGameMode() == GameMode.SURVIVAL) {
             Location to = e.getTo();
             Member member = Member.getMember(player.getUniqueId());
             member.Aim(player.getLocation());
-            if (to.getY() < 85 || Math.abs(to.getZ() - member.Coord - 0.5) > 149.5 || Math.abs(to.getX() - member.Map * 500 - 0.5) > 149.5) {
-                int map = member.Map;
+            if (to.getY() < 85 || Math.abs(to.getZ() - member.coord - 0.5) > 149.5 || Math.abs(to.getX() - member.map * 500 - 0.5) > 149.5) {
+                int map = member.map;
                 double NPCx = map * 500 + 0.5;
-                double NPCz = member.Coord + 0.5;
+                double NPCz = member.coord + 0.5;
                 SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + 0, 7);
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];

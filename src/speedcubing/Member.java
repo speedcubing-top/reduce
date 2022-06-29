@@ -39,8 +39,8 @@ public class Member {
     public int task = -1;
     public Set<BlockPosition> blocks = new HashSet<>();
     public TimerTask SideBar;
-    public int Coord;
-    public int Map;
+    public int coord;
+    public int map;
     public int oldMap;
     public int oldCoord;
     public UUID target;
@@ -65,16 +65,16 @@ public class Member {
         UUID uuid = player.getUniqueId();
         this.user = User.getUser(uuid);
         int mX = 500 * map;
-        int coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
+        this.coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());
-        this.Coord = coord;
-        this.Map = map;
+        this.map = map;
         boolean first = a == null;
-        EntityPlayer entityP = ((CraftPlayer) player).getHandle();
-        connection = entityP.playerConnection;
-        Property property = entityP.getProfile().getProperties().get("textures").iterator().next();
+        EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
+        connection = entityplayer.playerConnection;
+        Property property = entityplayer.getProfile().getProperties().get("textures").iterator().next();
         this.npc = new NPC(" ", null, true)
                 .setSkin(property.getValue(), property.getSignature())
+                .setSpawnBodyYaw(90)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0)
                 .hideNametag()
                 .setItemInHand(ItemStackList.Sticks[0][0])
@@ -83,25 +83,21 @@ public class Member {
                     if (action.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && player.getNoDamageTicks() < player.getMaximumNoDamageTicks() / 2 && player.getGameMode().equals(GameMode.SURVIVAL)) {
                         ItemStack hand = player.getItemInHand();
                         Boolean[] bs = booleanCache;
-                        EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
-                        PlayerConnection connection = entityplayer.playerConnection;
                         if ((hand == null || hand.getType() != Material.INK_SACK) && task == -1) {
                             task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
                                 Location location = player.getLocation();
                                 double xDiff = location.getX() - map * 500 - 0.5;
-                                double zDiff = location.getZ() - Coord - 0.5;
+                                double zDiff = location.getZ() - coord - 0.5;
                                 double yDiff = player.getEyeLocation().getY() - 101.62;
-                                Integer[] settings = integerCache;
-                                boolean vanillaKB = booleanCache[3];
-                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * settings[vanillaKB ? 9 : 5] / 1000) {
+                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
                                     double[] value = configcache.ReduceKB;
                                     double hor = player.isOnGround() ? value[0] : value[2];
                                     double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
-                                    double x = xDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
-                                    double y = (player.isOnGround() ? value[1] : value[3]) * settings[7] / 1000;
-                                    double z = zDiff * hor / horizontalDistance * settings[vanillaKB ? 10 : 6] / 1000;
+                                    double x = xDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
+                                    double y = (player.isOnGround() ? value[1] : value[3]) * integerCache[7] / 1000;
+                                    double z = zDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
                                     double[] velocities = user.velocities;
-                                    if (vanillaKB)
+                                    if (booleanCache[3])
                                         y = gettheKb(player);
                                     if (velocities != null) {
                                         x = x * velocities[0];
@@ -119,7 +115,7 @@ public class Member {
                             }, 0, 10);
                         }
                         if (bs[1])
-                            Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), map * 250 + 0.5, 101.62, Coord + 0.5, 1, 1));
+                            Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), map * 250 + 0.5, 101.62, coord + 0.5, 1, 1));
                         if (bs[0])
                             npc.animation(1);
                         player.setNoDamageTicks(20);
@@ -142,8 +138,8 @@ public class Member {
         this.Spectators = Spectators;
         for (PlayerConnection c : Spectators) {
             Member m = getMember(c.getPlayer().getUniqueId());
-            m.Map = map;
-            m.Coord = coord;
+            m.map = map;
+            m.coord = coord;
             c.getPlayer().teleport(new Location(player.getWorld(), locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
@@ -211,8 +207,8 @@ public class Member {
     public void Aim(Location location) {
         double x = location.getX();
         double z = location.getZ();
-        double NPCx = Map * 500 + 0.5;
-        double NPCz = Coord + 0.5;
+        double NPCx = map * 500 + 0.5;
+        double NPCz = coord + 0.5;
         double xDiff = x - NPCx;
         double zDiff = z - NPCz;
         float yaw;

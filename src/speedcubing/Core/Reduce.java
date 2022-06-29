@@ -59,13 +59,17 @@ public class Reduce {
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
         Bukkit.getPlayer(member.target).showPlayer(player);
-        if (!n)
-            Member.getMember(member.target).Spectators.remove(connection);
+        if (!n) {
+            Member tg = Member.getMember(member.target);
+            tg.Spectators.remove(connection);
+            tg.npc.listener.remove(connection);
+            tg.Holo.listener.remove(connection);
+        }
         connection.getPlayer().getHandle().removeAllEffects();
         if (backtoarena) {
-            member.Coord = member.oldCoord;
-            member.Map = member.oldMap;
-            player.teleport(new Location(player.getWorld(), member.Map * 500 - MapLocations[member.Map][0], 100 + MapLocations[member.Map][1], member.Coord + 0.5, 270, 0));
+            member.coord = member.oldCoord;
+            member.map = member.oldMap;
+            player.teleport(new Location(player.getWorld(), member.map * 500 - MapLocations[member.map][0], 100 + MapLocations[member.map][1], member.coord + 0.5, 270, 0));
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
@@ -83,7 +87,7 @@ public class Reduce {
                     connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.npc.entityPlayer));
                 }
             }, 4000);
-            b(member.Map, player, member);
+            b(member.map, player, member);
         }
     }
 

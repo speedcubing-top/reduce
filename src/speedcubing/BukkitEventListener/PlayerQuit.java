@@ -56,9 +56,9 @@ public class PlayerQuit implements Listener {
                             ",reduce_vanilla=" + (bs[3] ? 1 : 0)
                     , "uuid='" + uuid + "'")).start();
             if (!spec) {
-                Reduce.removeFromGUI(player, member.Map, null);
-                Reduce.Rooms[member.Map].remove(Reduce.coordToRoom(member.Coord));
-                WorldUtils.fillAir(-10 + member.Map * 500, 90, -10 + member.Coord, 10 + member.Map * 500, 110, 10 + member.Coord, player.getWorld());
+                Reduce.removeFromGUI(player, member.map, null);
+                Reduce.Rooms[member.map].remove(Reduce.coordToRoom(member.coord));
+                WorldUtils.fillAir(-10 + member.map * 500, 90, -10 + member.coord, 10 + member.map * 500, 110, 10 + member.coord, player.getWorld());
             }
             member.npc.despawn();
             member.npc.delete();

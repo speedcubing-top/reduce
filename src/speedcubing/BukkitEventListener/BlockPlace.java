@@ -23,7 +23,7 @@ public class BlockPlace implements Listener {
             int y = block.getY();
             int z = block.getZ();
             Member member = Member.getMember(player.getUniqueId());
-            if (y < 85 || Math.abs(z - member.Coord) > 150 || Math.abs(x - member.Map * 500) > 150)
+            if (y < 85 || Math.abs(z - member.coord) > 150 || Math.abs(x - member.map * 500) > 150)
                 e.setCancelled(true);
             else {
                 int a = member.PlacedBlocks + 1;

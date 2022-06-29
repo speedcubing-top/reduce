@@ -99,7 +99,6 @@ public class InventoryClick implements Listener {
                         break;
                         case 14: {
                             Member member = Member.getMember(player.getUniqueId());
-                            int m = member.Map;
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.user.lang]);
                             ItemStack[][] stacks = ItemStackList.Maps[0];
@@ -107,7 +106,7 @@ public class InventoryClick implements Listener {
                             inv.setItem(1, stacks[1][member.user.lang]);
                             inv.setItem(2, stacks[2][member.user.lang]);
                             inv.setItem(3, stacks[3][member.user.lang]);
-                            inv.setItem(m, ItemStackList.Maps[1][m][member.user.lang]);
+                            inv.setItem(member.map, ItemStackList.Maps[1][member.map][member.user.lang]);
                             player.openInventory(inv);
                         }
                         break;
@@ -229,7 +228,7 @@ public class InventoryClick implements Listener {
                 } else if (holder == ItemStackList.MapHolder) {
                     e.setCancelled(true);
                     Member member = Member.getMember(player.getUniqueId());
-                    if (RawSlot < Reduce.maptypes && RawSlot != member.Map) { //swap map
+                    if (RawSlot < Reduce.maptypes && RawSlot != member.map) { //swap map
                         int newroom = -1;
                         for (int h = 1; h < Integer.MAX_VALUE; h++) {
                             if (!Reduce.Rooms[RawSlot].contains(h)) {
@@ -238,8 +237,8 @@ public class InventoryClick implements Listener {
                                 break;
                             }
                         }
-                        int map = member.Map;
-                        int coord = member.Coord;
+                        int map = member.map;
+                        int coord = member.coord;
                         int oldroom = Reduce.coordToRoom(coord);
                         World world = player.getWorld();
                         world.getChunkAt(new Location(world, 500 * map + 0.5, 100, coord + 0.5)).load();
@@ -374,14 +373,17 @@ public class InventoryClick implements Listener {
                                     Bukkit.getScheduler().cancelTask(member.task);
                                     member.task = -1;
                                 }
-                                Member.getMember(member.target).Spectators.remove(connection);
+                                Member tg = Member.getMember(member.target);
+                                tg.Spectators.remove(connection);
+                                tg.npc.listener.remove(connection);
+                                tg.Holo.listener.remove(connection);
                             } else {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
-                                Reduce.removeFromGUI(player, member.Map, uuid);
+                                Reduce.removeFromGUI(player, member.map, uuid);
                                 player.closeInventory();
-                                member.oldMap = member.Map;
-                                member.oldCoord = member.Coord;
+                                member.oldMap = member.map;
+                                member.oldCoord = member.coord;
                                 player.setGameMode(GameMode.ADVENTURE);
                                 player.setAllowFlight(true);
                                 member.clearBlocks();
@@ -392,19 +394,18 @@ public class InventoryClick implements Listener {
                             }
                             Member targetMember = Member.getMember(target);
                             targetMember.Spectators.add(connection);
-                            member.Coord = targetMember.Coord;
-                            member.Map = map;
+                            targetMember.npc.listener.add(connection);
+                            targetMember.Holo.listener.add(connection);
+                            member.coord = targetMember.coord;
+                            member.map = map;
                             member.target = target;
-                            player.teleport(new Location(player.getWorld(), map * 500 + 0.5, 100, targetMember.Coord + 0.5, 0, 0));
+                            player.teleport(new Location(player.getWorld(), map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
                             Bukkit.getPlayer(target).hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
-                                targetMember.npc
-                                        .setListenerValues(connection)
-                                        .spawn()
-                                        .rollBackListenerValues();
-                                targetMember.Holo.spawn();
+                                targetMember.npc.setListenerValues(connection).spawn().rollBackListenerValues();
+                                targetMember.Holo.setListenerValues(connection).spawn().rollBackListenerValues();
                             }, 1);
                             new Timer().schedule(new TimerTask() {
                                 @Override
