@@ -33,7 +33,6 @@ import speedcubing.server.speedcubingServer;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 public class InventoryClick implements Listener {
     @EventHandler
@@ -59,25 +58,25 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 10: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[member.user.lang]);
-                            String[] reach = StringList.ReachLore[member.user.lang];
-                            String[] hor = StringList.HorLore[member.user.lang];
-                            String[] ver = StringList.VerLore[member.user.lang];
+                            Member member = Member.getMember(player);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[member.lang]);
+                            String[] reach = StringList.ReachLore[member.lang];
+                            String[] hor = StringList.HorLore[member.lang];
+                            String[] ver = StringList.VerLore[member.lang];
                             Integer[] cache = member.integerCache;
                             inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3].replace("%kb2%", String.format("%.3f", cache[9] / 1000D)), reach[4], reach[5], reach[6], reach[7]).build());
                             inv.setItem(12, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3].replace("%kb2%", String.format("%.3f", cache[10] / 1000D)), hor[4], hor[5], hor[6], hor[7]).build());
                             inv.setItem(13, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4], ver[5], ver[6], ver[7]).build());
-                            inv.setItem(15, new ItemBuilder(Material.FEATHER).name(StringList.def[member.user.lang]).lore(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on").build());
+                            inv.setItem(15, new ItemBuilder(Material.FEATHER).name(StringList.def[member.lang]).lore(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on").build());
                             player.openInventory(inv);
                         }
                         break;
                         case 11: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             Inventory inv = player.getInventory();
-                            player.openInventory(ItemStackList.InventoryKitEditor[member.user.lang]);
-                            InventoryUtils.fillItem(inv, 9, 36, Reduce.Invalid[member.user.lang]);
+                            player.openInventory(ItemStackList.InventoryKitEditor[member.lang]);
+                            InventoryUtils.fillItem(inv, 9, 36, Reduce.Invalid[member.lang]);
                             member.kitedit = true;
                         }
                         break;
@@ -85,34 +84,34 @@ public class InventoryClick implements Listener {
                             BlockEditor.createMainPage(player);
                             break;
                         case 13: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int x = Member.getMember(player.getUniqueId()).integerCache[3];
-                            Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[member.user.lang]);
+                            int x = Member.getMember(player).integerCache[3];
+                            Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[member.lang]);
                             for (int i = 0; i < 6; i++) {
-                                inv.setItem(i + 10, ItemStackList.stickeditor[0][i][member.user.lang]);
+                                inv.setItem(i + 10, ItemStackList.stickeditor[0][i][member.lang]);
                             }
-                            org.bukkit.inventory.ItemStack selected = ItemStackList.stickeditor[1][x][member.user.lang];
+                            org.bukkit.inventory.ItemStack selected = ItemStackList.stickeditor[1][x][member.lang];
                             inv.setItem(x + 10, selected);
                             player.openInventory(inv);
                         }
                         break;
                         case 14: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.user.lang]);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.lang]);
                             ItemStack[][] stacks = ItemStackList.Maps[0];
-                            inv.setItem(0, stacks[0][member.user.lang]);
-                            inv.setItem(1, stacks[1][member.user.lang]);
-                            inv.setItem(2, stacks[2][member.user.lang]);
-                            inv.setItem(3, stacks[3][member.user.lang]);
-                            inv.setItem(member.map, ItemStackList.Maps[1][member.map][member.user.lang]);
+                            inv.setItem(0, stacks[0][member.lang]);
+                            inv.setItem(1, stacks[1][member.lang]);
+                            inv.setItem(2, stacks[2][member.lang]);
+                            inv.setItem(3, stacks[3][member.lang]);
+                            inv.setItem(member.map, ItemStackList.Maps[1][member.map][member.lang]);
                             player.openInventory(inv);
                         }
                         break;
                         case 15: {
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = Member.getMember(player.getUniqueId()).user.lang;
+                            int lang = Member.getMember(player).lang;
                             Inventory inv = Bukkit.createInventory(ItemStackList.SkinHolder, 27, StringList.title[lang]);
                             inv.setItem(10, new ItemBuilder(Material.SIGN).name(StringList.input[lang]).build());
                             inv.setItem(11, new ItemBuilder(Material.SKULL_ITEM).durability(3).name(StringList.own[lang]).owner(player.getName()).build());
@@ -123,8 +122,8 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 16: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            int lang = member.user.lang;
+                            Member member = Member.getMember(player);
+                            int lang = member.lang;
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             Boolean[] bs = member.booleanCache;
                             org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][lang];
@@ -145,11 +144,10 @@ public class InventoryClick implements Listener {
                         e.setCancelled(true);
                     switch (RawSlot) {
                         case 3:
-                            UUID uuid = player.getUniqueId();
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             if (e.getCursor().getType() == Material.AIR) {
-                                Member member = Member.getMember(uuid);
-                                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                                Member member = Member.getMember(player);
+                                player.sendMessage(GlobalString.SavedSettings[member.lang]);
                                 Integer[] reduce = member.integerCache;
                                 Inventory inv = player.getInventory();
                                 for (int i = 0; i < 9; i++) {
@@ -190,26 +188,26 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 21: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = member.booleanCache[0];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.user.lang]);
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
                             member.booleanCache[0] = !b;
                         }
                         break;
                         case 22: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = member.booleanCache[1];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.user.lang]);
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
                             member.booleanCache[1] = !b;
                         }
                         break;
                         case 23: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             boolean b = member.booleanCache[2];
-                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.user.lang]);
+                            e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.lang]);
                             member.booleanCache[2] = !b;
                         }
                         break;
@@ -217,17 +215,17 @@ public class InventoryClick implements Listener {
                 } else if (holder == ItemStackList.StickSkinHolder) {
                     e.setCancelled(true);
                     if (RawSlot >= 10 && RawSlot <= 15) {
-                        Member member = Member.getMember(player.getUniqueId());
+                        Member member = Member.getMember(player);
                         int x = RawSlot - 10;
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
                         member.integerCache[3] = x;
                         player.closeInventory();
-                        player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
-                        player.getInventory().setItem(member.integerCache[0], ItemStackList.Sticks[x][member.user.lang]);
+                        player.sendMessage(GlobalString.SavedSettings[member.lang]);
+                        player.getInventory().setItem(member.integerCache[0], ItemStackList.Sticks[x][member.lang]);
                     }
                 } else if (holder == ItemStackList.MapHolder) {
                     e.setCancelled(true);
-                    Member member = Member.getMember(player.getUniqueId());
+                    Member member = Member.getMember(player);
                     if (RawSlot < Reduce.maptypes && RawSlot != member.map) { //swap map
                         int newroom = -1;
                         for (int h = 1; h < Integer.MAX_VALUE; h++) {
@@ -257,7 +255,7 @@ public class InventoryClick implements Listener {
                         member.Holo.despawn();
                         member.npc.despawn();
                         member.clearBlocks();
-                        Reduce.removeFromGUI(player, map, null);
+                        Reduce.removeFromGUI(member, map, 0);
                         player.closeInventory();
                         new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
                         Reduce.Rooms[map].remove(oldroom);
@@ -267,29 +265,29 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 10: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            player.sendMessage(StringList.InputString[member.user.lang]);
+                            Member member = Member.getMember(player);
+                            player.sendMessage(StringList.InputString[member.lang]);
                             player.closeInventory();
                             member.setSkin = true;
-                            speedcubingServer.node(true, player.getUniqueId(), member.user.tcpPort);
+                            speedcubingServer.node(true, member.id, member.tcpPort);
                         }
                         break;
                         case 11: {
                             Property property = ((CraftPlayer) player).getProfile().getProperties().get("textures").iterator().next();
-                            Member.getMember(player.getUniqueId()).setSkin(player, property.getValue(), property.getSignature());
+                            Member.getMember(player).setSkin(player, property.getValue(), property.getSignature());
                             player.closeInventory();
                         }
                         break;
                         case 13: {
-                            Member member = Member.getMember(player.getUniqueId());
-                            player.sendMessage(StringList.InputString2[member.user.lang]);
+                            Member member = Member.getMember(player);
+                            player.sendMessage(StringList.InputString2[member.lang]);
                             player.closeInventory();
                             member.setName = true;
-                            speedcubingServer.node(true, player.getUniqueId(), member.user.tcpPort);
+                            speedcubingServer.node(true, member.id, member.tcpPort);
                         }
                         break;
                         case 14: {
-                            Member.getMember(player.getUniqueId()).Holo.setName("§6" + config.SERVERIP);
+                            Member.getMember(player).Holo.setName("§6" + config.SERVERIP);
                             player.closeInventory();
                         }
                         break;
@@ -298,10 +296,10 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     switch (RawSlot) {
                         case 11: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.closeInventory();
-                            speedcubingServer.node(true, player.getUniqueId(), member.user.tcpPort);
-                            player.sendMessage(StringList.veloinput2[member.user.lang]);
+                            speedcubingServer.node(true, member.id, member.tcpPort);
+                            player.sendMessage(StringList.veloinput2[member.lang]);
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
                                     member.ReachSettings = true;
@@ -313,10 +311,10 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 12: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput[member.user.lang]);
-                            speedcubingServer.node(true, player.getUniqueId(), member.user.tcpPort);
+                            player.sendMessage(StringList.veloinput[member.lang]);
+                            speedcubingServer.node(true, member.id, member.tcpPort);
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
                                     member.horSettings = true;
@@ -330,17 +328,17 @@ public class InventoryClick implements Listener {
                         case 13: {
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
-                                    Member member = Member.getMember(player.getUniqueId());
+                                    Member member = Member.getMember(player);
                                     player.closeInventory();
                                     member.verSettings = true;
-                                    player.sendMessage(StringList.veloinput[member.user.lang]);
-                                    speedcubingServer.node(true, player.getUniqueId(), member.user.tcpPort);
+                                    player.sendMessage(StringList.veloinput[member.lang]);
+                                    speedcubingServer.node(true, member.id, member.tcpPort);
                                     break;
                             }
                         }
                         break;
                         case 15: {
-                            Member member = Member.getMember(player.getUniqueId());
+                            Member member = Member.getMember(player);
                             player.closeInventory();
                             member.booleanCache[3] = !member.booleanCache[3];
                         }
@@ -350,10 +348,9 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     if (RawSlot < Reduce.totalName.size()) {
                         //join spectate
-                        UUID uuid = player.getUniqueId();
                         boolean isSpec = player.getGameMode() == GameMode.ADVENTURE;
-                        Member member = Member.getMember(uuid);
-                        if (isSpec && Reduce.totalName.get(RawSlot).equals(Bukkit.getPlayer(member.target).getName()))
+                        Member member = Member.getMember(player);
+                        if (isSpec && Reduce.totalName.get(RawSlot).equals(member.target.player.getName()))
                             return;
                         int map = 0;
                         int front = 0;
@@ -364,8 +361,8 @@ public class InventoryClick implements Listener {
                             else front += size;
                             map += 1;
                         }
-                        UUID target = Reduce.specStorage[map].get(RawSlot - front);
-                        if (!target.equals(uuid)) {
+                        int target = Reduce.specStorage[map].get(RawSlot - front);
+                        if (target != 0 && target != member.id) {
                             EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
                             PlayerConnection connection = entityPlayer.playerConnection;
                             if (isSpec) {
@@ -373,14 +370,13 @@ public class InventoryClick implements Listener {
                                     Bukkit.getScheduler().cancelTask(member.task);
                                     member.task = -1;
                                 }
-                                Member tg = Member.getMember(member.target);
-                                tg.Spectators.remove(connection);
-                                tg.npc.listener.remove(connection);
-                                tg.Holo.listener.remove(connection);
+                                member.target.Spectators.remove(connection);
+                                member.target.npc.listener.remove(connection);
+                                member.target.Holo.listener.remove(connection);
                             } else {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
-                                Reduce.removeFromGUI(player, member.map, uuid);
+                                Reduce.removeFromGUI(member, member.map, member.id);
                                 player.closeInventory();
                                 member.oldMap = member.map;
                                 member.oldCoord = member.coord;
@@ -389,8 +385,8 @@ public class InventoryClick implements Listener {
                                 member.clearBlocks();
                                 Inventory inv = player.getInventory();
                                 inv.clear();
-                                inv.setItem(4, ItemStackList.Spec[member.user.lang]);
-                                inv.setItem(8, ItemStackList.LeaveSpec[member.user.lang]);
+                                inv.setItem(4, ItemStackList.Spec[member.lang]);
+                                inv.setItem(8, ItemStackList.LeaveSpec[member.lang]);
                             }
                             Member targetMember = Member.getMember(target);
                             targetMember.Spectators.add(connection);
@@ -398,10 +394,10 @@ public class InventoryClick implements Listener {
                             targetMember.Holo.listener.add(connection);
                             member.coord = targetMember.coord;
                             member.map = map;
-                            member.target = target;
+                            member.target = targetMember;
                             player.teleport(new Location(player.getWorld(), map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
-                            Bukkit.getPlayer(target).hidePlayer(player);
+                            Member.getMember(target).player.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
                                 targetMember.npc.setListenerValues(connection).spawn().rollBackListenerValues();
@@ -415,31 +411,31 @@ public class InventoryClick implements Listener {
                             }, 4000);
 
                             if (member.setSkin) {
-                                player.sendMessage(StringList.InputStringCancel[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel[member.lang]);
                                 member.setSkin = false;
                             }
                             if (member.setName) {
-                                player.sendMessage(StringList.InputStringCancel2[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel2[member.lang]);
                                 member.setName = false;
                             }
                             if (member.ReachSettings2) {
-                                player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel3[member.lang]);
                                 member.ReachSettings2 = false;
                             }
                             if (member.horSettings2) {
-                                player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel4[member.lang]);
                                 member.horSettings2 = false;
                             }
                             if (member.ReachSettings) {
-                                player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel3[member.lang]);
                                 member.ReachSettings = false;
                             }
                             if (member.horSettings) {
-                                player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel4[member.lang]);
                                 member.horSettings = false;
                             }
                             if (member.verSettings) {
-                                player.sendMessage(StringList.InputStringCancel5[member.user.lang]);
+                                player.sendMessage(StringList.InputStringCancel5[member.lang]);
                                 member.verSettings = false;
                             }
                         }

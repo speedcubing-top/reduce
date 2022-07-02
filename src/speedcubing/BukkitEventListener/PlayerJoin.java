@@ -6,11 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import speedcubing.Core.Reduce;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.BungeePluginMessage;
 
 import java.util.HashSet;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 public class PlayerJoin implements Listener {
@@ -20,14 +17,8 @@ public class PlayerJoin implements Listener {
         UUID uuid = player.getUniqueId();
         Integer map = Reduce.mapCache.get(uuid);
         if (map == null) {
-            player.sendMessage("Error in the connection.");
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    BungeePluginMessage.switchServer(player, "lobby");
-                }
-            }, 500);
-            return;
+            player.sendMessage("§4Error while transporting map data. please contact speedcubing");
+            map = 0;
         }
         int room = -1;
         for (int h = 1; h < Integer.MAX_VALUE; h++) {

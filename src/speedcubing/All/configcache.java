@@ -12,7 +12,7 @@ import java.util.List;
 
 public class configcache implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        commandSender.sendMessage(GlobalString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : Member.getMember(((Player) commandSender).getUniqueId()).user.lang]);
+        commandSender.sendMessage(GlobalString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : Member.getMember(commandSender).lang]);
         reload();
         return true;
     }

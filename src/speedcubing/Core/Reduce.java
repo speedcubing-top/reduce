@@ -13,7 +13,6 @@ import speedcubing.List.ItemStackList;
 import speedcubing.List.StringList;
 import speedcubing.Main;
 import speedcubing.Member;
-import speedcubing.lib.bukkit.PlayerUtils;
 import speedcubing.lib.bukkit.inventory.ItemBuilder;
 import speedcubing.lib.bukkit.inventory.ItemUtils;
 import speedcubing.server.speedcubingServer;
@@ -30,7 +29,7 @@ public class Reduce {
     public static final Map<UUID, Integer> mapCache = new HashMap<>();
     public static final ItemStack[] Invalid = new ItemStack[4];
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
-    public static final List<UUID>[] specStorage = new ArrayList[maptypes];
+    public static final List<Integer>[] specStorage = new ArrayList[maptypes];
     public static final Map<Integer, List<String>>[] specName = new HashMap[maptypes];
     public static final List<String> totalName = new ArrayList<>();
 
@@ -55,15 +54,14 @@ public class Reduce {
         boolean n = player == null;
         if (n)
             player = connection.getPlayer().getPlayer();
-        Member member = Member.getMember(player.getUniqueId());
+        Member member = Member.getMember(player);
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
-        Bukkit.getPlayer(member.target).showPlayer(player);
+        member.target.player.showPlayer(player);
         if (!n) {
-            Member tg = Member.getMember(member.target);
-            tg.Spectators.remove(connection);
-            tg.npc.listener.remove(connection);
-            tg.Holo.listener.remove(connection);
+            member.target.Spectators.remove(connection);
+            member.target.npc.listener.remove(connection);
+            member.target.Holo.listener.remove(connection);
         }
         connection.getPlayer().getHandle().removeAllEffects();
         if (backtoarena) {
@@ -73,10 +71,10 @@ public class Reduce {
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
-            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.user.lang]);
-            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
-            inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
-            inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
+            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.lang]);
+            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
+            inventory.setItem(ints[8], ItemStackList.Spec[member.lang]);
+            inventory.setItem(ints[2], ItemStackList.settings[member.lang]);
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
                 member.npc.spawn();
                 member.Holo.spawn();
@@ -87,13 +85,12 @@ public class Reduce {
                     connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.npc.entityPlayer));
                 }
             }, 4000);
-            b(member.map, player, member);
+            b(member.map, member);
         }
     }
 
-    public static void b(int map, Player player, Member member) {
-        UUID uuid = player.getUniqueId();
-        int rank = speedcubingServer.getCode(member.user.rank);
+    public static void b(int map, Member member) {
+        int rank = speedcubingServer.getCode(member.rank);
         int diffmap = 0;
         int diffrank = 0;
         int total = totalName.size();
@@ -111,18 +108,18 @@ public class Reduce {
         if (!names.containsKey(rank))
             names.put(rank, new ArrayList<>());
         List<String> same = names.get(rank);
-        String name = player.getName();
+        String name = member.player.getName();
         same.add(name);
         Collections.sort(same);
         int index = same.indexOf(name);
         int realindex = diffmap + diffrank + index;
         totalName.add(realindex, name);
-        specStorage[map].add(diffrank + index, uuid);
+        specStorage[map].add(diffrank + index, member.id);
         for (int i = total; i > realindex; i--) {
             spec.setItem(i, spec.getItem(i - 1));
         }
-        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.user.rank)[1] + name).build());
-        updateSpecPage(null);
+        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.rank)[1] + name).build());
+        updateSpecPage(0);
     }
 
     public static void sendPackets(PlayerConnection connection, Set<PlayerConnection> connections, Packet<?>... packet) {
@@ -137,32 +134,30 @@ public class Reduce {
     }
 
 
-    public static void updateSpecPage(UUID uuid) {
-        boolean notnull = uuid != null;
+    public static void updateSpecPage(int uuid) {
+        boolean notnull = uuid != 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
-            UUID id = p.getUniqueId();
-            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && uuid.equals(id))) {
-                Member m = Member.getMember(id);
+            Member member = Member.getMember(p);
+            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.id == uuid)) {
                 Inventory orig = spec;
-                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[m.user.lang]);
+                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.lang]);
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
-                    ItemUtils.glow(inv1.getItem(totalName.indexOf(Bukkit.getPlayer(m.target).getName())));
+                    ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.player.getName())));
                 Bukkit.getScheduler().runTask(Main.getPlugin(Main.class), () -> p.openInventory(inv1));
             }
         }
     }
 
-    public static void removeFromGUI(Player player, int map, UUID ignored) {
-        String name = player.getName();
-        UUID uuid = player.getUniqueId();
-        int code = speedcubingServer.getCode(Member.getMember(uuid).user.rank);
+    public static void removeFromGUI(Member member, int map, int ignored) {
+        String name = member.player.getName();
+        int code = speedcubingServer.getCode(member.rank);
         List<String> x = specName[map].get(code);
         if (x.size() == 1)
             specName[map].remove(code);
         else x.remove(name);
         int total = totalName.size();
-        specStorage[map].remove(uuid);
+        specStorage[map].remove(Integer.valueOf(member.id));
         for (int i = totalName.indexOf(name); i < total; i++) {
             spec.setItem(i, spec.getItem(i + 1));
         }

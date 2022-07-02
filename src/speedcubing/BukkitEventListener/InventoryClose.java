@@ -16,10 +16,10 @@ public class InventoryClose implements Listener {
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
-        Member member = Member.getMember(player.getUniqueId());
+        Member member = Member.getMember(player);
         if (e.getInventory().getHolder() == ItemStackList.KitEditorHolder && member.kitedit) {
             member.kitedit = false;
-            player.sendMessage(GlobalString.UnSavedSettings[member.user.lang]);
+            player.sendMessage(GlobalString.UnSavedSettings[member.lang]);
             InventoryUtils.fillItem(player.getInventory(), 9, 36, new ItemStack(Material.AIR));
             player.updateInventory();
         }

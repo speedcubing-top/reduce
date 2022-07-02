@@ -16,7 +16,7 @@ public class BlockBreak implements Listener {
         Player player = e.getPlayer();
         if (player.getGameMode() == GameMode.SURVIVAL) {
             Block block = e.getBlock();
-            Member member = Member.getMember(player.getUniqueId());
+            Member member = Member.getMember(player);
             BlockPosition position = new BlockPosition(block.getX(), block.getY(), block.getZ());
             if (member.blocks.contains(position)) {
                 member.blocks.remove(position);

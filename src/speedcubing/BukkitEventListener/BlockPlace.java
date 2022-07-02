@@ -22,7 +22,7 @@ public class BlockPlace implements Listener {
             int x = block.getX();
             int y = block.getY();
             int z = block.getZ();
-            Member member = Member.getMember(player.getUniqueId());
+            Member member = Member.getMember(player);
             if (y < 85 || Math.abs(z - member.coord) > 150 || Math.abs(x - member.map * 500) > 150)
                 e.setCancelled(true);
             else {
@@ -32,11 +32,11 @@ public class BlockPlace implements Listener {
                 if (a > 32) {
                     member.PlacedBlocks = 0;
                     Integer[] ints = member.integerCache;
-                    player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
+                    player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
                 }
                 member.blocks.add(new BlockPosition(x, y, z));
                 member.BlockPlaced = b + 1;
-                SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + (b + 1), 7);
+                SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.lang][7] + (b + 1), 7);
             }
         }
     }
