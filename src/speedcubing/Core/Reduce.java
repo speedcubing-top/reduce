@@ -26,7 +26,7 @@ public class Reduce {
     public static final ScoreboardTeam NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
 
     public static final Set<Integer>[] Rooms = new HashSet[maptypes];
-    public static final Map<UUID, Integer> mapCache = new HashMap<>();
+    public static final Map<Integer, Integer> mapCache = new HashMap<>();
     public static final ItemStack[] Invalid = new ItemStack[4];
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
     public static final List<Integer>[] specStorage = new ArrayList[maptypes];
@@ -134,11 +134,11 @@ public class Reduce {
     }
 
 
-    public static void updateSpecPage(int uuid) {
-        boolean notnull = uuid != 0;
+    public static void updateSpecPage(int id) {
+        boolean notnull = id != 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
             Member member = Member.getMember(p);
-            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.id == uuid)) {
+            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.id == id)) {
                 Inventory orig = spec;
                 Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.lang]);
                 inv1.setContents(orig.getContents());

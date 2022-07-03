@@ -257,7 +257,7 @@ public class InventoryClick implements Listener {
                         member.clearBlocks();
                         Reduce.removeFromGUI(member, map, 0);
                         player.closeInventory();
-                        new Member(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
+                        member.startGame(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
                         Reduce.Rooms[map].remove(oldroom);
                         WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }

@@ -7,10 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
-import speedcubing.Core.Reduce;
 import speedcubing.Member;
-
-import java.util.UUID;
 
 public class PlayerItemHeld implements Listener {
     @EventHandler

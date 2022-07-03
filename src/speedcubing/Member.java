@@ -68,9 +68,12 @@ public class Member extends User {
     public PlayerConnection connection;
     public int kb;
 
-    public Member(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
+    public Member(Player player) {
         super(player.getUniqueId());
         users.put(id, this);
+    }
+
+    public void startGame(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
         int mX = 500 * map;
         this.coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());

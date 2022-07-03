@@ -8,14 +8,13 @@ import speedcubing.Core.Reduce;
 import speedcubing.Member;
 
 import java.util.HashSet;
-import java.util.UUID;
 
 public class PlayerJoin implements Listener {
     @EventHandler
     public void PlayerJoinEvent(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        UUID uuid = player.getUniqueId();
-        Integer map = Reduce.mapCache.get(uuid);
+        Member member = new Member(player);
+        Integer map = Reduce.mapCache.get(member.id);
         if (map == null) {
             player.sendMessage("§4Error while transporting map data. please contact speedcubing");
             map = 0;
@@ -28,8 +27,8 @@ public class PlayerJoin implements Listener {
                 break;
             }
         }
-        Reduce.mapCache.remove(uuid);
-        new Member(player, map, room, null, null, new HashSet<>(), null);
+        Reduce.mapCache.remove(member.id);
+        member.startGame(player, map, room, null, null, new HashSet<>(), null);
     }
 }
 

@@ -11,8 +11,6 @@ import speedcubing.Member;
 import speedcubing.lib.bukkit.inventory.ItemUtils;
 import speedcubing.server.libs.GlobalString;
 
-import java.util.UUID;
-
 public class BlockEditor {
 
     public static final InventoryHolder BlockHolder = () -> null;

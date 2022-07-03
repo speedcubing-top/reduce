@@ -1,13 +1,9 @@
 package speedcubing;
 
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Material;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.CraftSound;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayInChat;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import speedcubing.All.configcache;
 import speedcubing.Core.Reduce;
 import speedcubing.lib.api.MojangAPI;
 import speedcubing.lib.api.SessionServer;
@@ -18,16 +14,13 @@ import speedcubing.server.events.SocketEvent;
 import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
 
-import java.util.Set;
-import java.util.UUID;
-
 public class ServerEvent {
     @LibEventHandler
     public void socketEvent(SocketEvent e) {
         String[] rs = e.receive.split("\\|");
         switch (rs[0]) {
             case "reduce":
-                Reduce.mapCache.put(UUID.fromString(rs[1]), Integer.parseInt(rs[2]));
+                Reduce.mapCache.put(Integer.parseInt(rs[1]), Integer.parseInt(rs[2]));
                 speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
                 break;
         }
