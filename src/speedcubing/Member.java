@@ -91,30 +91,30 @@ public class Member extends User {
                 .setItemInHand(ItemStackList.Sticks[0][0])
                 .setAutoListen(false)
                 .setClickEvent((p, action) -> {
-                    if (action.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && player.getNoDamageTicks() < player.getMaximumNoDamageTicks() / 2 && player.getGameMode().equals(GameMode.SURVIVAL)) {
-                        ItemStack hand = player.getItemInHand();
+                    if (action.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && p.getNoDamageTicks() < p.getMaximumNoDamageTicks() / 2 && p.getGameMode().equals(GameMode.SURVIVAL)) {
+                        ItemStack hand = p.getItemInHand();
                         Boolean[] bs = booleanCache;
                         if ((hand == null || hand.getType() != Material.INK_SACK) && task == -1) {
                             task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
-                                Location location = player.getLocation();
+                                Location location = p.getLocation();
                                 double xDiff = location.getX() - map * 500 - 0.5;
                                 double zDiff = location.getZ() - coord - 0.5;
-                                double yDiff = player.getEyeLocation().getY() - 101.62;
+                                double yDiff = p.getEyeLocation().getY() - 101.62;
                                 if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
                                     double[] value = configcache.ReduceKB;
-                                    double hor = player.isOnGround() ? value[0] : value[2];
+                                    double hor = p.isOnGround() ? value[0] : value[2];
                                     double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
                                     double x = xDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
-                                    double y = (player.isOnGround() ? value[1] : value[3]) * integerCache[7] / 1000;
+                                    double y = (p.isOnGround() ? value[1] : value[3]) * integerCache[7] / 1000;
                                     double z = zDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
                                     if (booleanCache[3])
-                                        y = gettheKb(player);
+                                        y = gettheKb(p);
                                     if (velocities != null) {
                                         x = x * velocities[0];
                                         y = y * velocities[1];
                                         z = z * velocities[0];
                                     }
-                                    connection.sendPacket(new PacketPlayOutEntityVelocity(player.getEntityId(), x, y, z));
+                                    connection.sendPacket(new PacketPlayOutEntityVelocity(p.getEntityId(), x, y, z));
                                     npc.animation(0);
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutAnimation(entityplayer, 1));
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1));
