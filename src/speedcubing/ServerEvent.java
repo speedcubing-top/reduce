@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import speedcubing.Core.Reduce;
-import speedcubing.lib.api.MojangAPI;
 import speedcubing.lib.api.SessionServer;
 import speedcubing.lib.api.exception.APIErrorException;
 import speedcubing.lib.bukkit.event.PlayInEvent;
@@ -13,6 +12,9 @@ import speedcubing.lib.eventbus.LibEventHandler;
 import speedcubing.server.events.SocketEvent;
 import speedcubing.server.libs.GlobalString;
 import speedcubing.server.speedcubingServer;
+import speedcubing.system.LocalMojang;
+
+import java.util.UUID;
 
 public class ServerEvent {
     @LibEventHandler
@@ -37,17 +39,16 @@ public class ServerEvent {
                 if (message.contains(" ") || message.length() > 16)
                     player.sendMessage(GlobalString.invalidName[member.lang]);
                 else {
-                    String id;
+                    UUID id = null;
                     try {
-                        id = MojangAPI.getUUID(message);
+                        id = LocalMojang.getUUID(message);
                     } catch (APIErrorException exception) {
-                        id = "invalidName";
                     }
-                    if (id.equals("invalidName"))
+                    if (id == null)
                         player.sendMessage("invalid name \"" + message + "\"");
                     else {
                         member.setSkin = false;
-                        String finalId = id;
+                        UUID finalId = id;
                         new Thread(() -> {
                             String[] a = SessionServer.getSkin(finalId);
                             if (member.npc != null)
