@@ -81,7 +81,7 @@ public class Member extends User {
         boolean first = a == null;
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
         connection = entityplayer.playerConnection;
-        Property property = entityplayer.getProfile().getProperties().get("textures").iterator().next();
+        Property property = first ? entityplayer.getProfile().getProperties().get("textures").iterator().next() : npc.entityPlayer.getProfile().getProperties().get("textures").iterator().next();
         this.npc = new NPC(" ", null, true)
                 .setSkin(property.getValue(), property.getSignature())
                 .setSpawnBodyYaw(90)
