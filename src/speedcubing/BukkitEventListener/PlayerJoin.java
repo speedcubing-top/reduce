@@ -20,7 +20,7 @@ public class PlayerJoin implements Listener {
             map = 0;
         }
         int room = 1;
-        while (!Reduce.Rooms[map].contains(room)) {
+        while (Reduce.Rooms[map].contains(room)) {
             room++;
         }
         Reduce.Rooms[map].add(room);

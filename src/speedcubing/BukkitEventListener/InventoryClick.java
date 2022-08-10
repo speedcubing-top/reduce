@@ -228,7 +228,7 @@ public class InventoryClick implements Listener {
                     Member member = Member.getMember(player);
                     if (RawSlot < Reduce.maptypes && RawSlot != member.map) { //swap map
                         int newroom = 1;
-                        while (!Reduce.Rooms[RawSlot].contains(newroom)) {
+                        while (Reduce.Rooms[RawSlot].contains(newroom)) {
                             newroom++;
                         }
                         Reduce.Rooms[RawSlot].add(newroom);
