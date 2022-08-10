@@ -19,14 +19,11 @@ public class PlayerJoin implements Listener {
             player.sendMessage("§4Error while transporting map data. please contact speedcubing");
             map = 0;
         }
-        int room = -1;
-        for (int h = 1; h < Integer.MAX_VALUE; h++) {
-            if (!Reduce.Rooms[map].contains(h)) {
-                Reduce.Rooms[map].add(h);
-                room = h;
-                break;
-            }
+        int room = 1;
+        while (!Reduce.Rooms[map].contains(room)) {
+            room++;
         }
+        Reduce.Rooms[map].add(room);
         Reduce.mapCache.remove(member.id);
         member.startGame(player, map, room, null, null, new HashSet<>(), null);
     }

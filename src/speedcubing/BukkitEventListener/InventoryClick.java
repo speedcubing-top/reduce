@@ -227,14 +227,11 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     Member member = Member.getMember(player);
                     if (RawSlot < Reduce.maptypes && RawSlot != member.map) { //swap map
-                        int newroom = -1;
-                        for (int h = 1; h < Integer.MAX_VALUE; h++) {
-                            if (!Reduce.Rooms[RawSlot].contains(h)) {
-                                Reduce.Rooms[RawSlot].add(h);
-                                newroom = h;
-                                break;
-                            }
+                        int newroom = 1;
+                        while (!Reduce.Rooms[RawSlot].contains(newroom)) {
+                            newroom++;
                         }
+                        Reduce.Rooms[RawSlot].add(newroom);
                         int map = member.map;
                         int coord = member.coord;
                         int oldroom = Reduce.coordToRoom(coord);
