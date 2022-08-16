@@ -227,16 +227,7 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     Member member = Member.getMember(player);
                     if (RawSlot < Reduce.maptypes && RawSlot != member.map) { //swap map
-                        int newroom = 1;
-                        while (Reduce.Rooms[RawSlot].contains(newroom)) {
-                            newroom++;
-                        }
-                        Reduce.Rooms[RawSlot].add(newroom);
-                        int map = member.map;
-                        int coord = member.coord;
-                        int oldroom = Reduce.coordToRoom(coord);
-                        World world = player.getWorld();
-                        world.getChunkAt(new Location(world, 500 * map + 0.5, 100, coord + 0.5)).load();
+                        Reduce.Rooms[RawSlot] += 1;
                         if (member.task != -1) {
                             Bukkit.getScheduler().cancelTask(member.task);
                             member.task = -1;
@@ -252,11 +243,9 @@ public class InventoryClick implements Listener {
                         member.Holo.despawn();
                         member.npc.despawn();
                         member.clearBlocks();
-                        Reduce.removeFromGUI(member, map, 0);
+                        Reduce.removeFromGUI(member, member.map, 0);
                         player.closeInventory();
-                        member.startGame(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
-                        Reduce.Rooms[map].remove(oldroom);
-                        WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
+                        member.startGame(player, RawSlot, Reduce.Rooms[RawSlot], member.booleanCache, member.integerCache, member.Spectators, member.Holo);
                     }
                 } else if (holder == ItemStackList.SkinHolder) {
                     e.setCancelled(true);
