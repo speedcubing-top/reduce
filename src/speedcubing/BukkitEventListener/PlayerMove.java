@@ -36,11 +36,11 @@ public class PlayerMove implements Listener {
                 int map = member.map;
                 double NPCx = map * 500 + 0.5;
                 double NPCz = member.coord + 0.5;
-                SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.lang][7] + 0, 7);
+                SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + 0, 7);
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];
                 player.teleport(new Location(player.getWorld(), NPCx - m[0], 100 + m[1], NPCz, 270, 0));
-                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.lang]);
+                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.user.lang]);
                 member.BlockPlaced = 0;
                 member.clearBlocks();
                 new Timer().schedule(new TimerTask() {

@@ -37,7 +37,7 @@ public class ServerEvent {
             if (member.setSkin) {
                 e.isCancelled = true;
                 if (message.contains(" ") || message.length() > 16)
-                    player.sendMessage(GlobalString.invalidName[member.lang]);
+                    player.sendMessage(GlobalString.invalidName[member.user.lang]);
                 else {
                     UUID id = null;
                     try {
@@ -54,14 +54,14 @@ public class ServerEvent {
                             if (member.npc != null)
                                 member.setSkin(player, a[0], a[1]);
                         }).start();
-                        speedcubingServer.node(false, member.id, member.tcpPort);
+                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 }
             } else if (member.setName) {
                 e.isCancelled = true;
                 member.Holo.setName(ChatColor.translateAlternateColorCodes('&', message));
                 member.setName = false;
-                speedcubingServer.node(false, member.id, member.tcpPort);
+                speedcubingServer.node(false, member.user.id, member.user.tcpPort);
             } else if (member.ReachSettings2) {
                 e.isCancelled = true;
                 try {
@@ -71,7 +71,7 @@ public class ServerEvent {
                     else {
                         member.ReachSettings2 = false;
                         member.integerCache[9] = x;
-                        speedcubingServer.node(false, member.id, member.tcpPort);
+                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
                     player.sendMessage("Invalid format! (0.000 ~ 25.000)");
@@ -85,7 +85,7 @@ public class ServerEvent {
                     else {
                         member.horSettings2 = false;
                         member.integerCache[10] = x;
-                        speedcubingServer.node(false, member.id, member.tcpPort);
+                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
                     player.sendMessage("Invalid format! (0.000 ~ 5.000)");
@@ -99,7 +99,7 @@ public class ServerEvent {
                     else {
                         member.ReachSettings = false;
                         member.integerCache[5] = x;
-                        speedcubingServer.node(false, member.id, member.tcpPort);
+                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
                     player.sendMessage("Invalid format! (0.000 ~ 25.000)");
@@ -113,7 +113,7 @@ public class ServerEvent {
                     else {
                         member.horSettings = false;
                         member.integerCache[6] = x;
-                        speedcubingServer.node(false, member.id, member.tcpPort);
+                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
                     player.sendMessage("Invalid format! (0.000 ~ 5.000)");
@@ -127,14 +127,14 @@ public class ServerEvent {
                     else {
                         member.verSettings = false;
                         member.integerCache[7] = x;
-                        speedcubingServer.node(false, member.id, member.tcpPort);
+                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
                     player.sendMessage("Invalid format! (0.000 ~ 5.000)");
                 }
             } else if (message.charAt(0) != '/') {
                 e.isCancelled = true;
-                String[] formats = speedcubingServer.getFormat(member.rank);
+                String[] formats = speedcubingServer.getFormat(member.user.rank);
                 String text = formats[0] + player.getName();
                 String[] str = GlobalString.MessageFormat[0];
                 String[] out = new String[]{
@@ -143,7 +143,7 @@ public class ServerEvent {
                         str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
                         str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
                 };
-                Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[Member.getMember(a).lang]));
+                Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[Member.getMember(a).user.lang]));
             }
         }
     }

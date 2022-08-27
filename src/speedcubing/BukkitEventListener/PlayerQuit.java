@@ -48,12 +48,12 @@ public class PlayerQuit implements Listener {
                         ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
                         ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
                         ",reduce_vanilla=" + (bs[3] ? 1 : 0)
-                , "id=" + member.id)).start();
+                , "id=" + member.user.id)).start();
         if (!spec)
             Reduce.removeFromGUI(member, member.map, 0);
         member.npc.despawn();
         member.npc.delete();
         player.teleport(new Location(player.getWorld(), 0.5, 1000, 0.5, 0, 0));
-        Member.users.remove(member.id);
+        Member.users.remove(member.user.id);
     }
 }

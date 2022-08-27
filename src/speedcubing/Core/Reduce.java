@@ -59,7 +59,7 @@ public class Reduce {
         Member member = Member.getMember(player);
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
-        member.target.player.showPlayer(player);
+        member.target.user.player.showPlayer(player);
         if (!n) {
             member.target.Spectators.remove(connection);
             member.target.npc.listener.remove(connection);
@@ -73,10 +73,10 @@ public class Reduce {
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
-            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.lang]);
-            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.lang]);
-            inventory.setItem(ints[8], ItemStackList.Spec[member.lang]);
-            inventory.setItem(ints[2], ItemStackList.settings[member.lang]);
+            inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.user.lang]);
+            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
+            inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
+            inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
                 member.npc.spawn();
                 member.Holo.spawn();
@@ -92,7 +92,7 @@ public class Reduce {
     }
 
     public static void b(int map, Member member) {
-        int rank = speedcubingServer.getCode(member.rank);
+        int rank = speedcubingServer.getCode(member.user.rank);
         int diffmap = 0;
         int diffrank = 0;
         int total = totalName.size();
@@ -110,17 +110,17 @@ public class Reduce {
         if (!names.containsKey(rank))
             names.put(rank, new ArrayList<>());
         List<String> same = names.get(rank);
-        String name = member.player.getName();
+        String name = member.user.player.getName();
         same.add(name);
         Collections.sort(same);
         int index = same.indexOf(name);
         int realindex = diffmap + diffrank + index;
         totalName.add(realindex, name);
-        specStorage[map].add(diffrank + index, member.id);
+        specStorage[map].add(diffrank + index, member.user.id);
         for (int i = total; i > realindex; i--) {
             spec.setItem(i, spec.getItem(i - 1));
         }
-        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.rank)[1] + name).build());
+        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.user.rank)[1] + name).build());
         updateSpecPage(0);
     }
 
@@ -140,26 +140,26 @@ public class Reduce {
         boolean notnull = id != 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
             Member member = Member.getMember(p);
-            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.id == id)) {
+            if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.user.id == id)) {
                 Inventory orig = spec;
-                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.lang]);
+                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.user.lang]);
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
-                    ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.player.getName())));
+                    ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.player.getName())));
                 Bukkit.getScheduler().runTask(Main.getPlugin(Main.class), () -> p.openInventory(inv1));
             }
         }
     }
 
     public static void removeFromGUI(Member member, int map, int ignored) {
-        String name = member.player.getName();
-        int code = speedcubingServer.getCode(member.rank);
+        String name = member.user.player.getName();
+        int code = speedcubingServer.getCode(member.user.rank);
         List<String> x = specName[map].get(code);
         if (x.size() == 1)
             specName[map].remove(code);
         else x.remove(name);
         int total = totalName.size();
-        specStorage[map].remove(Integer.valueOf(member.id));
+        specStorage[map].remove(Integer.valueOf(member.user.id));
         for (int i = totalName.indexOf(name); i < total; i++) {
             spec.setItem(i, spec.getItem(i + 1));
         }

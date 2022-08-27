@@ -14,13 +14,13 @@ public class PlayerJoin implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         Member member = new Member(player);
-        Integer map = Reduce.mapCache.get(member.id);
+        Integer map = Reduce.mapCache.get(member.user.id);
         if (map == null) {
             player.sendMessage("§4Error while transporting map data. please contact speedcubing");
             map = 0;
         }
         Reduce.Rooms[map] += 1;
-        Reduce.mapCache.remove(member.id);
+        Reduce.mapCache.remove(member.user.id);
         member.startGame(player, map, Reduce.Rooms[map], null, null, new HashSet<>(), null);
     }
 }

@@ -27,20 +27,18 @@ import speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
-public class Member extends User {
+public class Member {
     public static Map<Integer, Member> users = new HashMap<>();
 
     public static Member getMember(CommandSender sender) {
-        return getMember((Player) sender);
-    }
-
-    public static Member getMember(Player player) {
-        return getMember(User.getUser(player).id);
+        return getMember(User.getUser(sender).id);
     }
 
     public static Member getMember(int id) {
         return users.get(id);
     }
+
+    public final User user;
 
     public NPC npc;
     public Hologram Holo;
@@ -69,8 +67,8 @@ public class Member extends User {
     public int kb;
 
     public Member(Player player) {
-        super(player.getUniqueId());
-        users.put(id, this);
+        this.user = User.getUser(player);
+        users.put(user.id, this);
     }
 
     public void startGame(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
@@ -108,10 +106,10 @@ public class Member extends User {
                                     double z = zDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
                                     if (booleanCache[3])
                                         y = gettheKb(p);
-                                    if (velocities != null) {
-                                        x = x * velocities[0];
-                                        y = y * velocities[1];
-                                        z = z * velocities[0];
+                                    if (user.velocities != null) {
+                                        x = x * user.velocities[0];
+                                        y = y * user.velocities[1];
+                                        z = z * user.velocities[0];
                                     }
                                     connection.sendPacket(new PacketPlayOutEntityVelocity(p.getEntityId(), x, y, z));
                                     npc.animation(0);
@@ -152,24 +150,24 @@ public class Member extends User {
             c.getPlayer().teleport(new Location(player.getWorld(), locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
-            booleanCache = first ? SQLUtils.getBooleanArray(speedcubingServer.connection.select("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "id=" + id)) : a;
-            integerCache = first ? SQLUtils.getIntArray(speedcubingServer.connection.select("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "id=" + id)) : b;
+            booleanCache = first ? SQLUtils.getBooleanArray(speedcubingServer.connection.select("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "id=" + user.id)) : a;
+            integerCache = first ? SQLUtils.getIntArray(speedcubingServer.connection.select("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "id=" + user.id)) : b;
             Inventory inventory = player.getInventory();
             inventory.clear();
-            inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][lang]);
-            inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][lang]);
-            inventory.setItem(integerCache[8], ItemStackList.Spec[lang]);
-            inventory.setItem(integerCache[2], ItemStackList.settings[lang]);
+            inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
+            inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][user.lang]);
+            inventory.setItem(integerCache[8], ItemStackList.Spec[user.lang]);
+            inventory.setItem(integerCache[2], ItemStackList.settings[user.lang]);
             Reduce.b(map, this);
         }).start();
 
         player.updateInventory();
-        String[] sidebar = StringList.ReduceSidebar[lang];
+        String[] sidebar = StringList.ReduceSidebar[user.lang];
         new SideBar(player, sidebar[0].replace("%h%", "").replace("%m%", "00:").replace("%s%", "00"))
                 .staticLine(sidebar[1], 7)
                 .staticLine(sidebar[2], 6)
                 .staticLine(sidebar[3], 5)
-                .changeableLine(sidebar[4].replace("%str%", StringList.mapname[map][lang]), 4)
+                .changeableLine(sidebar[4].replace("%str%", StringList.mapname[map][user.lang]), 4)
                 .staticLine(sidebar[5], 3)
                 .staticLine(sidebar[6], 2)
                 .changeableLine(sidebar[7] + 0, 1)
@@ -181,7 +179,7 @@ public class Member extends User {
             public void run() {
                 Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
                 if (objective != null)
-                    objective.setDisplayName(StringList.ReduceSidebar[lang][0]
+                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][0]
                             .replace("%h%", x / 3600 == 0 ? "" : x / 3600 + ":")
                             .replace("%m%", String.format("%02d", (x % 3600) / 60) + ":")
                             .replace("%s%", String.format("%02d", x % 60)));
