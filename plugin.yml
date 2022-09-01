@@ -1,5 +1,5 @@
 name: Reduce
-main: speedcubing.Main
+main: top.speedcubing.reduce.Main
 version: 1.0
 depend:
   - speedcubingServer

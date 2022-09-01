@@ -1,18 +1,18 @@
-package speedcubing;
+package top.speedcubing.reduce;
 
 import net.minecraft.server.v1_8_R3.PacketPlayInChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import speedcubing.Core.Reduce;
-import speedcubing.lib.api.SessionServer;
-import speedcubing.lib.api.exception.APIErrorException;
-import speedcubing.lib.bukkit.event.PlayInEvent;
-import speedcubing.lib.eventbus.LibEventHandler;
-import speedcubing.server.events.SocketEvent;
-import speedcubing.server.libs.GlobalString;
-import speedcubing.server.speedcubingServer;
-import speedcubing.system.LocalMojang;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.lib.api.SessionServer;
+import top.speedcubing.lib.api.exception.APIErrorException;
+import top.speedcubing.lib.bukkit.event.PlayInEvent;
+import top.speedcubing.lib.eventbus.LibEventHandler;
+import top.speedcubing.server.events.SocketEvent;
+import top.speedcubing.server.libs.GlobalString;
+import top.speedcubing.server.speedcubingServer;
+import top.speedcubing.system.LocalMojang;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class ServerEvent {
     public void socketEvent(SocketEvent e) {
         String[] rs = e.receive.split("\\|");
         switch (rs[0]) {
-            case "reduce":
+            case "top/speedcubing/reduce":
                 Reduce.mapCache.put(Integer.parseInt(rs[1]), Integer.parseInt(rs[2]));
                 speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
                 break;

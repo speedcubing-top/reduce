@@ -1,4 +1,4 @@
-package speedcubing.Core;
+package top.speedcubing.reduce.Core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import speedcubing.List.ItemStackList;
-import speedcubing.Member;
-import speedcubing.lib.bukkit.inventory.ItemUtils;
-import speedcubing.server.libs.GlobalString;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.lib.bukkit.inventory.ItemUtils;
+import top.speedcubing.server.libs.GlobalString;
 
 public class BlockEditor {
 

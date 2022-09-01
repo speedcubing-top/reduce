@@ -1,4 +1,4 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
@@ -18,18 +18,18 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import speedcubing.Core.BlockEditor;
-import speedcubing.Core.Reduce;
-import speedcubing.List.ItemStackList;
-import speedcubing.List.StringList;
-import speedcubing.Main;
-import speedcubing.Member;
-import speedcubing.lib.bukkit.WorldUtils;
-import speedcubing.lib.bukkit.inventory.InventoryUtils;
-import speedcubing.lib.bukkit.inventory.ItemBuilder;
-import speedcubing.server.config;
-import speedcubing.server.libs.GlobalString;
-import speedcubing.server.speedcubingServer;
+import top.speedcubing.reduce.Core.BlockEditor;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.lib.bukkit.WorldUtils;
+import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
+import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.server.config;
+import top.speedcubing.server.libs.GlobalString;
+import top.speedcubing.server.speedcubingServer;
 
 import java.util.Timer;
 import java.util.TimerTask;

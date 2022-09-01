@@ -1,4 +1,4 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

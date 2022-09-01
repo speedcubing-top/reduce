@@ -1,4 +1,4 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 
 import org.bukkit.Bukkit;
@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import speedcubing.Core.Reduce;
-import speedcubing.Member;
-import speedcubing.lib.bukkit.WorldUtils;
-import speedcubing.server.speedcubingServer;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.lib.bukkit.WorldUtils;
+import top.speedcubing.server.speedcubingServer;
 
 public class PlayerQuit implements Listener {
 

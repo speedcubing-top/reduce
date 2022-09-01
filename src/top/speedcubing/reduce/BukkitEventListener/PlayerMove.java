@@ -1,18 +1,17 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import speedcubing.Core.Reduce;
-import speedcubing.List.ItemStackList;
-import speedcubing.List.StringList;
-import speedcubing.Member;
-import speedcubing.lib.bukkit.PlayerUtils;
-import speedcubing.lib.bukkit.SideBar;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.lib.bukkit.PlayerUtils;
+import top.speedcubing.lib.bukkit.SideBar;
 
 import java.util.Timer;
 import java.util.TimerTask;

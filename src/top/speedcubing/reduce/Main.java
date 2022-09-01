@@ -1,15 +1,15 @@
-package speedcubing;
+package top.speedcubing.reduce;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.plugin.java.JavaPlugin;
-import speedcubing.All.configcache;
-import speedcubing.BukkitEventListener.*;
-import speedcubing.Core.BlockEditor;
-import speedcubing.Core.Reduce;
-import speedcubing.List.ItemStackList;
-import speedcubing.lib.eventbus.LibEventManager;
-import speedcubing.server.speedcubingServer;
+import top.speedcubing.lib.eventbus.LibEventManager;
+import top.speedcubing.reduce.All.configcache;
+import top.speedcubing.reduce.BukkitEventListener.*;
+import top.speedcubing.reduce.Core.BlockEditor;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.server.speedcubingServer;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,11 +1,9 @@
-package speedcubing.All;
+package top.speedcubing.reduce.All;
 
 import org.bukkit.command.*;
-import org.bukkit.entity.Player;
-import speedcubing.Main;
-import speedcubing.Member;
-import speedcubing.server.libs.GlobalString;
-import speedcubing.server.libs.User;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.server.libs.GlobalString;
 
 import java.util.ArrayList;
 import java.util.List;

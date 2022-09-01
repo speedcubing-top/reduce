@@ -1,6 +1,6 @@
-package speedcubing.List;
+package top.speedcubing.reduce.List;
 
-import speedcubing.server.config;
+import top.speedcubing.server.config;
 
 public class StringList {
     public static String[] spec = {"§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu"};

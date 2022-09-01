@@ -1,4 +1,4 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import org.bukkit.GameMode;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import speedcubing.Member;
+import top.speedcubing.reduce.Member;
 
 public class BlockBreak implements Listener {
     @EventHandler

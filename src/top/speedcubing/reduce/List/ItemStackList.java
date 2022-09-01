@@ -1,15 +1,15 @@
-package speedcubing.List;
+package top.speedcubing.reduce.List;
 
-import speedcubing.lib.bukkit.inventory.InventoryUtils;
-import speedcubing.lib.bukkit.inventory.ItemBuilder;
-import speedcubing.server.libs.GlobalString;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
+import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.server.libs.GlobalString;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import speedcubing.Core.Reduce;
 
 public class ItemStackList {
 

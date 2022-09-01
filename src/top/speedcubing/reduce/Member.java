@@ -1,4 +1,4 @@
-package speedcubing;
+package top.speedcubing.reduce;
 
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_8_R3.*;
@@ -12,18 +12,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import speedcubing.All.configcache;
-import speedcubing.Core.Reduce;
-import speedcubing.List.ItemStackList;
-import speedcubing.List.StringList;
-import speedcubing.lib.bukkit.SideBar;
-import speedcubing.lib.bukkit.WorldUtils;
-import speedcubing.lib.bukkit.entity.Hologram;
-import speedcubing.lib.bukkit.entity.NPC;
-import speedcubing.lib.utils.SQL.SQLUtils;
-import speedcubing.server.config;
-import speedcubing.server.libs.User;
-import speedcubing.server.speedcubingServer;
+import top.speedcubing.reduce.All.configcache;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.lib.bukkit.SideBar;
+import top.speedcubing.lib.bukkit.WorldUtils;
+import top.speedcubing.lib.bukkit.entity.Hologram;
+import top.speedcubing.lib.bukkit.entity.NPC;
+import top.speedcubing.lib.utils.SQL.SQLUtils;
+import top.speedcubing.server.config;
+import top.speedcubing.server.libs.User;
+import top.speedcubing.server.speedcubingServer;
 
 import java.util.*;
 

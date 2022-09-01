@@ -1,4 +1,4 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
-import speedcubing.Member;
+import top.speedcubing.reduce.Member;
 
 public class PlayerItemHeld implements Listener {
     @EventHandler

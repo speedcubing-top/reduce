@@ -1,4 +1,4 @@
-package speedcubing.Core;
+package top.speedcubing.reduce.Core;
 
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -9,13 +9,13 @@ import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import speedcubing.List.ItemStackList;
-import speedcubing.List.StringList;
-import speedcubing.Main;
-import speedcubing.Member;
-import speedcubing.lib.bukkit.inventory.ItemBuilder;
-import speedcubing.lib.bukkit.inventory.ItemUtils;
-import speedcubing.server.speedcubingServer;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.lib.bukkit.inventory.ItemUtils;
+import top.speedcubing.server.speedcubingServer;
 
 import java.util.*;
 

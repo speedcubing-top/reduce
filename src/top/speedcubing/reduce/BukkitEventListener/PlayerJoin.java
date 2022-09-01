@@ -1,11 +1,11 @@
-package speedcubing.BukkitEventListener;
+package top.speedcubing.reduce.BukkitEventListener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import speedcubing.Core.Reduce;
-import speedcubing.Member;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.Member;
 
 import java.util.HashSet;
 
