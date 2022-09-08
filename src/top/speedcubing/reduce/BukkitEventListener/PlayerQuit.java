@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import top.speedcubing.reduce.Core.Reduce;
-import top.speedcubing.reduce.Member;
 import top.speedcubing.lib.bukkit.WorldUtils;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Member;
 import top.speedcubing.server.speedcubingServer;
 
 public class PlayerQuit implements Listener {
@@ -21,9 +22,11 @@ public class PlayerQuit implements Listener {
         Player player = e.getPlayer();
         boolean spec = player.getGameMode() == GameMode.ADVENTURE;
         Member member = Member.getMember(player);
-        if (spec)
+        if (spec) {
             Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
-        else {
+            Reduce.Rooms[member.oldMap].remove(Reduce.coordToRoom(member.oldCoord));
+            WorldUtils.fillAir(-10 + member.oldMap * 500, 90, -10 + member.oldCoord, 10 + member.oldMap * 500, 110, 10 + member.oldCoord, player.getWorld());
+        } else {
             member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
             member.Spectators.clear();
             if (member.task != -1)
@@ -49,11 +52,14 @@ public class PlayerQuit implements Listener {
                         ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
                         ",reduce_vanilla=" + (bs[3] ? 1 : 0)
                 , "id=" + member.user.id)).start();
-        if (!spec)
+        if (!spec) {
             Reduce.removeFromGUI(member, member.map, 0);
+            Reduce.Rooms[member.map].remove(Reduce.coordToRoom(member.coord));
+            WorldUtils.fillAir(-10 + member.map * 500, 90, -10 + member.coord, 10 + member.map * 500, 110, 10 + member.coord, player.getWorld());
+        }
         member.npc.despawn();
         member.npc.delete();
-        player.teleport(new Location(player.getWorld(), 0.5, 1000, 0.5, 0, 0));
+        player.teleport(new Location(Main.world, 0.5, 1000, 0.5, 0, 0));
         Member.users.remove(member.user.id);
     }
 }

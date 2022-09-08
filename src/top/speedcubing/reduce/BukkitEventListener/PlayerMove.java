@@ -2,16 +2,17 @@ package top.speedcubing.reduce.BukkitEventListener;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import top.speedcubing.reduce.Core.Reduce;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Member;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.lib.bukkit.PlayerUtils;
 import top.speedcubing.lib.bukkit.SideBar;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Member;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,7 +27,7 @@ public class PlayerMove implements Listener {
             if (Math.abs(to.getZ() - member.coord - 0.5) > 149.5 || Math.abs(to.getX() - member.map * 500 - 0.5) > 149.5)
                 player.teleport(e.getFrom());
             else if (to.getY() < 85)
-                player.teleport(new Location(player.getWorld(),member.map * 500 + 0.5, 100, member.coord + 0.5, 0, 0));
+                player.teleport(new Location(Main.world, member.map * 500 + 0.5, 100, member.coord + 0.5, 0, 0));
         } else if (player.getGameMode() == GameMode.SURVIVAL) {
             Location to = e.getTo();
             Member member = Member.getMember(player);
@@ -38,7 +39,7 @@ public class PlayerMove implements Listener {
                 SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + 0, 7);
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];
-                player.teleport(new Location(player.getWorld(), NPCx - m[0], 100 + m[1], NPCz, 270, 0));
+                player.teleport(new Location(Main.world, NPCx - m[0], 100 + m[1], NPCz, 270, 0));
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.user.lang]);
                 member.BlockPlaced = 0;
                 member.clearBlocks();

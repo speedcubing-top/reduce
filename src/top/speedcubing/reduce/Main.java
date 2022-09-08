@@ -2,6 +2,7 @@ package top.speedcubing.reduce;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.speedcubing.lib.eventbus.LibEventManager;
 import top.speedcubing.reduce.All.configcache;
@@ -15,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main extends JavaPlugin {
+    public static World world;
 
     public void onEnable() {
         new configcache().reload();
@@ -31,8 +33,9 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(), this);
         Bukkit.getPluginCommand("reloadsubplugin").setExecutor(new configcache());
         Bukkit.getPluginCommand("reloadsubplugin").setTabCompleter(new configcache());
-        Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
-        Bukkit.getWorld("world").setTime(6000);
+        world = Bukkit.getWorld("world");
+        world.setDifficulty(Difficulty.PEACEFUL);
+        world.setTime(6000);
         new ItemStackList().Load();
         new Reduce().Load();
         new BlockEditor().Load();

@@ -18,15 +18,15 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import top.speedcubing.reduce.Core.BlockEditor;
-import top.speedcubing.reduce.Core.Reduce;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Main;
-import top.speedcubing.reduce.Member;
-import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.reduce.Core.BlockEditor;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Member;
 import top.speedcubing.server.config;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
@@ -227,7 +227,16 @@ public class InventoryClick implements Listener {
                     e.setCancelled(true);
                     Member member = Member.getMember(player);
                     if (RawSlot < Reduce.maptypes && RawSlot != member.map) { //swap map
-                        Reduce.Rooms[RawSlot] += 1;
+                        int newroom = 1;
+                        while (Reduce.Rooms[RawSlot].contains(newroom)) {
+                            newroom++;
+                        }
+                        Reduce.Rooms[RawSlot].add(newroom);
+                        int map = member.map;
+                        int coord = member.coord;
+                        int oldroom = Reduce.coordToRoom(coord);
+                        World world = player.getWorld();
+                        world.getChunkAt(new Location(world, 500 * map + 0.5, 100, coord + 0.5)).load();
                         if (member.task != -1) {
                             Bukkit.getScheduler().cancelTask(member.task);
                             member.task = -1;
@@ -243,9 +252,11 @@ public class InventoryClick implements Listener {
                         member.Holo.despawn();
                         member.npc.despawn();
                         member.clearBlocks();
-                        Reduce.removeFromGUI(member, member.map, 0);
+                        Reduce.removeFromGUI(member, map, 0);
                         player.closeInventory();
-                        member.startGame(player, RawSlot, Reduce.Rooms[RawSlot], member.booleanCache, member.integerCache, member.Spectators, member.Holo);
+                        member.startGame(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
+                        Reduce.Rooms[map].remove(oldroom);
+                        WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }
                 } else if (holder == ItemStackList.SkinHolder) {
                     e.setCancelled(true);
@@ -381,7 +392,7 @@ public class InventoryClick implements Listener {
                             member.coord = targetMember.coord;
                             member.map = map;
                             member.target = targetMember;
-                            player.teleport(new Location(player.getWorld(), map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
+                            player.teleport(new Location(Main.world, map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
                             Member.getMember(target).user.player.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));

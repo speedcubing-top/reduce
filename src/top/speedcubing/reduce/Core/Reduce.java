@@ -9,12 +9,12 @@ import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Member;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.Main;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Member;
 import top.speedcubing.server.speedcubingServer;
 
 import java.util.*;
@@ -25,8 +25,7 @@ public class Reduce {
 
     public static final ScoreboardTeam NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
 
-    //    public static final Set<Integer>[] Rooms = new HashSet[maptypes];
-    public static final int[] Rooms = new int[maptypes];
+    public static final Set<Integer>[] Rooms = new HashSet[maptypes];
     public static final Map<Integer, Integer> mapCache = new HashMap<>();
     public static final ItemStack[] Invalid = new ItemStack[4];
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
@@ -42,8 +41,7 @@ public class Reduce {
         for (int i = 0; i < maptypes; i++) {
             specStorage[i] = new ArrayList<>();
             specName[i] = new HashMap<>();
-//            Rooms[i] = new HashSet<>();
-            Rooms[i] = 0;
+            Rooms[i] = new HashSet<>();
         }
     }
 
@@ -69,7 +67,7 @@ public class Reduce {
         if (backtoarena) {
             member.coord = member.oldCoord;
             member.map = member.oldMap;
-            player.teleport(new Location(player.getWorld(), member.map * 500 - MapLocations[member.map][0], 100 + MapLocations[member.map][1], member.coord + 0.5, 270, 0));
+            player.teleport(new Location(Main.world, member.map * 500 - MapLocations[member.map][0], 100 + MapLocations[member.map][1], member.coord + 0.5, 270, 0));
             Integer[] ints = member.integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();

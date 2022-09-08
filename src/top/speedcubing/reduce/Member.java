@@ -12,15 +12,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import top.speedcubing.reduce.All.configcache;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Core.Reduce;
-import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.lib.bukkit.SideBar;
 import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.utils.SQL.SQLUtils;
+import top.speedcubing.reduce.All.configcache;
+import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.server.config;
 import top.speedcubing.server.libs.User;
 import top.speedcubing.server.speedcubingServer;
@@ -74,7 +74,7 @@ public class Member {
     public void startGame(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
         int mX = 500 * map;
         this.coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
-        WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, player.getWorld());
+        WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, Main.world);
         this.map = map;
         boolean first = a == null;
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
@@ -137,7 +137,7 @@ public class Member {
         double locx = mX + 0.5 - Reduce.MapLocations[map][0];
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
-        player.teleport(new Location(player.getWorld(), locx, locy, locz, 270, 0));
+        player.teleport(new Location(Main.world, locx, locy, locz, 270, 0));
         this.Holo = new Hologram(first ? "§6" + config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
@@ -147,7 +147,7 @@ public class Member {
             Member m = getMember(c.getPlayer());
             m.map = map;
             m.coord = coord;
-            c.getPlayer().teleport(new Location(player.getWorld(), locx, locy, locz, 270, 0));
+            c.getPlayer().teleport(new Location(Main.world, locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
             booleanCache = first ? SQLUtils.getBooleanArray(speedcubingServer.connection.select("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "id=" + user.id)) : a;
@@ -198,8 +198,7 @@ public class Member {
     }
 
     public void clearBlocks() {
-        org.bukkit.World world = Bukkit.getWorld("world");
-        blocks.forEach(a -> world.getBlockAt(a.getX(), a.getY(), a.getZ()).setType(Material.AIR));
+        blocks.forEach(a -> Main.world.getBlockAt(a.getX(), a.getY(), a.getZ()).setType(Material.AIR));
         blocks.clear();
     }
 

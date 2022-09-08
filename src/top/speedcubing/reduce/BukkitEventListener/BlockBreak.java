@@ -21,7 +21,7 @@ public class BlockBreak implements Listener {
             if (member.blocks.contains(position)) {
                 member.blocks.remove(position);
                 block.setType(Material.AIR);
-            }
+            } else e.setCancelled(true);
         }
     }
 }
