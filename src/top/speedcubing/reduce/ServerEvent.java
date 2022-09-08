@@ -4,15 +4,14 @@ import net.minecraft.server.v1_8_R3.PacketPlayInChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.lib.api.SessionServer;
 import top.speedcubing.lib.api.exception.APIErrorException;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
+import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
-import top.speedcubing.system.LocalMojang;
 
 import java.util.UUID;
 
@@ -36,12 +35,12 @@ public class ServerEvent {
             Member member = Member.getMember(player);
             if (member.setSkin) {
                 e.isCancelled = true;
-                if (message.contains(" ") || message.length() > 16)
+                if (speedcubingServer.nameRegex.matcher(message).matches())
                     player.sendMessage(GlobalString.invalidName[member.user.lang]);
                 else {
                     UUID id = null;
                     try {
-                        id = LocalMojang.getUUID(message);
+                        id = speedcubingServer.getUUID(message);
                     } catch (APIErrorException exception) {
                     }
                     if (id == null)
