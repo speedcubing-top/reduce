@@ -4,16 +4,12 @@ import net.minecraft.server.v1_8_R3.PacketPlayInChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import top.speedcubing.lib.api.SessionServer;
-import top.speedcubing.lib.api.exception.APIErrorException;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
 import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
-
-import java.util.UUID;
 
 public class ServerEvent {
     @LibEventHandler
@@ -38,20 +34,14 @@ public class ServerEvent {
                 if (speedcubingServer.nameRegex.matcher(message).matches())
                     player.sendMessage(GlobalString.invalidName[member.user.lang]);
                 else {
-                    UUID id = null;
-                    try {
-                        id = speedcubingServer.getUUID(message);
-                    } catch (APIErrorException exception) {
-                    }
-                    if (id == null)
+                    member.setSkin = false;
+                    String[] skin = speedcubingServer.getSkin(message);
+                    if (skin == null)
                         player.sendMessage("invalid name \"" + message + "\"");
                     else {
-                        member.setSkin = false;
-                        UUID finalId = id;
                         new Thread(() -> {
-                            String[] a = SessionServer.getSkin(finalId);
                             if (member.npc != null)
-                                member.setSkin(player, a[0], a[1]);
+                                member.setSkin(player, skin[0], skin[1]);
                         }).start();
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
