@@ -31,13 +31,13 @@ public class ServerEvent {
             Member member = Member.getMember(player);
             if (member.setSkin) {
                 e.isCancelled = true;
-                if (speedcubingServer.nameRegex.matcher(message).matches())
+                if (!speedcubingServer.nameRegex.matcher(message).matches())
                     player.sendMessage(GlobalString.invalidName[member.user.lang]);
                 else {
                     member.setSkin = false;
                     String[] skin = speedcubingServer.getSkin(message);
                     if (skin == null)
-                        player.sendMessage("invalid name \"" + message + "\"");
+                        player.sendMessage(GlobalString.invalidName[member.user.lang]);
                     else {
                         new Thread(() -> {
                             if (member.npc != null)
