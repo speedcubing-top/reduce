@@ -181,7 +181,7 @@ public class Member {
             public void run() {
                 Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
                 if (objective != null)
-                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][0].replace("%t%",new TimeFormatter(x, TimeUnit.SECONDS).format("%H%:%m%:%s%")));
+                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][0].replace("%t%", new TimeFormatter(x, TimeUnit.SECONDS).format("%H%:", true).format("%m%:%s%", false).toString()));
                 x++;
             }
         };
