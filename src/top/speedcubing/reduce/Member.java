@@ -17,6 +17,7 @@ import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.utils.SQL.SQLUtils;
+import top.speedcubing.lib.utils.TimeFormatter;
 import top.speedcubing.reduce.All.configcache;
 import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.List.ItemStackList;
@@ -26,6 +27,7 @@ import top.speedcubing.server.libs.User;
 import top.speedcubing.server.speedcubingServer;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Member {
     public static Map<Integer, Member> users = new HashMap<>();
@@ -179,10 +181,7 @@ public class Member {
             public void run() {
                 Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
                 if (objective != null)
-                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][0]
-                            .replace("%h%", x / 3600 == 0 ? "" : x / 3600 + ":")
-                            .replace("%m%", String.format("%02d", (x % 3600) / 60) + ":")
-                            .replace("%s%", String.format("%02d", x % 60)));
+                    objective.setDisplayName(StringList.ReduceSidebar[user.lang][0].replace("%t%",new TimeFormatter(x, TimeUnit.SECONDS).format("%H%:%m%:%s%")));
                 x++;
             }
         };
