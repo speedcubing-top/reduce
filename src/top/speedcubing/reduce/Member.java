@@ -165,7 +165,7 @@ public class Member {
 
         player.updateInventory();
         String[] sidebar = StringList.ReduceSidebar[user.lang];
-        new SideBar(player, sidebar[0].replace("%h%", "").replace("%m%", "00:").replace("%s%", "00"))
+        new SideBar(player, sidebar[0].replace("%t%", "00:00"))
                 .staticLine(sidebar[1], 7)
                 .staticLine(sidebar[2], 6)
                 .staticLine(sidebar[3], 5)
