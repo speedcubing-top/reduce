@@ -1,5 +1,6 @@
 package top.speedcubing.reduce;
 
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
@@ -19,6 +20,7 @@ public class Main extends JavaPlugin {
     public static World world;
 
     public void onEnable() {
+        MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
         new configcache().reload();
         Bukkit.getPluginManager().registerEvents(new BlockBreak(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlace(), this);
