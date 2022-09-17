@@ -11,10 +11,6 @@ import top.speedcubing.reduce.BukkitEventListener.*;
 import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.server.speedcubingServer;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Main extends JavaPlugin {
     public static World world;
@@ -42,12 +38,6 @@ public class Main extends JavaPlugin {
         new Reduce().Load();
         new BlockEditor().Load();
         LibEventManager.registerListeners(new ServerEvent());
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                speedcubingServer.tcp.sendClean(25576 - Bukkit.getPort() % 2, "online|7|" + Bukkit.getOnlinePlayers().size());
-            }
-        }, 0, 1000);
     }
 }
 
