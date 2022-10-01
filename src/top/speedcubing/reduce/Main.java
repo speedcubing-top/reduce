@@ -5,8 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.speedcubing.lib.bukkit.TabCompleteUtils;
 import top.speedcubing.lib.eventbus.LibEventManager;
-import top.speedcubing.reduce.All.configcache;
 import top.speedcubing.reduce.BukkitEventListener.*;
 import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.Core.Reduce;
@@ -17,7 +17,7 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
-        new configcache().reload();
+        new configuration().reload();
         Bukkit.getPluginManager().registerEvents(new BlockBreak(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlace(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamage(), this);
@@ -29,8 +29,8 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMove(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(), this);
-        Bukkit.getPluginCommand("reloadsubplugin").setExecutor(new configcache());
-        Bukkit.getPluginCommand("reloadsubplugin").setTabCompleter(new configcache());
+        Bukkit.getPluginCommand("reloadconfig").setExecutor(new configuration());
+        TabCompleteUtils.registerEmptyTabComplete("reloadconfig");
         world = Bukkit.getWorld("world");
         world.setDifficulty(Difficulty.PEACEFUL);
         world.setTime(6000);

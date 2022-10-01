@@ -1,14 +1,12 @@
-package top.speedcubing.reduce.All;
+package top.speedcubing.reduce;
 
 import org.bukkit.command.*;
-import top.speedcubing.reduce.Main;
-import top.speedcubing.reduce.Member;
 import top.speedcubing.server.libs.GlobalString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class configcache implements CommandExecutor, TabCompleter {
+public class configuration implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         commandSender.sendMessage(GlobalString.UnknownCommand[commandSender instanceof ConsoleCommandSender ? 1 : Member.getMember(commandSender).user.lang]);
         reload();
@@ -17,7 +15,7 @@ public class configcache implements CommandExecutor, TabCompleter {
 
     public void reload() {
         Main.getPlugin(Main.class).reloadConfig();
-        configcache.ReduceKB = new double[]{
+        configuration.ReduceKB = new double[]{
                 Main.getPlugin(Main.class).getConfig().getDouble("kb.Reduce.hor"),
                 Main.getPlugin(Main.class).getConfig().getDouble("kb.Reduce.ver"),
                 Main.getPlugin(Main.class).getConfig().getDouble("kb.Reduce.airhor"),
@@ -26,8 +24,4 @@ public class configcache implements CommandExecutor, TabCompleter {
     }
 
     public static double[] ReduceKB;
-
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return new ArrayList<>();
-    }
 }

@@ -18,11 +18,9 @@ import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.utils.SQL.SQLUtils;
 import top.speedcubing.lib.utils.TimeFormatter;
-import top.speedcubing.reduce.All.configcache;
 import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.server.config;
 import top.speedcubing.server.libs.User;
 import top.speedcubing.server.speedcubingServer;
 
@@ -99,8 +97,8 @@ public class Member {
                                 double xDiff = location.getX() - map * 500 - 0.5;
                                 double zDiff = location.getZ() - coord - 0.5;
                                 double yDiff = p.getEyeLocation().getY() - 101.62;
-                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configcache.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
-                                    double[] value = configcache.ReduceKB;
+                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configuration.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
+                                    double[] value = configuration.ReduceKB;
                                     double hor = p.isOnGround() ? value[0] : value[2];
                                     double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
                                     double x = xDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
@@ -140,7 +138,7 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Main.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6" + config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
+        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
         Holo.spawn();
