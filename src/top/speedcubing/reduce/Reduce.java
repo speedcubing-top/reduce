@@ -1,9 +1,9 @@
 package top.speedcubing.reduce;
 
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -28,7 +28,7 @@ public class Reduce extends JavaPlugin {
     public static final int maptypes = 4;
     public static final int[][] MapLocations = {{2, 0}, {1, 0}, {0, 4}, {1, 0}};
 
-    public static final ScoreboardTeam NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
+    public static ScoreboardTeam NoNameTag;
 
     public static final Set<Integer>[] Rooms = new HashSet[maptypes];
     public static final Map<Integer, Integer> mapCache = new HashMap<>();
@@ -58,6 +58,7 @@ public class Reduce extends JavaPlugin {
         world.setTime(6000);
         new ItemStackList().Load();
         new BlockEditor().Load();
+        NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
         NoNameTag.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         for (int i = 0; i < 4; i++) {
             Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i]).build();
