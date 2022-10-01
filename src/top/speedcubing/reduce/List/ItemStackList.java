@@ -1,8 +1,8 @@
 package top.speedcubing.reduce.List;
 
-import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.libs.GlobalString;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

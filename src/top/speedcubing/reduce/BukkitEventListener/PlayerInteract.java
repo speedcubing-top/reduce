@@ -11,11 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
+import top.speedcubing.reduce.Reduce;
 
 public class PlayerInteract implements Listener {
 

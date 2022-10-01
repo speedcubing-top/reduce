@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
-import top.speedcubing.reduce.Core.Reduce;
+import top.speedcubing.server.config;
+import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
@@ -22,6 +23,17 @@ public class ServerEvent {
                 speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
                 break;
         }
+    }
+
+    @LibEventHandler
+    public void ConfigReloadEvent(ConfigReloadEvent e) {
+        Reduce.ReduceKB = new double[]{
+                config.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
+        };
     }
 
     @LibEventHandler

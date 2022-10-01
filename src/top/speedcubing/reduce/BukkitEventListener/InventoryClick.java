@@ -22,10 +22,9 @@ import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.reduce.Core.BlockEditor;
-import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Reduce;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.server.config;
 import top.speedcubing.server.libs.GlobalString;
@@ -392,11 +391,11 @@ public class InventoryClick implements Listener {
                             member.coord = targetMember.coord;
                             member.map = map;
                             member.target = targetMember;
-                            player.teleport(new Location(Main.world, map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
+                            player.teleport(new Location(Reduce.world, map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
                             Member.getMember(target).user.player.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () -> {
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
                                 targetMember.npc.setListenerValues(connection).spawn().rollBackListenerValues();
                                 targetMember.Holo.setListenerValues(connection).spawn().rollBackListenerValues();
                             }, 1);

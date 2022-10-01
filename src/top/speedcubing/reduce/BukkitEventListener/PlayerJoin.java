@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.Reduce;
 
 import java.util.HashSet;
 

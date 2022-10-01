@@ -10,8 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import top.speedcubing.lib.bukkit.WorldUtils;
-import top.speedcubing.reduce.Core.Reduce;
-import top.speedcubing.reduce.Main;
+import top.speedcubing.reduce.Reduce;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.server.speedcubingServer;
 
@@ -59,7 +58,7 @@ public class PlayerQuit implements Listener {
         }
         member.npc.despawn();
         member.npc.delete();
-        player.teleport(new Location(Main.world, 0.5, 1000, 0.5, 0, 0));
+        player.teleport(new Location(Reduce.world, 0.5, 1000, 0.5, 0, 0));
         Member.users.remove(member.user.id);
     }
 }

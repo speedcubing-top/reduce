@@ -18,7 +18,6 @@ import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.utils.SQL.SQLUtils;
 import top.speedcubing.lib.utils.TimeFormatter;
-import top.speedcubing.reduce.Core.Reduce;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.server.libs.User;
@@ -74,7 +73,7 @@ public class Member {
     public void startGame(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
         int mX = 500 * map;
         this.coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
-        WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, Main.world);
+        WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, Reduce.world);
         this.map = map;
         boolean first = a == null;
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
@@ -92,13 +91,13 @@ public class Member {
                         ItemStack hand = p.getItemInHand();
                         Boolean[] bs = booleanCache;
                         if ((hand == null || hand.getType() != Material.INK_SACK) && task == -1) {
-                            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), () -> {
+                            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Reduce.getPlugin(Reduce.class), () -> {
                                 Location location = p.getLocation();
                                 double xDiff = location.getX() - map * 500 - 0.5;
                                 double zDiff = location.getZ() - coord - 0.5;
                                 double yDiff = p.getEyeLocation().getY() - 101.62;
-                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= configuration.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
-                                    double[] value = configuration.ReduceKB;
+                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= Reduce.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
+                                    double[] value = Reduce.ReduceKB;
                                     double hor = p.isOnGround() ? value[0] : value[2];
                                     double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
                                     double x = xDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;
@@ -116,7 +115,7 @@ public class Member {
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutAnimation(entityplayer, 1));
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1));
                                     if (booleanCache[2] && Spectators != null)
-                                        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), () ->
+                                        Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () ->
                                                 npc.animation(0), 5);
                                 }
                             }, 0, 10);
@@ -137,7 +136,7 @@ public class Member {
         double locx = mX + 0.5 - Reduce.MapLocations[map][0];
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
-        player.teleport(new Location(Main.world, locx, locy, locz, 270, 0));
+        player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
@@ -147,7 +146,7 @@ public class Member {
             Member m = getMember(c.getPlayer());
             m.map = map;
             m.coord = coord;
-            c.getPlayer().teleport(new Location(Main.world, locx, locy, locz, 270, 0));
+            c.getPlayer().teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
             booleanCache = first ? SQLUtils.getBooleanArray(speedcubingServer.connection.select("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "id=" + user.id)) : a;
@@ -195,7 +194,7 @@ public class Member {
     }
 
     public void clearBlocks() {
-        blocks.forEach(a -> Main.world.getBlockAt(a.getX(), a.getY(), a.getZ()).setType(Material.AIR));
+        blocks.forEach(a -> Reduce.world.getBlockAt(a.getX(), a.getY(), a.getZ()).setType(Material.AIR));
         blocks.clear();
     }
 
