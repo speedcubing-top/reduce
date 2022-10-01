@@ -5,5 +5,5 @@ depend:
   - speedcubingServer
   - speedcubingLib
 commands:
-  reloadsubplugin:
-    usage: /reloadsubplugin
+  reloadconfig:
+    usage: /reloadconfig
