@@ -16,6 +16,7 @@ import top.speedcubing.lib.bukkit.SideBar;
 import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
+import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.utils.SQL.SQLUtils;
 import top.speedcubing.lib.utils.TimeFormatter;
 import top.speedcubing.reduce.List.ItemStackList;
@@ -49,7 +50,7 @@ public class Member {
     public int oldMap;
     public int oldCoord;
     public Member target;
-    public Set<PlayerConnection> Spectators;
+    public Set<PlayerConnection> Spectators = new HashSet<>();
     public int PlacedBlocks;
     public int BlockPlaced;
     public boolean horSettings;
@@ -70,7 +71,8 @@ public class Member {
         users.put(user.id, this);
     }
 
-    public void startGame(Player player, int map, int room, Boolean[] a, Integer[] b, Set<PlayerConnection> Spectators, Hologram holo) {
+    public void startGame(int map, int room, Boolean[] a) {
+        Player player = user.player;
         int mX = 500 * map;
         this.coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
         WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, Reduce.world);
@@ -137,11 +139,10 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
+        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
         Holo.spawn();
-        this.Spectators = Spectators;
         for (PlayerConnection c : Spectators) {
             Member m = getMember(c.getPlayer());
             m.map = map;
@@ -150,14 +151,14 @@ public class Member {
         }
         new Thread(() -> {
             booleanCache = first ? SQLUtils.getBooleanArray(speedcubingServer.connection.select("playersdata", "reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla", "id=" + user.id)) : a;
-            integerCache = first ? SQLUtils.getIntArray(speedcubingServer.connection.select("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "id=" + user.id)) : b;
+            integerCache = first ? SQLUtils.getIntArray(speedcubingServer.connection.select("playersdata", "reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor", "id=" + user.id)) : integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
             inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
             inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][user.lang]);
             inventory.setItem(integerCache[8], ItemStackList.Spec[user.lang]);
             inventory.setItem(integerCache[2], ItemStackList.settings[user.lang]);
-            Reduce.b(map, this);
+            b();
         }).start();
 
         player.updateInventory();
@@ -255,5 +256,55 @@ public class Member {
         if (kb == 2)
             return 0.01;
         return -1;
+    }
+
+    public void b() {
+        int rank = speedcubingServer.getCode(user.rank);
+        int diffmap = 0;
+        int diffrank = 0;
+        int total = Reduce.totalName.size();
+        for (int i = 0; i < map; i++) {
+            diffmap += Reduce.specStorage[i].size();
+        }
+        Map<Integer, List<String>> names = Reduce.specName[map];
+        List<Integer> ranks = new ArrayList<>(names.keySet());
+        Collections.sort(ranks);
+        for (Integer i : ranks) {
+            if (i < rank)
+                diffrank += names.get(i).size();
+            else break;
+        }
+        if (!names.containsKey(rank))
+            names.put(rank, new ArrayList<>());
+        List<String> same = names.get(rank);
+        String name = user.player.getName();
+        same.add(name);
+        Collections.sort(same);
+        int index = same.indexOf(name);
+        int realindex = diffmap + diffrank + index;
+        Reduce.totalName.add(realindex, name);
+        Reduce.specStorage[map].add(diffrank + index, user.id);
+        for (int i = total; i > realindex; i--) {
+            Reduce.spec.setItem(i, Reduce.spec.getItem(i - 1));
+        }
+        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(user.rank)[1] + name).build());
+        Reduce.updateSpecPage(0);
+    }
+
+    public void removeFromGUI(boolean ignored) {
+        String name = user.player.getName();
+        int code = speedcubingServer.getCode(user.rank);
+        List<String> x = Reduce.specName[map].get(code);
+        if (x.size() == 1)
+            Reduce.specName[map].remove(code);
+        else x.remove(name);
+        int total = Reduce.totalName.size();
+        Reduce.specStorage[map].remove(Integer.valueOf(user.id));
+        for (int i = Reduce.totalName.indexOf(name); i < total; i++) {
+            Reduce.spec.setItem(i, Reduce.spec.getItem(i + 1));
+        }
+        Reduce.spec.setItem(total, new ItemStack(Material.AIR));
+        Reduce.totalName.remove(name);
+        Reduce.updateSpecPage(ignored ? 0 : user.id);
     }
 }

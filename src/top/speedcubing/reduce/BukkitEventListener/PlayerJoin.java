@@ -7,8 +7,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
 
-import java.util.HashSet;
-
 public class PlayerJoin implements Listener {
     @EventHandler
     public void PlayerJoinEvent(PlayerJoinEvent e) {
@@ -25,7 +23,7 @@ public class PlayerJoin implements Listener {
         }
         Reduce.Rooms[map].add(room);
         Reduce.mapCache.remove(member.user.id);
-        member.startGame(player, map, room, null, null, new HashSet<>(), null);
+        member.startGame(map, room, null);
     }
 }
 

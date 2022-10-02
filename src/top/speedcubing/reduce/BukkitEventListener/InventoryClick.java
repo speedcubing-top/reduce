@@ -24,8 +24,8 @@ import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Reduce;
 import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.config;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
@@ -234,8 +234,6 @@ public class InventoryClick implements Listener {
                         int map = member.map;
                         int coord = member.coord;
                         int oldroom = Reduce.coordToRoom(coord);
-                        World world = player.getWorld();
-                        world.getChunkAt(new Location(world, 500 * map + 0.5, 100, coord + 0.5)).load();
                         if (member.task != -1) {
                             Bukkit.getScheduler().cancelTask(member.task);
                             member.task = -1;
@@ -251,9 +249,9 @@ public class InventoryClick implements Listener {
                         member.Holo.despawn();
                         member.npc.despawn();
                         member.clearBlocks();
-                        Reduce.removeFromGUI(member, map, 0);
+                        member.removeFromGUI(true);
                         player.closeInventory();
-                        member.startGame(player, RawSlot, newroom, member.booleanCache, member.integerCache, member.Spectators, member.Holo);
+                        member.startGame(RawSlot, newroom, member.booleanCache);
                         Reduce.Rooms[map].remove(oldroom);
                         WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
                     }
@@ -372,7 +370,7 @@ public class InventoryClick implements Listener {
                             } else {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
-                                Reduce.removeFromGUI(member, member.map, member.user.id);
+                                member.removeFromGUI(false);
                                 player.closeInventory();
                                 member.oldMap = member.map;
                                 member.oldCoord = member.coord;

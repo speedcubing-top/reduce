@@ -112,41 +112,8 @@ public class Reduce extends JavaPlugin {
                     connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.npc.entityPlayer));
                 }
             }, 4000);
-            b(member.map, member);
+            member.b();
         }
-    }
-
-    public static void b(int map, Member member) {
-        int rank = speedcubingServer.getCode(member.user.rank);
-        int diffmap = 0;
-        int diffrank = 0;
-        int total = totalName.size();
-        for (int i = 0; i < map; i++) {
-            diffmap += specStorage[i].size();
-        }
-        Map<Integer, List<String>> names = specName[map];
-        List<Integer> ranks = new ArrayList<>(names.keySet());
-        Collections.sort(ranks);
-        for (Integer i : ranks) {
-            if (i < rank)
-                diffrank += names.get(i).size();
-            else break;
-        }
-        if (!names.containsKey(rank))
-            names.put(rank, new ArrayList<>());
-        List<String> same = names.get(rank);
-        String name = member.user.player.getName();
-        same.add(name);
-        Collections.sort(same);
-        int index = same.indexOf(name);
-        int realindex = diffmap + diffrank + index;
-        totalName.add(realindex, name);
-        specStorage[map].add(diffrank + index, member.user.id);
-        for (int i = total; i > realindex; i--) {
-            spec.setItem(i, spec.getItem(i - 1));
-        }
-        spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(member.user.rank)[1] + name).build());
-        updateSpecPage(0);
     }
 
     public static void sendPackets(PlayerConnection connection, Set<PlayerConnection> connections, Packet<?>... packet) {
@@ -174,23 +141,6 @@ public class Reduce extends JavaPlugin {
                 Bukkit.getScheduler().runTask(top.speedcubing.reduce.Reduce.getPlugin(top.speedcubing.reduce.Reduce.class), () -> p.openInventory(inv1));
             }
         }
-    }
-
-    public static void removeFromGUI(Member member, int map, int ignored) {
-        String name = member.user.player.getName();
-        int code = speedcubingServer.getCode(member.user.rank);
-        List<String> x = specName[map].get(code);
-        if (x.size() == 1)
-            specName[map].remove(code);
-        else x.remove(name);
-        int total = totalName.size();
-        specStorage[map].remove(Integer.valueOf(member.user.id));
-        for (int i = totalName.indexOf(name); i < total; i++) {
-            spec.setItem(i, spec.getItem(i + 1));
-        }
-        spec.setItem(total, new ItemStack(Material.AIR));
-        totalName.remove(name);
-        updateSpecPage(ignored);
     }
 }
 

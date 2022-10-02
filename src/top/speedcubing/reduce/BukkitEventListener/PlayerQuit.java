@@ -10,8 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import top.speedcubing.lib.bukkit.WorldUtils;
-import top.speedcubing.reduce.Reduce;
 import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.speedcubingServer;
 
 public class PlayerQuit implements Listener {
@@ -52,7 +52,7 @@ public class PlayerQuit implements Listener {
                         ",reduce_vanilla=" + (bs[3] ? 1 : 0)
                 , "id=" + member.user.id)).start();
         if (!spec) {
-            Reduce.removeFromGUI(member, member.map, 0);
+            member.removeFromGUI(true);
             Reduce.Rooms[member.map].remove(Reduce.coordToRoom(member.coord));
             WorldUtils.fillAir(-10 + member.map * 500, 90, -10 + member.coord, 10 + member.map * 500, 110, 10 + member.coord, player.getWorld());
         }
