@@ -34,7 +34,7 @@ public class PlayerMove implements Listener {
                 int map = member.map;
                 double NPCx = map * 500 + 0.5;
                 double NPCz = member.coord + 0.5;
-                SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + 0, 7);
+                SideBar.getSidebar(player).setLineByScore(StringList.ReduceSidebar[member.user.lang][7] + 0, 1);
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];
                 player.teleport(new Location(Reduce.world, NPCx - m[0], 100 + m[1], NPCz, 270, 0));

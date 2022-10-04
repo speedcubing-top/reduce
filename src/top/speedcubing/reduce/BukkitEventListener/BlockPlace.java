@@ -35,7 +35,7 @@ public class BlockPlace implements Listener {
                 }
                 member.blocks.add(new BlockPosition(x, y, z));
                 member.BlockPlaced = b + 1;
-                SideBar.getSidebar(player).setLine(StringList.ReduceSidebar[member.user.lang][7] + (b + 1), 7);
+                SideBar.getSidebar(player).setLineByScore(StringList.ReduceSidebar[member.user.lang][7] + (b + 1), 1);
             }
         }
     }

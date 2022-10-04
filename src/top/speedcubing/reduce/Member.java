@@ -167,7 +167,7 @@ public class Member {
                 .staticLine(sidebar[1], 7)
                 .staticLine(sidebar[2], 6)
                 .staticLine(sidebar[3], 5)
-                .changeableLine(sidebar[4].replace("%str%", StringList.mapname[map][user.lang]), 4)
+                .staticLine(sidebar[4].replace("%str%", StringList.mapname[map][user.lang]), 4)
                 .staticLine(sidebar[5], 3)
                 .staticLine(sidebar[6], 2)
                 .changeableLine(sidebar[7] + 0, 1)
