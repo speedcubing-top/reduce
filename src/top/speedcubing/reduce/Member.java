@@ -81,7 +81,7 @@ public class Member {
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
         connection = entityplayer.playerConnection;
         Property property = first ? entityplayer.getProfile().getProperties().get("textures").iterator().next() : npc.entityPlayer.getProfile().getProperties().get("textures").iterator().next();
-        this.npc = new NPC(" ", null, true)
+        this.npc = new NPC("§8[NPC]", null, true)
                 .setSkin(property.getValue(), property.getSignature())
                 .setSpawnBodyYaw(90)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0)
