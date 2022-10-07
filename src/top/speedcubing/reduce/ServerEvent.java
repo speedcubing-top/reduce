@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
+import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
 import top.speedcubing.server.config;
@@ -48,15 +49,15 @@ public class ServerEvent {
                     player.sendMessage(GlobalString.invalidName[member.user.lang]);
                 else {
                     member.setSkin = false;
-                    String[] skin = MojangAPI.getSkin(MojangAPI.getUUID(message));
-                    if (skin == null)
-                        player.sendMessage(GlobalString.invalidName[member.user.lang]);
-                    else {
+                    try {
+                        ProfileSkin skin = MojangAPI.getSkinByName(message);
                         new Thread(() -> {
                             if (member.npc != null)
-                                member.setSkin(player, skin[0], skin[1]);
+                                member.setSkin(player, skin.getValue(), skin.getSignature());
                         }).start();
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                    } catch (Exception exception) {
+                        player.sendMessage(GlobalString.invalidName[member.user.lang]);
                     }
                 }
             } else if (member.setName) {
