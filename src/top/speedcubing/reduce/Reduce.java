@@ -17,7 +17,6 @@ import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.server.config;
-import top.speedcubing.server.speedcubingServer;
 
 import java.util.*;
 
@@ -103,15 +102,9 @@ public class Reduce extends JavaPlugin {
             inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
             inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
             Bukkit.getScheduler().scheduleSyncDelayedTask(top.speedcubing.reduce.Reduce.getPlugin(top.speedcubing.reduce.Reduce.class), () -> {
-                member.npc.spawn();
+                member.npc.spawn().hideFromTab(4000);
                 member.Holo.spawn();
             }, 1);
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, member.npc.entityPlayer));
-                }
-            }, 4000);
             member.b();
         }
     }

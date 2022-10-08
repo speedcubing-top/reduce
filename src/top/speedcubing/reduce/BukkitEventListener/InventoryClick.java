@@ -394,15 +394,9 @@ public class InventoryClick implements Listener {
                             Member.getMember(target).user.player.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
-                                targetMember.npc.setListenerValues(connection).spawn().rollBackListenerValues();
+                                targetMember.npc.setListenerValues(connection).spawn().hideFromTab(4000).rollBackListenerValues();
                                 targetMember.Holo.setListenerValues(connection).spawn().rollBackListenerValues();
                             }, 1);
-                            new Timer().schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, targetMember.npc.entityPlayer));
-                                }
-                            }, 4000);
 
                             if (member.setSkin) {
                                 player.sendMessage(StringList.InputStringCancel[member.user.lang]);

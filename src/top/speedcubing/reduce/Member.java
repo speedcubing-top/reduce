@@ -130,7 +130,7 @@ public class Member {
                 });
         npc.listener.add(connection);
         npc.listener.addAll(Spectators);
-        npc.spawn();
+        npc.spawn().hideFromTab(4000);
         player.setGameMode(GameMode.SURVIVAL);
         ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
         player.getInventory().setHeldItemSlot(0);
@@ -185,13 +185,6 @@ public class Member {
         };
         Timer timer = new Timer();
         timer.schedule(SideBar, 0, 1000);
-        Set<PlayerConnection> e = new HashSet<>(Spectators);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Reduce.sendPackets(connection, e, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc.entityPlayer));
-            }
-        }, 4000);
     }
 
     public void clearBlocks() {
@@ -233,15 +226,8 @@ public class Member {
     }
 
     public void setSkin(Player player, String value, String signature) {
-        npc.setSkin(value, signature).setItemInHand(ItemStackList.Sticks[0][0]);
+        npc.setSkin(value, signature).hideFromTab(4000).setItemInHand(ItemStackList.Sticks[0][0]);
         Aim(player.getLocation());
-        new Timer().schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        Reduce.sendPackets(connection, Spectators, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc.entityPlayer));
-                    }
-                }, 4000);
     }
 
 
