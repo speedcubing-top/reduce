@@ -146,7 +146,7 @@ public class ServerEvent {
                         str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
                         str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
                 };
-                Bukkit.getOnlinePlayers().forEach(a -> a.sendMessage(out[Member.getMember(a).user.lang]));
+                speedcubingServer.globalChat(Bukkit.getOnlinePlayers(), player, out);
             }
         }
     }
