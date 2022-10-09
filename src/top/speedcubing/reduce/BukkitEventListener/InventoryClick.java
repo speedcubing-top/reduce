@@ -3,7 +3,6 @@ package top.speedcubing.reduce.BukkitEventListener;
 
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -29,9 +28,6 @@ import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.config;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class InventoryClick implements Listener {
     @EventHandler
@@ -394,8 +390,8 @@ public class InventoryClick implements Listener {
                             Member.getMember(target).user.player.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
-                                targetMember.npc.setListenerValues(connection).spawn().hideFromTab(4000).rollBackListenerValues();
-                                targetMember.Holo.setListenerValues(connection).spawn().rollBackListenerValues();
+                                targetMember.npc.setListener(connection).spawn().hideFromTab(4000).undoSetListener();
+                                targetMember.Holo.setListener(connection).spawn().undoSetListener();
                             }, 1);
 
                             if (member.setSkin) {

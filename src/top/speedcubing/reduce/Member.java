@@ -80,13 +80,15 @@ public class Member {
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
         connection = entityplayer.playerConnection;
         Property property = first ? entityplayer.getProfile().getProperties().get("textures").iterator().next() : npc.entityPlayer.getProfile().getProperties().get("textures").iterator().next();
-        this.npc = new NPC("§8[NPC]", null, true)
+        this.npc = new NPC("§8[NPC]", null, true, false, false)
                 .setSkin(property.getValue(), property.getSignature())
                 .setSpawnBodyYaw(90)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0)
                 .hideNametag()
+                .addListener(connection)
+                .addListener(Spectators)
+                .hideFromTab(4000)
                 .setItemInHand(ItemStackList.Sticks[0][0])
-                .setAutoListen(false)
                 .setClickEvent((p, action) -> {
                     if (action.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && p.getNoDamageTicks() < p.getMaximumNoDamageTicks() / 2 && p.getGameMode().equals(GameMode.SURVIVAL)) {
                         ItemStack hand = p.getItemInHand();
@@ -127,10 +129,7 @@ public class Member {
                             npc.animation(1);
                         player.setNoDamageTicks(20);
                     }
-                });
-        npc.listener.add(connection);
-        npc.listener.addAll(Spectators);
-        npc.spawn().hideFromTab(4000);
+                }).spawn();
         player.setGameMode(GameMode.SURVIVAL);
         ((CraftPlayer) player).getHandle().invulnerableTicks = 0;
         player.getInventory().setHeldItemSlot(0);
@@ -138,7 +137,7 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName()).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
+        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
         Holo.spawn();
