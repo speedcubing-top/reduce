@@ -353,16 +353,14 @@ public class InventoryClick implements Listener {
                         }
                         int target = Reduce.specStorage[map].get(RawSlot - front);
                         if (target != 0 && target != member.user.id) {
-                            EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-                            PlayerConnection connection = entityPlayer.playerConnection;
                             if (isSpec) {
                                 if (member.task != -1) {
                                     Bukkit.getScheduler().cancelTask(member.task);
                                     member.task = -1;
                                 }
-                                member.target.Spectators.remove(connection);
-                                member.target.npc.listener.remove(connection);
-                                member.target.Holo.listener.remove(connection);
+                                member.target.Spectators.remove(player);
+                                member.target.npc.removeListener(player);
+                                member.target.Holo.removeListener(player);
                             } else {
                                 member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
                                 member.Spectators.clear();
@@ -379,9 +377,9 @@ public class InventoryClick implements Listener {
                                 inv.setItem(8, ItemStackList.LeaveSpec[member.user.lang]);
                             }
                             Member targetMember = Member.getMember(target);
-                            targetMember.Spectators.add(connection);
-                            targetMember.npc.listener.add(connection);
-                            targetMember.Holo.listener.add(connection);
+                            targetMember.Spectators.add(player);
+                            targetMember.npc.addListener(player);
+                            targetMember.Holo.addListener(player);
                             member.coord = targetMember.coord;
                             member.map = map;
                             member.target = targetMember;
@@ -390,8 +388,8 @@ public class InventoryClick implements Listener {
                             Member.getMember(target).user.player.hidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
-                                targetMember.npc.setListener(connection).spawn().hideFromTab(4000).undoSetListener();
-                                targetMember.Holo.setListener(connection).spawn().undoSetListener();
+                                targetMember.npc.setListener(player).spawn().hideFromTab(4000).undoSetListener();
+                                targetMember.Holo.setListener(player).spawn().undoSetListener();
                             }, 1);
 
                             if (member.setSkin) {

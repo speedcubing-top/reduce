@@ -49,7 +49,7 @@ public class Member {
     public int oldMap;
     public int oldCoord;
     public Member target;
-    public Set<PlayerConnection> Spectators = new HashSet<>();
+    public Set<Player> Spectators = new HashSet<>();
     public int PlacedBlocks;
     public int BlockPlaced;
     public boolean horSettings;
@@ -85,7 +85,7 @@ public class Member {
                 .setSpawnBodyYaw(90)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0)
                 .hideNametag()
-                .addListener(connection)
+                .addListener(player)
                 .addListener(Spectators)
                 .hideFromTab(4000)
                 .setItemInHand(ItemStackList.Sticks[0][0])
@@ -138,14 +138,14 @@ public class Member {
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
-        Holo.listener.add(connection);
-        Holo.listener.addAll(Spectators);
+        Holo.addListener(player);
+        Holo.addListener(Spectators);
         Holo.spawn();
-        for (PlayerConnection c : Spectators) {
-            Member m = getMember(c.getPlayer());
+        for (Player c : Spectators) {
+            Member m = getMember(c);
             m.map = map;
             m.coord = coord;
-            c.getPlayer().teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
+            c.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
             booleanCache = first ? speedcubingServer.connection.select("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").from("playersdata").where("id=" + user.id).getBooleanArray() : a;

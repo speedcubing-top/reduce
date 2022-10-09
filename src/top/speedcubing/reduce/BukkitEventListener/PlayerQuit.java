@@ -4,7 +4,6 @@ package top.speedcubing.reduce.BukkitEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +21,7 @@ public class PlayerQuit implements Listener {
         boolean spec = player.getGameMode() == GameMode.ADVENTURE;
         Member member = Member.getMember(player);
         if (spec) {
-            Reduce.quitSpec(player, ((CraftPlayer) player).getHandle().playerConnection, false);
+            Reduce.quitSpec(player, player, false);
             Reduce.Rooms[member.oldMap].remove(Reduce.coordToRoom(member.oldCoord));
             WorldUtils.fillAir(-10 + member.oldMap * 500, 90, -10 + member.oldCoord, 10 + member.oldMap * 500, 110, 10 + member.oldCoord, player.getWorld());
         } else {

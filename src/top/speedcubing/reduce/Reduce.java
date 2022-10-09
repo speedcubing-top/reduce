@@ -4,6 +4,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -76,7 +77,7 @@ public class Reduce extends JavaPlugin {
     }
 
     //quit spec
-    public static void quitSpec(Player player, PlayerConnection connection, boolean backtoarena) {
+    public static void quitSpec(Player player, Player connection, boolean backtoarena) {
         boolean n = player == null;
         if (n)
             player = connection.getPlayer().getPlayer();
@@ -86,10 +87,10 @@ public class Reduce extends JavaPlugin {
         member.target.user.player.showPlayer(player);
         if (!n) {
             member.target.Spectators.remove(connection);
-            member.target.npc.listener.remove(connection);
-            member.target.Holo.listener.remove(connection);
+            member.target.npc.removeListener(connection);
+            member.target.Holo.removeListener(connection);
         }
-        connection.getPlayer().getHandle().removeAllEffects();
+        ((CraftPlayer) connection).getHandle().removeAllEffects();
         if (backtoarena) {
             member.coord = member.oldCoord;
             member.map = member.oldMap;
@@ -109,13 +110,13 @@ public class Reduce extends JavaPlugin {
         }
     }
 
-    public static void sendPackets(PlayerConnection connection, Set<PlayerConnection> connections, Packet<?>... packet) {
+    public static void sendPackets(PlayerConnection connection, Set<Player> connections, Packet<?>... packet) {
         for (Packet<?> p : packet) {
             connection.sendPacket(p);
         }
         connections.forEach(a -> {
             for (Packet<?> p : packet) {
-                a.sendPacket(p);
+                ((CraftPlayer) a).getHandle().playerConnection.sendPacket(p);
             }
         });
     }
