@@ -138,7 +138,7 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName(), mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
+        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName()).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0).setAutoListen(false);
         Holo.listener.add(connection);
         Holo.listener.addAll(Spectators);
         Holo.spawn();
