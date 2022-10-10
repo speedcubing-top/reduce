@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import top.speedcubing.lib.bukkit.SideBar;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Reduce;
 import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.Reduce;
 
 import java.util.Timer;
 import java.util.TimerTask;

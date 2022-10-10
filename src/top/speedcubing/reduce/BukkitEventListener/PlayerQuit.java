@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
-import top.speedcubing.server.speedcubingServer;
 
 public class PlayerQuit implements Listener {
 
@@ -33,7 +32,7 @@ public class PlayerQuit implements Listener {
         }
         Integer[] ints = member.integerCache;
         Boolean[] bs = member.booleanCache;
-        new Thread(() -> speedcubingServer.connection.update("playersdata",
+        member.user.dbUpdate(
                 "reduce_stick=" + ints[0] +
                         ",reduce_block=" + ints[1] +
                         ",reduce_setting=" + ints[2] +
@@ -49,7 +48,7 @@ public class PlayerQuit implements Listener {
                         ",reduce_npcsound=" + (bs[1] ? 1 : 0) +
                         ",reduce_npcswing=" + (bs[2] ? 1 : 0) +
                         ",reduce_vanilla=" + (bs[3] ? 1 : 0)
-                , "id=" + member.user.id)).start();
+        );
         if (!spec) {
             member.removeFromGUI(true);
             Reduce.Rooms[member.map].remove(Reduce.coordToRoom(member.coord));

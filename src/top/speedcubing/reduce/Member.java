@@ -148,9 +148,8 @@ public class Member {
             c.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
-            booleanCache = first ? speedcubingServer.connection.select("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").from("playersdata").where("id=" + user.id).getBooleanArray() : a;
-            integerCache = first ? speedcubingServer.connection.select("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor").from("playersdata").where("id=" + user.id).getIntArray() :
-                    integerCache;
+            booleanCache = first ? user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").getBooleanArray() : a;
+            integerCache = first ? user.dbSelect("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor").getIntArray() : integerCache;
             Inventory inventory = player.getInventory();
             inventory.clear();
             inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
