@@ -46,7 +46,7 @@ public class ServerEvent {
             if (member.setSkin) {
                 e.isCancelled = true;
                 if (!speedcubingServer.nameRegex.matcher(message).matches())
-                    player.sendMessage(GlobalString.invalidName[member.user.lang]);
+                    member.user.sendLangMessage(GlobalString.invalidName);
                 else {
                     member.setSkin = false;
                     try {
@@ -57,7 +57,7 @@ public class ServerEvent {
                         }).start();
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     } catch (Exception exception) {
-                        player.sendMessage(GlobalString.invalidName[member.user.lang]);
+                        member.user.sendLangMessage(GlobalString.invalidName);
                     }
                 }
             } else if (member.setName) {
@@ -70,70 +70,70 @@ public class ServerEvent {
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 25000)
-                        player.sendMessage("the number is too large / small !");
+                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "25.000").send();
                     else {
                         member.ReachSettings2 = false;
                         member.integerCache[9] = x;
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
-                    player.sendMessage("Invalid format! (0.000 ~ 25.000)");
+                    member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.horSettings2) {
                 e.isCancelled = true;
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
-                        player.sendMessage("the number is too large / small !");
+                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "5.000").send();
                     else {
                         member.horSettings2 = false;
                         member.integerCache[10] = x;
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
-                    player.sendMessage("Invalid format! (0.000 ~ 5.000)");
+                    member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.ReachSettings) {
                 e.isCancelled = true;
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 25000)
-                        player.sendMessage("the number is too large / small !");
+                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "25.000").send();
                     else {
                         member.ReachSettings = false;
                         member.integerCache[5] = x;
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
-                    player.sendMessage("Invalid format! (0.000 ~ 25.000)");
+                    member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.horSettings) {
                 e.isCancelled = true;
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
-                        player.sendMessage("the number is too large / small !");
+                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "5.000").send();
                     else {
                         member.horSettings = false;
                         member.integerCache[6] = x;
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
-                    player.sendMessage("Invalid format! (0.000 ~ 5.000)");
+                    member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.verSettings) {
                 e.isCancelled = true;
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
-                        player.sendMessage("the number is too large / small !");
+                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "5.000").send();
                     else {
                         member.verSettings = false;
                         member.integerCache[7] = x;
                         speedcubingServer.node(false, member.user.id, member.user.tcpPort);
                     }
                 } catch (Exception exception) {
-                    player.sendMessage("Invalid format! (0.000 ~ 5.000)");
+                    member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (message.charAt(0) != '/') {
                 e.isCancelled = true;

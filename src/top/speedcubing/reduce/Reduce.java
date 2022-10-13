@@ -18,6 +18,7 @@ import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.server.config;
+import top.speedcubing.server.libs.GlobalString;
 
 import java.util.*;
 
@@ -61,7 +62,7 @@ public class Reduce extends JavaPlugin {
         NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
         NoNameTag.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         for (int i = 0; i < 4; i++) {
-            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(new String[]{"§4Sie können die Elemente hier nicht einstellen!", "§4You can't set the items here!", "§4你不能將物品設定於此處!", "§4你不能将物品设定于此处!"}[i]).build();
+            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(GlobalString.CantSetItemhere[i]).build();
         }
         for (int i = 0; i < maptypes; i++) {
             specStorage[i] = new ArrayList<>();

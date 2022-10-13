@@ -4,17 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.reduce.Member;
-import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.reduce.Reduce;
 
 public class PlayerInteract implements Listener {
@@ -28,31 +27,31 @@ public class PlayerInteract implements Listener {
                     Member member = Member.getMember(player);
                     player.openInventory(ItemStackList.Settings[member.user.lang]);
                     if (member.setSkin) {
-                        player.sendMessage(StringList.InputStringCancel[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel);
                         member.setSkin = false;
                     }
                     if (member.setName) {
-                        player.sendMessage(StringList.InputStringCancel2[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel2);
                         member.setName = false;
                     }
                     if (member.ReachSettings) {
-                        player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel3);;
                         member.ReachSettings = false;
                     }
                     if (member.horSettings) {
-                        player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel4);
                         member.horSettings = false;
                     }
                     if (member.verSettings) {
-                        player.sendMessage(StringList.InputStringCancel5[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel5);
                         member.verSettings = false;
                     }
                     if (member.ReachSettings2) {
-                        player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel3);
                         member.ReachSettings2 = false;
                     }
                     if (member.horSettings2) {
-                        player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                        member.user.sendLangMessage(StringList.InputStringCancel4);
                         member.horSettings2 = false;
                     }
                 }

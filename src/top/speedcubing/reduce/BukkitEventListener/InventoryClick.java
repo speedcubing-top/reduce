@@ -2,8 +2,6 @@ package top.speedcubing.reduce.BukkitEventListener;
 
 
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -142,7 +140,7 @@ public class InventoryClick implements Listener {
                             player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
                             if (e.getCursor().getType() == Material.AIR) {
                                 Member member = Member.getMember(player);
-                                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                                member.user.sendLangMessage(GlobalString.SavedSettings);
                                 Integer[] reduce = member.integerCache;
                                 Inventory inv = player.getInventory();
                                 for (int i = 0; i < 9; i++) {
@@ -215,7 +213,7 @@ public class InventoryClick implements Listener {
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
                         member.integerCache[3] = x;
                         player.closeInventory();
-                        player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                        member.user.sendLangMessage(GlobalString.SavedSettings);
                         player.getInventory().setItem(member.integerCache[0], ItemStackList.Sticks[x][member.user.lang]);
                     }
                 } else if (holder == ItemStackList.MapHolder) {
@@ -256,7 +254,7 @@ public class InventoryClick implements Listener {
                     switch (RawSlot) {
                         case 10: {
                             Member member = Member.getMember(player);
-                            player.sendMessage(StringList.InputString[member.user.lang]);
+                            member.user.sendLangMessage(StringList.InputString);
                             player.closeInventory();
                             member.setSkin = true;
                             speedcubingServer.node(true, member.user.id, member.user.tcpPort);
@@ -270,7 +268,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 13: {
                             Member member = Member.getMember(player);
-                            player.sendMessage(StringList.InputString2[member.user.lang]);
+                            member.user.sendLangMessage(StringList.InputString2);
                             player.closeInventory();
                             member.setName = true;
                             speedcubingServer.node(true, member.user.id, member.user.tcpPort);
@@ -289,7 +287,7 @@ public class InventoryClick implements Listener {
                             Member member = Member.getMember(player);
                             player.closeInventory();
                             speedcubingServer.node(true, member.user.id, member.user.tcpPort);
-                            player.sendMessage(StringList.veloinput2[member.user.lang]);
+                            member.user.sendLangMessage(StringList.veloinput2);
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
                                     member.ReachSettings = true;
@@ -303,7 +301,7 @@ public class InventoryClick implements Listener {
                         case 12: {
                             Member member = Member.getMember(player);
                             player.closeInventory();
-                            player.sendMessage(StringList.veloinput[member.user.lang]);
+                            member.user.sendLangMessage(StringList.veloinput);
                             speedcubingServer.node(true, member.user.id, member.user.tcpPort);
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
@@ -321,7 +319,7 @@ public class InventoryClick implements Listener {
                                     Member member = Member.getMember(player);
                                     player.closeInventory();
                                     member.verSettings = true;
-                                    player.sendMessage(StringList.veloinput[member.user.lang]);
+                                    member.user.sendLangMessage(StringList.veloinput);
                                     speedcubingServer.node(true, member.user.id, member.user.tcpPort);
                                     break;
                             }
@@ -393,31 +391,31 @@ public class InventoryClick implements Listener {
                             }, 1);
 
                             if (member.setSkin) {
-                                player.sendMessage(StringList.InputStringCancel[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel);
                                 member.setSkin = false;
                             }
                             if (member.setName) {
-                                player.sendMessage(StringList.InputStringCancel2[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel2);
                                 member.setName = false;
                             }
                             if (member.ReachSettings2) {
-                                player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel3);
                                 member.ReachSettings2 = false;
                             }
                             if (member.horSettings2) {
-                                player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel4);
                                 member.horSettings2 = false;
                             }
                             if (member.ReachSettings) {
-                                player.sendMessage(StringList.InputStringCancel3[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel3);
                                 member.ReachSettings = false;
                             }
                             if (member.horSettings) {
-                                player.sendMessage(StringList.InputStringCancel4[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel4);
                                 member.horSettings = false;
                             }
                             if (member.verSettings) {
-                                player.sendMessage(StringList.InputStringCancel5[member.user.lang]);
+                                member.user.sendLangMessage(StringList.InputStringCancel5);
                                 member.verSettings = false;
                             }
                         }

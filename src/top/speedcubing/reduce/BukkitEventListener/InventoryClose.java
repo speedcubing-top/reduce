@@ -7,9 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
+import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.Member;
-import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
 import top.speedcubing.server.libs.GlobalString;
 
 public class InventoryClose implements Listener {
@@ -19,7 +19,7 @@ public class InventoryClose implements Listener {
         Member member = Member.getMember(player);
         if (e.getInventory().getHolder() == ItemStackList.KitEditorHolder && member.kitedit) {
             member.kitedit = false;
-            player.sendMessage(GlobalString.UnSavedSettings[member.user.lang]);
+            member.user.sendLangMessage(GlobalString.UnSavedSettings);
             InventoryUtils.fillItem(player.getInventory(), 9, 36, new ItemStack(Material.AIR));
             player.updateInventory();
         }

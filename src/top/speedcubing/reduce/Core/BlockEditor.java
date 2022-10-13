@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.Member;
-import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.server.libs.GlobalString;
 
 public class BlockEditor {
@@ -56,7 +56,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             } else if (RawSlot >= 1 && RawSlot <= ItemStackList.categoryblockeditor.length) {
                 e.setCancelled(true);
                 switch (RawSlot) {
@@ -180,7 +180,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         } else if (holder == woolholder) {
             e.setCancelled(true);
@@ -191,7 +191,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         } else if (holder == oreblockeditor) {
             e.setCancelled(true);
@@ -202,7 +202,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         } else if (holder == oreeditor) {
             e.setCancelled(true);
@@ -213,7 +213,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         } else if (holder == quartzeditor) {
             e.setCancelled(true);
@@ -224,7 +224,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         } else if (holder == woodeditor) {
             e.setCancelled(true);
@@ -235,7 +235,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         } else if (holder == clayeditor) {
             e.setCancelled(true);
@@ -246,7 +246,7 @@ public class BlockEditor {
                 member.integerCache[4] = x;
                 player.closeInventory();
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[x][member.user.lang]);
-                player.sendMessage(GlobalString.SavedSettings[member.user.lang]);
+                member.user.sendLangMessage(GlobalString.SavedSettings);
             }
         }
     }
