@@ -21,7 +21,7 @@ public class ServerEvent {
         switch (rs[0]) {
             case "reduce":
                 Reduce.mapCache.put(Integer.parseInt(rs[1]), Integer.parseInt(rs[2]));
-                speedcubingServer.tcp.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
+                speedcubingServer.tcpClient.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
                 break;
         }
     }
