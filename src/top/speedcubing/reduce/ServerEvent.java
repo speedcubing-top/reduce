@@ -8,20 +8,27 @@ import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
+import top.speedcubing.lib.utils.ByteArrayDataBuilder;
 import top.speedcubing.server.config;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.libs.GlobalString;
 import top.speedcubing.server.speedcubingServer;
 
+import java.io.IOException;
+
 public class ServerEvent {
     @LibEventHandler
     public void socketEvent(SocketEvent e) {
-        String[] rs = e.receive.split("\\|");
-        switch (rs[0]) {
+        switch (e.header) {
             case "reduce":
-                Reduce.mapCache.put(Integer.parseInt(rs[1]), Integer.parseInt(rs[2]));
-                speedcubingServer.tcpClient.send(Integer.parseInt(rs[3]), "reduce|" + rs[1]);
+                try {
+                    int id = e.receive.readInt();
+                    Reduce.mapCache.put(id, e.receive.readInt());
+                    speedcubingServer.tcpClient.send(e.receive.readInt(), new ByteArrayDataBuilder().writeUTF("reduce").writeInt(id).toByteArray());
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
                 break;
         }
     }
