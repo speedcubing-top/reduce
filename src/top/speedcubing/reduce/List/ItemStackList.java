@@ -61,11 +61,13 @@ public class ItemStackList {
             Maps[0][0][i] = new ItemBuilder(Material.LOG).durability(3).name(StringList.mapname[0][i]).build();
             Maps[0][1][i] = new ItemBuilder(Material.BED).name(StringList.mapname[1][i]).build();
             Maps[0][2][i] = new ItemBuilder(Material.BARRIER).name(StringList.mapname[2][i]).build();
-            Maps[0][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).durability(1).name(StringList.mapname[3][i]).build();
-            Maps[1][0][i] = new ItemBuilder(Material.LOG).glow().durability(3).name(StringList.mapname[0][i]).lore(GlobalString.selected[i]).build();
+            Maps[0][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).name(StringList.mapname[3][i]).build();
+            Maps[0][4][i] = new ItemBuilder(Material.SANDSTONE).name(StringList.mapname[4][i]).build();
+            Maps[1][0][i] = new ItemBuilder(Material.LOG).durability(3).glow().durability(3).name(StringList.mapname[0][i]).lore(GlobalString.selected[i]).build();
             Maps[1][1][i] = new ItemBuilder(Material.BED).glow().name(StringList.mapname[1][i]).lore(GlobalString.selected[i]).build();
             Maps[1][2][i] = new ItemBuilder(Material.BARRIER).glow().name(StringList.mapname[2][i]).lore(GlobalString.selected[i]).build();
             Maps[1][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).glow().name(StringList.mapname[3][i]).lore(GlobalString.selected[i]).build();
+            Maps[1][4][i] = new ItemBuilder(Material.SANDSTONE).glow().name(StringList.mapname[4][i]).lore(GlobalString.selected[i]).build();
             Spec[i] = new ItemBuilder(Material.COMPASS).name(specitem[i]).build();
             LeaveSpec[i] = new ItemBuilder(Material.SLIME_BALL).name(leavespec[i]).build();
         }

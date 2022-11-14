@@ -74,7 +74,7 @@ public class Member {
         Player player = user.player;
         int mX = 500 * map;
         this.coord = 250 * (room * (room % 2 == 0 ? -1 : 1) + room % 2);
-        WorldUtils.cloneArea(-10 + mX, 90, -10, 10 + mX, 110, 10, -10 + mX, 90, -10 + coord, Reduce.world);
+        WorldUtils.cloneArea(-20 + mX, 80, -20, 20 + mX, 120, 20, -20 + mX, 80, -20 + coord, Reduce.world);
         this.map = map;
         boolean first = a == null;
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();

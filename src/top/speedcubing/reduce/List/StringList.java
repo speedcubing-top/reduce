@@ -9,7 +9,8 @@ public class StringList {
             {"§6Oneline", "§6Oneline", "§6Oneline", "§6Oneline"},
             {"§6BedWars", "§6BedWars", "§6BedWars", "§6BedWars"},
             {"§6OneBlock", "§6OneBlock", "§6OneBlock", "§6OneBlock"},
-            {"§6Chrama", "§6Chrama", "§6Chrama", "§6Chrama"}};
+            {"§6Chrama", "§6Chrama", "§6Chrama", "§6Chrama"},
+            {"§6Inclined", "§6Inclined", "§6Inclined", "§6Inclined"}};
     public static final String[] stickedit = {"§bStick Skin", "§bStick Skin", "§bStick Skin", "§bStick Skin"};
     public static final String[] title = {"§bNPC appearances", "§bNPC appearances", "§bNPC appearances", "§bNPC appearances"};
     public static final String[] input = {"§aChange NPC's skin", "§aChange NPC's skin", "§aChange NPC's skin", "§aChange NPC's skin"};

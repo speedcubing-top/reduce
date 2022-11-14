@@ -26,8 +26,8 @@ public class Reduce extends JavaPlugin {
     public static World world;
 
 
-    public static final int maptypes = 4;
-    public static final int[][] MapLocations = {{2, 0}, {1, 0}, {0, 4}, {1, 0}};
+    public static final int maptypes = 5;
+    public static final int[][] MapLocations = {{2, 0}, {1, 0}, {0, 4}, {1, 0}, {1, 0}};
 
     public static ScoreboardTeam NoNameTag;
 

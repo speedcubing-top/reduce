@@ -98,6 +98,7 @@ public class InventoryClick implements Listener {
                             inv.setItem(1, stacks[1][member.user.lang]);
                             inv.setItem(2, stacks[2][member.user.lang]);
                             inv.setItem(3, stacks[3][member.user.lang]);
+                            inv.setItem(4, stacks[4][member.user.lang]);
                             inv.setItem(member.map, ItemStackList.Maps[1][member.map][member.user.lang]);
                             player.openInventory(inv);
                         }
@@ -247,7 +248,7 @@ public class InventoryClick implements Listener {
                         player.closeInventory();
                         member.startGame(RawSlot, newroom, member.booleanCache);
                         Reduce.Rooms[map].remove(oldroom);
-                        WorldUtils.fillAir(-10 + map * 500, 90, -10 + coord, 10 + map * 500, 110, 10 + coord, player.getWorld());
+                        WorldUtils.fillAir(-20 + map * 500, 80, -20 + coord, 20 + map * 500, 120, 20 + coord, player.getWorld());
                     }
                 } else if (holder == ItemStackList.SkinHolder) {
                     e.setCancelled(true);
