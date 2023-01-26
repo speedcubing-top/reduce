@@ -9,7 +9,6 @@ import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
 import top.speedcubing.lib.utils.ByteArrayDataBuilder;
-import top.speedcubing.lib.utils.Console;
 import top.speedcubing.server.config;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
@@ -146,26 +145,8 @@ public class ServerEvent {
                 }
             } else if (message.charAt(0) != '/') {
                 e.isCancelled = true;
-                if (Chat.checkBlockedText(message))
-                    return;
-                String filtered = Chat.filter(message);
                 String[] formats = speedcubingServer.getFormat(member.user.rank);
-                String text = formats[0] + player.getName();
-                String[] str = GlobalString.MessageFormat;
-                String[] out = {
-                        str[0].replace("%text%", text).replace("%text2%", formats[2] + message),
-                        str[1].replace("%text%", text).replace("%text2%", formats[2] + message),
-                        str[2].replace("%text%", text).replace("%text2%", formats[2] + message),
-                        str[3].replace("%text%", text).replace("%text2%", formats[2] + message)
-                };
-                String[] out2 = {
-                        str[0].replace("%text%", text).replace("%text2%", formats[2] + filtered),
-                        str[1].replace("%text%", text).replace("%text2%", formats[2] + filtered),
-                        str[2].replace("%text%", text).replace("%text2%", formats[2] + filtered),
-                        str[3].replace("%text%", text).replace("%text2%", formats[2] + filtered)
-                };
-                Chat.globalChat(Bukkit.getOnlinePlayers(), player, out, out2);
-                Console.sendColoredConsole("§7[§aChatLog§7] [§b" + player.getWorld().getName() + "§7] " + out[1]);
+                Chat.globalChat(Bukkit.getOnlinePlayers(), player, GlobalString.MessageFormat, message, formats[0] + player.getName(), formats[2]);
             }
         }
     }
