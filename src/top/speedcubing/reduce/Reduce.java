@@ -85,7 +85,7 @@ public class Reduce extends JavaPlugin {
         Member member = Member.getMember(player);
         player.setAllowFlight(false);
         player.setGameMode(GameMode.SURVIVAL);
-        member.target.user.player.showPlayer(player);
+        member.target.user.bShowPlayer(player);
         if (!n) {
             member.target.Spectators.remove(connection);
             member.target.npc.removeListener(connection);
@@ -132,7 +132,7 @@ public class Reduce extends JavaPlugin {
                 Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.user.lang]);
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
-                    ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.player.getName())));
+                    ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.bGetName())));
                 Bukkit.getScheduler().runTask(top.speedcubing.reduce.Reduce.getPlugin(top.speedcubing.reduce.Reduce.class), () -> p.openInventory(inv1));
             }
         }

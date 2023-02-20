@@ -261,7 +261,7 @@ public class Member {
         if (!names.containsKey(rank))
             names.put(rank, new ArrayList<>());
         List<String> same = names.get(rank);
-        String name = user.player.getName();
+        String name = user.bGetName();
         same.add(name);
         Collections.sort(same);
         int index = same.indexOf(name);
@@ -276,7 +276,7 @@ public class Member {
     }
 
     public void removeFromGUI(boolean ignored) {
-        String name = user.player.getName();
+        String name = user.bGetName();
         int code = speedcubingServer.getCode(user.rank);
         List<String> x = Reduce.specName[map].get(code);
         if (x.size() == 1)

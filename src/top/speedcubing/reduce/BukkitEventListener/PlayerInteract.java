@@ -62,7 +62,7 @@ public class PlayerInteract implements Listener {
                 Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.user.lang]);
                 inventory.setContents(orig.getContents());
                 if (player.getGameMode().equals(GameMode.ADVENTURE)) {
-                    int a = Reduce.totalName.indexOf(member.target.user.player.getName());
+                    int a = Reduce.totalName.indexOf(member.target.user.bGetName());
                     if (a != -1)
                         ItemUtils.glow(inventory.getItem(a));
                 }

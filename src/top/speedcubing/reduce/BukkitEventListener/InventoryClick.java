@@ -339,7 +339,7 @@ public class InventoryClick implements Listener {
                         //join spectate
                         boolean isSpec = player.getGameMode() == GameMode.ADVENTURE;
                         Member member = Member.getMember(player);
-                        if (isSpec && Reduce.totalName.get(RawSlot).equals(member.target.user.player.getName()))
+                        if (isSpec && Reduce.totalName.get(RawSlot).equals(member.target.user.bGetName()))
                             return;
                         int map = 0;
                         int front = 0;
@@ -384,7 +384,7 @@ public class InventoryClick implements Listener {
                             member.target = targetMember;
                             player.teleport(new Location(Reduce.world, map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
-                            Member.getMember(target).user.player.hidePlayer(player);
+                            Member.getMember(target).user.bHidePlayer(player);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
                                 targetMember.npc.setListener(player).spawn().hideFromTab(4000).undoSetListener();
