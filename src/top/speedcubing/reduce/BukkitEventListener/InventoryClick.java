@@ -66,7 +66,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 11: {
                             Member member = Member.getMember(player);
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             Inventory inv = player.getInventory();
                             player.openInventory(ItemStackList.InventoryKitEditor[member.user.lang]);
                             InventoryUtils.fillItem(inv, 9, 36, Reduce.Invalid[member.user.lang]);
@@ -78,7 +78,7 @@ public class InventoryClick implements Listener {
                             break;
                         case 13: {
                             Member member = Member.getMember(player);
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             int x = Member.getMember(player).integerCache[3];
                             Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[member.user.lang]);
                             for (int i = 0; i < 6; i++) {
@@ -91,7 +91,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 14: {
                             Member member = Member.getMember(player);
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.user.lang]);
                             ItemStack[][] stacks = ItemStackList.Maps[0];
                             inv.setItem(0, stacks[0][member.user.lang]);
@@ -104,8 +104,9 @@ public class InventoryClick implements Listener {
                         }
                         break;
                         case 15: {
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
-                            int lang = Member.getMember(player).user.lang;
+                            Member member = Member.getMember(player);
+                            int lang = member.user.lang;
+                            member.user.sound(Sound.CLICK);
                             Inventory inv = Bukkit.createInventory(ItemStackList.SkinHolder, 27, StringList.title[lang]);
                             inv.setItem(10, new ItemBuilder(Material.SIGN).name(StringList.input[lang]).build());
                             inv.setItem(11, new ItemBuilder(Material.SKULL_ITEM).durability(3).name(StringList.own[lang]).owner(player.getName()).build());
@@ -118,7 +119,7 @@ public class InventoryClick implements Listener {
                         case 16: {
                             Member member = Member.getMember(player);
                             int lang = member.user.lang;
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             Boolean[] bs = member.booleanCache;
                             org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][lang];
                             ItemStack s2 = ItemStackList.preferButton[1][lang];
@@ -138,9 +139,9 @@ public class InventoryClick implements Listener {
                         e.setCancelled(true);
                     switch (RawSlot) {
                         case 3:
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            Member member = Member.getMember(player);
+                            member.user.sound(Sound.CLICK);
                             if (e.getCursor().getType() == Material.AIR) {
-                                Member member = Member.getMember(player);
                                 member.user.sendLangMessage(GlobalString.SavedSettings);
                                 Integer[] reduce = member.integerCache;
                                 Inventory inv = player.getInventory();
@@ -174,7 +175,8 @@ public class InventoryClick implements Listener {
                             }
                             break;
                         case 5:
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member = Member.getMember(player);
+                            member.user.sound(Sound.CLICK);
                             player.closeInventory();
                             break;
                     }
@@ -183,7 +185,7 @@ public class InventoryClick implements Listener {
                     switch (RawSlot) {
                         case 21: {
                             Member member = Member.getMember(player);
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             boolean b = member.booleanCache[0];
                             e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.user.lang]);
                             member.booleanCache[0] = !b;
@@ -191,7 +193,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 22: {
                             Member member = Member.getMember(player);
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             boolean b = member.booleanCache[1];
                             e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.user.lang]);
                             member.booleanCache[1] = !b;
@@ -199,7 +201,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 23: {
                             Member member = Member.getMember(player);
-                            player.playSound(player.getLocation(), Sound.CLICK, 1F, 1F);
+                            member.user.sound(Sound.CLICK);
                             boolean b = member.booleanCache[2];
                             e.getClickedInventory().setItem(RawSlot, ItemStackList.preferButton[b ? 1 : 0][member.user.lang]);
                             member.booleanCache[2] = !b;
@@ -211,7 +213,7 @@ public class InventoryClick implements Listener {
                     if (RawSlot >= 10 && RawSlot <= 15) {
                         Member member = Member.getMember(player);
                         int x = RawSlot - 10;
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1F, 1F);
+                        member.user.sound(Sound.CLICK);
                         member.integerCache[3] = x;
                         player.closeInventory();
                         member.user.sendLangMessage(GlobalString.SavedSettings);
