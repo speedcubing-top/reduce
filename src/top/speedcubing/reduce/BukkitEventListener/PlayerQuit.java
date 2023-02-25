@@ -20,11 +20,11 @@ public class PlayerQuit implements Listener {
         boolean spec = player.getGameMode() == GameMode.ADVENTURE;
         Member member = Member.getMember(player);
         if (spec) {
-            Reduce.quitSpec(player, player, false);
+            Reduce.quitSpec(false, member, false);
             Reduce.Rooms[member.oldMap].remove(Reduce.coordToRoom(member.oldCoord));
             WorldUtils.fillAir(-20 + member.oldMap * 500, 80, -20 + member.oldCoord, 20 + member.oldMap * 500, 120, 20 + member.oldCoord, player.getWorld());
         } else {
-            member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
+            member.Spectators.forEach(a -> Reduce.quitSpec(true, a, true));
             member.Spectators.clear();
             if (member.task != -1)
                 Bukkit.getScheduler().cancelTask(member.task);

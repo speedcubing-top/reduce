@@ -4,7 +4,6 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -78,26 +77,22 @@ public class Reduce extends JavaPlugin {
     }
 
     //quit spec
-    public static void quitSpec(Player player, Player connection, boolean backtoarena) {
-        boolean n = player == null;
-        if (n)
-            player = connection.getPlayer().getPlayer();
-        Member member = Member.getMember(player);
-        player.setAllowFlight(false);
-        player.setGameMode(GameMode.SURVIVAL);
-        member.target.user.bShowPlayer(player);
-        if (!n) {
-            member.target.Spectators.remove(connection);
-            member.target.npc.removeListener(connection);
-            member.target.Holo.removeListener(connection);
+    public static void quitSpec(boolean isNull, Member member, boolean backtoarena) {
+        member.user.bSetAllowFlight(false);
+        member.user.bSetGameMode(GameMode.SURVIVAL);
+        member.target.user.bShowPlayer(member.user.player);
+        if (!isNull) {
+            member.target.Spectators.remove(member);
+            member.target.npc.removeListener(member.user.player);
+            member.target.Holo.removeListener(member.user.player);
         }
-        ((CraftPlayer) connection).getHandle().removeAllEffects();
+        member.user.toNMS().removeAllEffects();
         if (backtoarena) {
             member.coord = member.oldCoord;
             member.map = member.oldMap;
-            player.teleport(new Location(top.speedcubing.reduce.Reduce.world, member.map * 500 - MapLocations[member.map][0], 100 + MapLocations[member.map][1], member.coord + 0.5, 270, 0));
+            member.user.bTeleport(new Location(top.speedcubing.reduce.Reduce.world, member.map * 500 - MapLocations[member.map][0], 100 + MapLocations[member.map][1], member.coord + 0.5, 270, 0));
             Integer[] ints = member.integerCache;
-            Inventory inventory = player.getInventory();
+            Inventory inventory = member.user.bGetInventory();
             inventory.clear();
             inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.user.lang]);
             inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
@@ -111,15 +106,11 @@ public class Reduce extends JavaPlugin {
         }
     }
 
-    public static void sendPackets(PlayerConnection connection, Set<Player> connections, Packet<?>... packet) {
+    public static void sendPackets(PlayerConnection connection, Set<Member> connections, Packet<?>... packet) {
         for (Packet<?> p : packet) {
             connection.sendPacket(p);
         }
-        connections.forEach(a -> {
-            for (Packet<?> p : packet) {
-                ((CraftPlayer) a).getHandle().playerConnection.sendPacket(p);
-            }
-        });
+        connections.forEach(a -> a.user.sendPacket(packet));
     }
 
 

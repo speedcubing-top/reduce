@@ -359,11 +359,11 @@ public class InventoryClick implements Listener {
                                     Bukkit.getScheduler().cancelTask(member.task);
                                     member.task = -1;
                                 }
-                                member.target.Spectators.remove(player);
+                                member.target.Spectators.remove(member.user);
                                 member.target.npc.removeListener(player);
                                 member.target.Holo.removeListener(player);
                             } else {
-                                member.Spectators.forEach(a -> Reduce.quitSpec(null, a, true));
+                                member.Spectators.forEach(a -> Reduce.quitSpec(true, a, true));
                                 member.Spectators.clear();
                                 member.removeFromGUI(false);
                                 player.closeInventory();
@@ -378,7 +378,7 @@ public class InventoryClick implements Listener {
                                 inv.setItem(8, ItemStackList.LeaveSpec[member.user.lang]);
                             }
                             Member targetMember = Member.getMember(target);
-                            targetMember.Spectators.add(player);
+                            targetMember.Spectators.add(member);
                             targetMember.npc.addListener(player);
                             targetMember.Holo.addListener(player);
                             member.coord = targetMember.coord;

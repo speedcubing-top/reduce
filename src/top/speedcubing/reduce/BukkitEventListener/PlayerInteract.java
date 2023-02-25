@@ -70,7 +70,7 @@ public class PlayerInteract implements Listener {
                 break;
             case SLIME_BALL:
                 //click slimeball
-                Reduce.quitSpec(player, player, true);
+                Reduce.quitSpec(false, Member.getMember(player), true);
                 break;
         }
         Block block = e.getClickedBlock();

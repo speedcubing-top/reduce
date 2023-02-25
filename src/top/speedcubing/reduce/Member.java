@@ -49,7 +49,7 @@ public class Member {
     public int oldMap;
     public int oldCoord;
     public Member target;
-    public Set<Player> Spectators = new HashSet<>();
+    public Set<Member> Spectators = new HashSet<>();
     public int PlacedBlocks;
     public int BlockPlaced;
     public boolean horSettings;
@@ -80,13 +80,16 @@ public class Member {
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
         connection = entityplayer.playerConnection;
         Property property = first ? entityplayer.getProfile().getProperties().get("textures").iterator().next() : npc.entityPlayer.getProfile().getProperties().get("textures").iterator().next();
+        Set<Player> SPEC = new HashSet<>();
+        for (Member m : Spectators)
+            SPEC.add(m.user.player);
         this.npc = new NPC("§8[NPC]", null, true, false, false)
                 .setSkin(property.getValue(), property.getSignature())
                 .setSpawnBodyYaw(90)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0)
                 .hideNametag()
                 .addListener(player)
-                .addListener(Spectators)
+                .addListener(SPEC)
                 .hideFromTab(4000)
                 .setItemInHand(ItemStackList.Sticks[0][0])
                 .setClickEvent((p, action) -> {
@@ -113,7 +116,7 @@ public class Member {
                                         y = y * user.velocities[1];
                                         z = z * user.velocities[0];
                                     }
-                                    connection.sendPacket(new PacketPlayOutEntityVelocity(p.getEntityId(), x, y, z));
+                                    user.sendPacket(new PacketPlayOutEntityVelocity(p.getEntityId(), x, y, z));
                                     npc.animation(0);
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutAnimation(entityplayer, 1));
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1));
@@ -139,13 +142,12 @@ public class Member {
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
         Holo.addListener(player);
-        Holo.addListener(Spectators);
+        Holo.addListener(SPEC);
         Holo.spawn();
-        for (Player c : Spectators) {
-            Member m = getMember(c);
+        for (Member m : Spectators) {
             m.map = map;
             m.coord = coord;
-            c.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
+            m.user.bTeleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         }
         new Thread(() -> {
             booleanCache = first ? user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").getBooleanArray() : a;
