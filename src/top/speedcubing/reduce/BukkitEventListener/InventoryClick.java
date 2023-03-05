@@ -359,7 +359,7 @@ public class InventoryClick implements Listener {
                                     Bukkit.getScheduler().cancelTask(member.task);
                                     member.task = -1;
                                 }
-                                member.target.Spectators.remove(member.user);
+                                member.target.Spectators.remove(member);
                                 member.target.npc.removeListener(player);
                                 member.target.Holo.removeListener(player);
                             } else {

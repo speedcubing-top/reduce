@@ -63,6 +63,7 @@ public class Member {
     public Boolean[] booleanCache;
     public Integer[] integerCache;
     public PlayerConnection connection;
+    public boolean isLockedOnSomeone;
     public int kb;
 
     public Member(Player player) {

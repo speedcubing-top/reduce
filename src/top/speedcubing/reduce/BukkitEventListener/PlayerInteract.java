@@ -35,7 +35,7 @@ public class PlayerInteract implements Listener {
                         member.setName = false;
                     }
                     if (member.ReachSettings) {
-                        member.user.sendLangMessage(StringList.InputStringCancel3);;
+                        member.user.sendLangMessage(StringList.InputStringCancel3);
                         member.ReachSettings = false;
                     }
                     if (member.horSettings) {

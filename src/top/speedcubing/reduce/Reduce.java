@@ -53,6 +53,7 @@ public class Reduce extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMove(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerToggleSneak(), this);
         world = Bukkit.getWorld("world");
         world.setDifficulty(Difficulty.PEACEFUL);
         world.setTime(6000);

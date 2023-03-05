@@ -1,14 +1,17 @@
 package top.speedcubing.reduce;
 
-import net.minecraft.server.v1_8_R3.PacketPlayInChat;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
 import top.speedcubing.lib.utils.ByteArrayDataBuilder;
+import top.speedcubing.lib.utils.Reflections;
 import top.speedcubing.server.config;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
@@ -147,6 +150,24 @@ public class ServerEvent {
                 e.isCancelled = true;
                 String[] formats = speedcubingServer.getFormat(member.user.rank);
                 Chat.globalChat(Bukkit.getOnlinePlayers(), player, GlobalString.MessageFormat, message, formats[0] + player.getName(), formats[2]);
+            }
+        } else if (e.packet instanceof PacketPlayInUseEntity) {
+            if (e.player.getGameMode() == GameMode.ADVENTURE && ((PacketPlayInUseEntity) e.packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
+                Member member = Member.getMember(e.player);
+                if (!member.isLockedOnSomeone) {
+                    if (member.target.user.player.getEntityId() == (int) Reflections.getField(e.packet, "a")) {
+                        System.out.println("send");
+                        PlayerConnection connection = ((CraftPlayer) e.player).getHandle().playerConnection;
+                        connection.sendPacket(new PacketPlayOutGameStateChange(3, 3));
+                        connection.sendPacket(new PacketPlayOutCamera(member.target.user.toNMS()));
+                        PacketPlayOutAbilities abilities = new PacketPlayOutAbilities();
+                        abilities.b(true);
+                        abilities.c(true);
+                        connection.sendPacket(abilities);
+                        member.target.user.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer) e.player).getHandle()));
+                        member.isLockedOnSomeone = true;
+                    }
+                }
             }
         }
     }
