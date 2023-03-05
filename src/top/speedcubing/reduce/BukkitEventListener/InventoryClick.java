@@ -386,8 +386,7 @@ public class InventoryClick implements Listener {
                             member.target = targetMember;
                             player.teleport(new Location(Reduce.world, map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
-                            Member.getMember(target).user.bHidePlayer(player);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+                            targetMember.user.bHidePlayer(player);
                             Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
                                 targetMember.npc.setListener(player).spawn().hideFromTab(4000).undoSetListener();
                                 targetMember.Holo.setListener(player).spawn().undoSetListener();

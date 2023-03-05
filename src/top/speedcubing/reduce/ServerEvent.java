@@ -4,6 +4,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
@@ -156,7 +157,6 @@ public class ServerEvent {
                 Member member = Member.getMember(e.player);
                 if (!member.isLockedOnSomeone) {
                     if (member.target.user.player.getEntityId() == (int) Reflections.getField(e.packet, "a")) {
-                        System.out.println("send");
                         PlayerConnection connection = ((CraftPlayer) e.player).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutGameStateChange(3, 3));
                         connection.sendPacket(new PacketPlayOutCamera(member.target.user.toNMS()));
@@ -164,7 +164,7 @@ public class ServerEvent {
                         abilities.b(true);
                         abilities.c(true);
                         connection.sendPacket(abilities);
-                        member.target.user.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer) e.player).getHandle()));
+//                        e.player.teleport(new Location(e.player.getWorld(), member.coord, 97, 0, 0, 0));
                         member.isLockedOnSomeone = true;
                     }
                 }

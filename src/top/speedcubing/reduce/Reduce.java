@@ -89,6 +89,10 @@ public class Reduce extends JavaPlugin {
         }
         member.user.toNMS().removeAllEffects();
         if (backtoarena) {
+            if (member.isLockedOnSomeone) {
+                member.user.sendPacket(new PacketPlayOutCamera(member.user.toNMS()), new PacketPlayOutGameStateChange(3, 2));
+                member.isLockedOnSomeone = false;
+            }
             member.coord = member.oldCoord;
             member.map = member.oldMap;
             member.user.bTeleport(new Location(top.speedcubing.reduce.Reduce.world, member.map * 500 - MapLocations[member.map][0], 100 + MapLocations[member.map][1], member.coord + 0.5, 270, 0));
