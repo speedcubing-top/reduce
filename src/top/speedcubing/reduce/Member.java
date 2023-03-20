@@ -274,7 +274,7 @@ public class Member {
         for (int i = total; i > realindex; i--) {
             Reduce.spec.setItem(i, Reduce.spec.getItem(i - 1));
         }
-        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(speedcubingServer.getFormat(user.rank)[1] + name).build());
+        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(user.getFormatName(false)).build());
         Reduce.updateSpecPage(0);
     }
 

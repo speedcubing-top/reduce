@@ -149,7 +149,7 @@ public class ServerEvent {
                 }
             } else if (message.charAt(0) != '/') {
                 e.isCancelled = true;
-                String[] formats = speedcubingServer.getFormat(member.user.rank);
+                String[] formats = member.user.getFormat();
                 Chat.globalChat(Bukkit.getOnlinePlayers(), player, GlobalString.MessageFormat, message, formats[0] + player.getName(), formats[2]);
             }
         } else if (e.packet instanceof PacketPlayInUseEntity) {
