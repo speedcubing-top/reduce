@@ -4,7 +4,6 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
@@ -62,7 +61,7 @@ public class ServerEvent {
                 else {
                     member.setSkin = false;
                     try {
-                        ProfileSkin skin = MojangAPI.getSkinByName(message);
+                        ProfileSkin skin = MojangAPI.getDetailByName(message);
                         new Thread(() -> {
                             if (member.npc != null)
                                 member.setSkin(player, skin.getValue(), skin.getSignature());
