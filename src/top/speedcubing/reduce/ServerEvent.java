@@ -1,23 +1,19 @@
 package top.speedcubing.reduce;
 
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
-import top.speedcubing.lib.utils.ByteArrayDataBuilder;
 import top.speedcubing.lib.utils.Reflections;
-import top.speedcubing.server.config;
-import top.speedcubing.server.events.ConfigReloadEvent;
-import top.speedcubing.server.events.SocketEvent;
+import top.speedcubing.server.*;
+import top.speedcubing.server.events.*;
 import top.speedcubing.server.libs.GlobalString;
+import top.speedcubing.server.mulitproxy.BungeeProxy;
 import top.speedcubing.server.share.Chat;
-import top.speedcubing.server.speedcubingServer;
 
 import java.io.IOException;
 
@@ -29,7 +25,7 @@ public class ServerEvent {
                 try {
                     int id = e.receive.readInt();
                     Reduce.mapCache.put(id, e.receive.readInt());
-                    speedcubingServer.tcpClient.send(e.receive.readInt(), new ByteArrayDataBuilder().writeUTF("reduce").writeInt(id).toByteArray());
+                    BungeeProxy.switchServer(id, "reduce");
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
