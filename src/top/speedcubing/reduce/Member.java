@@ -246,7 +246,7 @@ public class Member {
     }
 
     public void b() {
-        int rank = speedcubingServer.getCode(user.rank);
+        int rank = speedcubingServer.getCode(user.displayRank);
         int diffmap = 0;
         int diffrank = 0;
         int total = Reduce.totalName.size();
@@ -280,7 +280,7 @@ public class Member {
 
     public void removeFromGUI(boolean ignored) {
         String name = user.bGetName();
-        int code = speedcubingServer.getCode(user.rank);
+        int code = speedcubingServer.getCode(user.displayRank);
         List<String> x = Reduce.specName[map].get(code);
         if (x.size() == 1)
             Reduce.specName[map].remove(code);
