@@ -25,7 +25,7 @@ public class ServerEvent {
                 try {
                     int id = e.receive.readInt();
                     Reduce.mapCache.put(id, e.receive.readInt());
-                    BungeeProxy.switchServer(id, "reduce");
+                    BungeeProxy.switchServer(id, "reduce",e.receive.readInt());
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
