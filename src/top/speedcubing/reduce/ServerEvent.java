@@ -57,7 +57,7 @@ public class ServerEvent {
                 else {
                     member.setSkin = false;
                     try {
-                        ProfileSkin skin = MojangAPI.getDetailByName(message);
+                        ProfileSkin skin = MojangAPI.getSkinByName(message);
                         new Thread(() -> {
                             if (member.npc != null)
                                 member.setSkin(player, skin.getValue(), skin.getSignature());
