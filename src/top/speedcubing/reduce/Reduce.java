@@ -6,18 +6,16 @@ import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
-import top.speedcubing.lib.bukkit.inventory.ItemUtils;
+import top.speedcubing.lib.bukkit.inventory.*;
 import top.speedcubing.lib.eventbus.LibEventManager;
 import top.speedcubing.reduce.BukkitEventListener.*;
 import top.speedcubing.reduce.Core.BlockEditor;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.server.config;
-import top.speedcubing.server.libs.GlobalString;
+import top.speedcubing.reduce.List.*;
+import top.speedcubing.server.lang.GlobalString;
+import top.speedcubing.server.utils.config;
 
 import java.util.*;
 
@@ -62,7 +60,7 @@ public class Reduce extends JavaPlugin {
         NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
         NoNameTag.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         for (int i = 0; i < 4; i++) {
-            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(GlobalString.CantSetItemhere[i]).build();
+            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(GlobalString.CantSetItemhere.get(i)).build();
         }
         for (int i = 0; i < maptypes; i++) {
             specStorage[i] = new ArrayList<>();
@@ -125,7 +123,7 @@ public class Reduce extends JavaPlugin {
             Member member = Member.getMember(p);
             if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.user.id == id)) {
                 Inventory orig = spec;
-                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.user.lang]);
+                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.get(member.user.lang));
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
                     ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.bGetName())));

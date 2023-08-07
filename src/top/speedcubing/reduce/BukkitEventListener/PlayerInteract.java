@@ -1,20 +1,15 @@
 package top.speedcubing.reduce.BukkitEventListener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Member;
-import top.speedcubing.reduce.Reduce;
+import top.speedcubing.reduce.List.*;
+import top.speedcubing.reduce.*;
 
 public class PlayerInteract implements Listener {
 
@@ -59,7 +54,7 @@ public class PlayerInteract implements Listener {
             case COMPASS:
                 Member member = Member.getMember(player);
                 Inventory orig = Reduce.spec;
-                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec[member.user.lang]);
+                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.get(member.user.lang));
                 inventory.setContents(orig.getContents());
                 if (player.getGameMode().equals(GameMode.ADVENTURE)) {
                     int a = Reduce.totalName.indexOf(member.target.user.bGetName());

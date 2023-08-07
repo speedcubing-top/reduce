@@ -20,8 +20,9 @@ import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.utils.TimeFormatter;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.server.libs.User;
+import top.speedcubing.server.player.User;
 import top.speedcubing.server.speedcubingServer;
+import top.speedcubing.server.utils.config;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -141,7 +142,7 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6" + top.speedcubing.server.config.SERVERIP : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
+        this.Holo = new Hologram(first ? "§6" + config.SERVERIP : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
         Holo.addListener(player);
         Holo.addListener(SPEC);
         Holo.spawn();
@@ -239,7 +240,7 @@ public class Member {
         if (kb == 0)
             return player.getLocation().getY() < npc.entityPlayer.locY - 1 ? 0.01 : 0.46;
         if (kb == 1)
-            return player.getLocation().getY() < npc.entityPlayer.locY - 1 ? 0.01 : 0.38;
+            return player.getLocation().getY() < npc.entityPlayer.locY - 1 ? 0.01 : 0.41;
         if (kb == 2)
             return 0.01;
         return -1;

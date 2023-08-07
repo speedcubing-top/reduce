@@ -5,27 +5,17 @@ import com.mojang.authlib.properties.Property;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.*;
+import org.bukkit.event.inventory.*;
+import org.bukkit.inventory.*;
 import top.speedcubing.lib.bukkit.WorldUtils;
-import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
-import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.lib.bukkit.inventory.*;
 import top.speedcubing.reduce.Core.BlockEditor;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
-import top.speedcubing.reduce.Member;
-import top.speedcubing.reduce.Reduce;
-import top.speedcubing.server.config;
-import top.speedcubing.server.libs.GlobalString;
+import top.speedcubing.reduce.List.*;
+import top.speedcubing.reduce.*;
+import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.speedcubingServer;
+import top.speedcubing.server.utils.config;
 
 public class InventoryClick implements Listener {
     @EventHandler
@@ -52,7 +42,7 @@ public class InventoryClick implements Listener {
                     switch (RawSlot) {
                         case 10: {
                             Member member = Member.getMember(player);
-                            Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings[member.user.lang]);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.HitSettingsHolder, 27, StringList.npchitsettings.get(member.user.lang));
                             String[] reach = StringList.ReachLore[member.user.lang];
                             String[] hor = StringList.HorLore[member.user.lang];
                             String[] ver = StringList.VerLore[member.user.lang];
@@ -60,7 +50,7 @@ public class InventoryClick implements Listener {
                             inv.setItem(11, new ItemBuilder(Material.STICK).name(reach[0]).lore(reach[1], reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)), reach[3].replace("%kb2%", String.format("%.3f", cache[9] / 1000D)), reach[4], reach[5], reach[6], reach[7]).build());
                             inv.setItem(12, new ItemBuilder(Material.STICK).name(hor[0]).lore(hor[1], hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)), hor[3].replace("%kb2%", String.format("%.3f", cache[10] / 1000D)), hor[4], hor[5], hor[6], hor[7]).build());
                             inv.setItem(13, new ItemBuilder(Material.STICK).name(ver[0]).lore(ver[1], ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)), ver[3], ver[4], ver[5], ver[6], ver[7]).build());
-                            inv.setItem(15, new ItemBuilder(Material.FEATHER).name(StringList.def[member.user.lang]).lore(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on").build());
+                            inv.setItem(15, new ItemBuilder(Material.FEATHER).name(StringList.def.get(member.user.lang)).lore(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on").build());
                             player.openInventory(inv);
                         }
                         break;
@@ -80,7 +70,7 @@ public class InventoryClick implements Listener {
                             Member member = Member.getMember(player);
                             member.user.sound(Sound.CLICK);
                             int x = Member.getMember(player).integerCache[3];
-                            Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit[member.user.lang]);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.StickSkinHolder, 27, StringList.stickedit.get(member.user.lang));
                             for (int i = 0; i < 6; i++) {
                                 inv.setItem(i + 10, ItemStackList.stickeditor[0][i][member.user.lang]);
                             }
@@ -92,7 +82,7 @@ public class InventoryClick implements Listener {
                         case 14: {
                             Member member = Member.getMember(player);
                             member.user.sound(Sound.CLICK);
-                            Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect[member.user.lang]);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.MapHolder, 18, StringList.mapselect.get(member.user.lang));
                             ItemStack[][] stacks = ItemStackList.Maps[0];
                             inv.setItem(0, stacks[0][member.user.lang]);
                             inv.setItem(1, stacks[1][member.user.lang]);
@@ -107,12 +97,12 @@ public class InventoryClick implements Listener {
                             Member member = Member.getMember(player);
                             int lang = member.user.lang;
                             member.user.sound(Sound.CLICK);
-                            Inventory inv = Bukkit.createInventory(ItemStackList.SkinHolder, 27, StringList.title[lang]);
-                            inv.setItem(10, new ItemBuilder(Material.SIGN).name(StringList.input[lang]).build());
-                            inv.setItem(11, new ItemBuilder(Material.SKULL_ITEM).durability(3).name(StringList.own[lang]).owner(player.getName()).build());
-                            inv.setItem(13, new ItemBuilder(Material.NAME_TAG).name(StringList.name[lang]).build());
-                            inv.setItem(14, new ItemBuilder(Material.NAME_TAG).name(StringList.resetname[lang]).build());
-                            inv.setItem(16, new ItemBuilder(Material.STICK).name(StringList.resetname[lang]).build());
+                            Inventory inv = Bukkit.createInventory(ItemStackList.SkinHolder, 27, StringList.title.get(lang));
+                            inv.setItem(10, new ItemBuilder(Material.SIGN).name(StringList.input.get(lang)).build());
+                            inv.setItem(11, new ItemBuilder(Material.SKULL_ITEM).durability(3).name(StringList.own.get(lang)).owner(player.getName()).build());
+                            inv.setItem(13, new ItemBuilder(Material.NAME_TAG).name(StringList.name.get(lang)).build());
+                            inv.setItem(14, new ItemBuilder(Material.NAME_TAG).name(StringList.resetname.get(lang)).build());
+                            inv.setItem(16, new ItemBuilder(Material.STICK).name(StringList.resetname.get(lang)).build());
                             player.openInventory(inv);
                         }
                         break;
@@ -123,7 +113,7 @@ public class InventoryClick implements Listener {
                             Boolean[] bs = member.booleanCache;
                             org.bukkit.inventory.ItemStack s1 = ItemStackList.preferButton[0][lang];
                             ItemStack s2 = ItemStackList.preferButton[1][lang];
-                            Inventory inv = Bukkit.createInventory(ItemStackList.PreferHolder, 36, StringList.prefedit[lang]);
+                            Inventory inv = Bukkit.createInventory(ItemStackList.PreferHolder, 36, StringList.prefedit.get(lang));
                             for (int i = 0; i < 3; i++) {
                                 inv.setItem(i + 12, ItemStackList.prefereditor[i][lang]);
                             }

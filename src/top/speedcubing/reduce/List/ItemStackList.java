@@ -1,15 +1,11 @@
 package top.speedcubing.reduce.List;
 
-import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
-import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
-import top.speedcubing.reduce.Reduce;
-import top.speedcubing.server.libs.GlobalString;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
+import top.speedcubing.lib.bukkit.inventory.*;
+import top.speedcubing.reduce.Reduce;
+import top.speedcubing.server.lang.GlobalString;
 
 public class ItemStackList {
 
@@ -63,11 +59,11 @@ public class ItemStackList {
             Maps[0][2][i] = new ItemBuilder(Material.BARRIER).name(StringList.mapname[2][i]).build();
             Maps[0][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).name(StringList.mapname[3][i]).build();
             Maps[0][4][i] = new ItemBuilder(Material.SANDSTONE).name(StringList.mapname[4][i]).build();
-            Maps[1][0][i] = new ItemBuilder(Material.LOG).durability(3).glow().durability(3).name(StringList.mapname[0][i]).lore(GlobalString.selected[i]).build();
-            Maps[1][1][i] = new ItemBuilder(Material.BED).glow().name(StringList.mapname[1][i]).lore(GlobalString.selected[i]).build();
-            Maps[1][2][i] = new ItemBuilder(Material.BARRIER).glow().name(StringList.mapname[2][i]).lore(GlobalString.selected[i]).build();
-            Maps[1][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).glow().name(StringList.mapname[3][i]).lore(GlobalString.selected[i]).build();
-            Maps[1][4][i] = new ItemBuilder(Material.SANDSTONE).glow().name(StringList.mapname[4][i]).lore(GlobalString.selected[i]).build();
+            Maps[1][0][i] = new ItemBuilder(Material.LOG).durability(3).glow().durability(3).name(StringList.mapname[0][i]).lore(GlobalString.selected.get(i)).build();
+            Maps[1][1][i] = new ItemBuilder(Material.BED).glow().name(StringList.mapname[1][i]).lore(GlobalString.selected.get(i)).build();
+            Maps[1][2][i] = new ItemBuilder(Material.BARRIER).glow().name(StringList.mapname[2][i]).lore(GlobalString.selected.get(i)).build();
+            Maps[1][3][i] = new ItemBuilder(Material.SMOOTH_BRICK).glow().name(StringList.mapname[3][i]).lore(GlobalString.selected.get(i)).build();
+            Maps[1][4][i] = new ItemBuilder(Material.SANDSTONE).glow().name(StringList.mapname[4][i]).lore(GlobalString.selected.get(i)).build();
             Spec[i] = new ItemBuilder(Material.COMPASS).name(specitem[i]).build();
             LeaveSpec[i] = new ItemBuilder(Material.SLIME_BALL).name(leavespec[i]).build();
         }
@@ -185,12 +181,12 @@ public class ItemStackList {
                         new ItemBuilder(Material.FEATHER).name(feather[i]).build()
                 };
                 ItemStack[] sticks2 = {
-                        new ItemBuilder(Material.STICK).name(stick[i]).lore(GlobalString.selected[i]).build(),
-                        new ItemBuilder(Material.DIAMOND_SWORD).glow().name(sword[i]).hideAttr().lore(GlobalString.selected[i]).build(),
-                        new ItemBuilder(Material.DIAMOND_HOE).glow().name(hoe[i]).hideAttr().lore(GlobalString.selected[i]).build(),
-                        new ItemBuilder(Material.BLAZE_ROD).name(blaze[i]).lore(GlobalString.selected[i]).build(),
-                        new ItemBuilder(Material.BONE).name(bone[i]).lore(GlobalString.selected[i]).build(),
-                        new ItemBuilder(Material.FEATHER).name(feather[i]).lore(GlobalString.selected[i]).build()
+                        new ItemBuilder(Material.STICK).name(stick[i]).lore(GlobalString.selected.get(i)).build(),
+                        new ItemBuilder(Material.DIAMOND_SWORD).glow().name(sword[i]).hideAttr().lore(GlobalString.selected.get(i)).build(),
+                        new ItemBuilder(Material.DIAMOND_HOE).glow().name(hoe[i]).hideAttr().lore(GlobalString.selected.get(i)).build(),
+                        new ItemBuilder(Material.BLAZE_ROD).name(blaze[i]).lore(GlobalString.selected.get(i)).build(),
+                        new ItemBuilder(Material.BONE).name(bone[i]).lore(GlobalString.selected.get(i)).build(),
+                        new ItemBuilder(Material.FEATHER).name(feather[i]).lore(GlobalString.selected.get(i)).build()
                 };
                 int length = sticks.length;
                 for (int j = 0; j < length; j++) {
@@ -211,13 +207,13 @@ public class ItemStackList {
             };
 
             ItemStack[] categoryblockeditor = {
-                    new ItemBuilder(Material.SANDSTONE).name(block[0][i]).lore(GlobalString.category[i]).build(),
-                    new ItemBuilder(Material.WOOL).name(block[1][i]).lore(GlobalString.category[i]).build(),
-                    new ItemBuilder(Material.DIAMOND_BLOCK).name(block[2][i]).lore(GlobalString.category[i]).build(),
-                    new ItemBuilder(Material.DIAMOND_ORE).name(block[3][i]).lore(GlobalString.category[i]).build(),
-                    new ItemBuilder(Material.QUARTZ_BLOCK).name(block[4][i]).lore(GlobalString.category[i]).build(),
-                    new ItemBuilder(Material.WOOD).name(block[5][i]).lore(GlobalString.category[i]).build(),
-                    new ItemBuilder(Material.STAINED_CLAY).name(block[6][i]).lore(GlobalString.category[i]).build()
+                    new ItemBuilder(Material.SANDSTONE).name(block[0][i]).lore(GlobalString.category.get(i)).build(),
+                    new ItemBuilder(Material.WOOL).name(block[1][i]).lore(GlobalString.category.get(i)).build(),
+                    new ItemBuilder(Material.DIAMOND_BLOCK).name(block[2][i]).lore(GlobalString.category.get(i)).build(),
+                    new ItemBuilder(Material.DIAMOND_ORE).name(block[3][i]).lore(GlobalString.category.get(i)).build(),
+                    new ItemBuilder(Material.QUARTZ_BLOCK).name(block[4][i]).lore(GlobalString.category.get(i)).build(),
+                    new ItemBuilder(Material.WOOD).name(block[5][i]).lore(GlobalString.category.get(i)).build(),
+                    new ItemBuilder(Material.STAINED_CLAY).name(block[6][i]).lore(GlobalString.category.get(i)).build()
             };
 
             ItemStack[] blockeditor = {

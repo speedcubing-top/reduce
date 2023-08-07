@@ -9,11 +9,12 @@ import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.LibEventHandler;
 import top.speedcubing.lib.utils.Reflections;
-import top.speedcubing.server.*;
 import top.speedcubing.server.events.*;
-import top.speedcubing.server.libs.GlobalString;
+import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.mulitproxy.BungeeProxy;
 import top.speedcubing.server.share.Chat;
+import top.speedcubing.server.speedcubingServer;
+import top.speedcubing.server.utils.config;
 
 import java.io.IOException;
 
@@ -25,7 +26,7 @@ public class ServerEvent {
                 try {
                     int id = e.receive.readInt();
                     Reduce.mapCache.put(id, e.receive.readInt());
-                    BungeeProxy.switchServer(id, "reduce",e.receive.readInt());
+                    BungeeProxy.switchServer(id, "reduce", e.receive.readInt());
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
@@ -77,7 +78,7 @@ public class ServerEvent {
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 25000)
-                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "25.000").send();
+                        member.user.sendLangMessage(GlobalString.integerOutOfRange, "0.000", "25.000");
                     else {
                         member.ReachSettings2 = false;
                         member.integerCache[9] = x;
@@ -91,7 +92,7 @@ public class ServerEvent {
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
-                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "5.000").send();
+                        member.user.sendLangMessage(GlobalString.integerOutOfRange, "0.000", "5.000");
                     else {
                         member.horSettings2 = false;
                         member.integerCache[10] = x;
@@ -105,7 +106,7 @@ public class ServerEvent {
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 25000)
-                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "25.000").send();
+                        member.user.sendLangMessage(GlobalString.integerOutOfRange, "0.000", "25.000");
                     else {
                         member.ReachSettings = false;
                         member.integerCache[5] = x;
@@ -119,7 +120,7 @@ public class ServerEvent {
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
-                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "5.000").send();
+                        member.user.sendLangMessage(GlobalString.integerOutOfRange, "0.000", "5.000");
                     else {
                         member.horSettings = false;
                         member.integerCache[6] = x;
@@ -133,7 +134,7 @@ public class ServerEvent {
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
-                        member.user.langMessageSender(GlobalString.integerOutOfRange).replace("%min%", "0.000").replace("%max%", "5.000").send();
+                        member.user.sendLangMessage(GlobalString.integerOutOfRange, "0.000", "5.000");
                     else {
                         member.verSettings = false;
                         member.integerCache[7] = x;
