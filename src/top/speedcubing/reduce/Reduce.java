@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.speedcubing.lib.bukkit.inventory.*;
-import top.speedcubing.lib.eventbus.LibEventManager;
+import top.speedcubing.lib.eventbus.CubingEventManager;
 import top.speedcubing.reduce.BukkitEventListener.*;
 import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.List.*;
@@ -67,7 +67,7 @@ public class Reduce extends JavaPlugin {
             specName[i] = new HashMap<>();
             Rooms[i] = new HashSet<>();
         }
-        LibEventManager.registerListeners(new ServerEvent());
+        CubingEventManager.registerListeners(new ServerEvent());
         config.event.call();
     }
 

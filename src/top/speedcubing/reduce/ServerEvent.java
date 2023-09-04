@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
-import top.speedcubing.lib.eventbus.LibEventHandler;
+import top.speedcubing.lib.eventbus.CubingEventHandler;
 import top.speedcubing.lib.utils.Reflections;
 import top.speedcubing.server.events.*;
 import top.speedcubing.server.lang.GlobalString;
@@ -19,7 +19,7 @@ import top.speedcubing.server.utils.config;
 import java.io.IOException;
 
 public class ServerEvent {
-    @LibEventHandler
+    @CubingEventHandler
     public void socketEvent(SocketEvent e) {
         switch (e.header) {
             case "reduce":
@@ -34,7 +34,7 @@ public class ServerEvent {
         }
     }
 
-    @LibEventHandler
+    @CubingEventHandler
     public void ConfigReloadEvent(ConfigReloadEvent e) {
         Reduce.ReduceKB = new double[]{
                 config.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
@@ -45,7 +45,7 @@ public class ServerEvent {
         };
     }
 
-    @LibEventHandler
+    @CubingEventHandler
     public void PlayInEvent(PlayInEvent e) {
         if (e.packet instanceof PacketPlayInChat) {
             String message = ((PacketPlayInChat) e.packet).a();
