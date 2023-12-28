@@ -52,9 +52,12 @@ public class Reduce extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerMove(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerToggleSneak(), this);
+
         world = Bukkit.getWorld("world");
         world.setDifficulty(Difficulty.PEACEFUL);
         world.setTime(6000);
+        world.setAutoSave(false);
+
         new ItemStackList().Load();
         new BlockEditor().Load();
         NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
