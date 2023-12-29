@@ -15,7 +15,7 @@ import top.speedcubing.reduce.BukkitEventListener.*;
 import top.speedcubing.reduce.Core.BlockEditor;
 import top.speedcubing.reduce.List.*;
 import top.speedcubing.server.lang.GlobalString;
-import top.speedcubing.server.utils.config;
+import top.speedcubing.server.utils.*;
 
 import java.util.*;
 
@@ -35,8 +35,8 @@ public class Reduce extends JavaPlugin {
     public static final List<Integer>[] specStorage = new ArrayList[maptypes];
     public static final Map<Integer, List<String>>[] specName = new HashMap[maptypes];
     public static final List<String> totalName = new ArrayList<>();
-
     public static double[] ReduceKB;
+    public static String mapName = "map_reduce";
 
     public void onEnable() {
         MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
@@ -53,11 +53,6 @@ public class Reduce extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerQuit(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerToggleSneak(), this);
 
-        world = Bukkit.getWorld("world");
-        world.setDifficulty(Difficulty.PEACEFUL);
-        world.setTime(6000);
-        world.setAutoSave(false);
-
         new ItemStackList().Load();
         new BlockEditor().Load();
         NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
@@ -72,6 +67,13 @@ public class Reduce extends JavaPlugin {
         }
         CubingEventManager.registerListeners(new ServerEvent());
         config.event.call();
+
+        try {
+            MapManager.install(mapName, mapName, Difficulty.PEACEFUL, 6000, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getServer().shutdown();
+        }
     }
 
     public static int coordToRoom(int z) {
