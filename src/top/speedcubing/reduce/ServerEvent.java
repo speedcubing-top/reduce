@@ -1,7 +1,15 @@
 package top.speedcubing.reduce;
 
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.*;
+import java.io.IOException;
+import net.minecraft.server.v1_8_R3.PacketPlayInChat;
+import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAbilities;
+import net.minecraft.server.v1_8_R3.PacketPlayOutCamera;
+import net.minecraft.server.v1_8_R3.PacketPlayOutGameStateChange;
+import net.minecraft.server.v1_8_R3.PlayerConnection;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
@@ -9,14 +17,13 @@ import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.event.PlayInEvent;
 import top.speedcubing.lib.eventbus.CubingEventHandler;
 import top.speedcubing.lib.utils.Reflections;
-import top.speedcubing.server.events.*;
+import top.speedcubing.server.events.ConfigReloadEvent;
+import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.mulitproxy.BungeeProxy;
 import top.speedcubing.server.share.Chat;
 import top.speedcubing.server.speedcubingServer;
 import top.speedcubing.server.utils.config;
-
-import java.io.IOException;
 
 public class ServerEvent {
     @CubingEventHandler
@@ -59,13 +66,16 @@ public class ServerEvent {
                     member.setSkin = false;
                     try {
                         ProfileSkin skin = MojangAPI.getSkinByName(message);
-                        new Thread(() -> {
-                            if (member.npc != null)
-                                member.setSkin(player, skin.getValue(), skin.getSignature());
-                        }).start();
-                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
-                    } catch (Exception exception) {
-                        member.user.sendLangMessage(GlobalString.invalidName);
+                        if (skin == null)
+                            member.user.sendLangMessage(GlobalString.invalidName);
+                        else {
+                            new Thread(() -> {
+                                if (member.npc != null)
+                                    member.setSkin(player, skin.getValue(), skin.getSignature());
+                            }).start();
+                            speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                        }
+                    } catch (IOException ignored) {
                     }
                 }
             } else if (member.setName) {

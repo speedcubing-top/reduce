@@ -1,9 +1,13 @@
 package top.speedcubing.reduce.List;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.*;
-import top.speedcubing.lib.bukkit.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
+import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.lang.GlobalString;
 

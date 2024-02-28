@@ -3,7 +3,8 @@ package top.speedcubing.reduce.BukkitEventListener;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import top.speedcubing.lib.bukkit.inventory.InventoryUtils;

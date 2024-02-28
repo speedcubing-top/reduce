@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import top.speedcubing.lib.bukkit.SideBar;
 import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.reduce.Member;
-import top.speedcubing.lib.bukkit.SideBar;
 
 public class BlockPlace implements Listener {
     @EventHandler

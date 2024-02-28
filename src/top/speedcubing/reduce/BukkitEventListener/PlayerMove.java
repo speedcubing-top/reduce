@@ -1,5 +1,7 @@
 package top.speedcubing.reduce.BukkitEventListener;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,9 +13,6 @@ import top.speedcubing.reduce.List.ItemStackList;
 import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class PlayerMove implements Listener {
     @EventHandler

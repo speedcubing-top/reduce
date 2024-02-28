@@ -1,9 +1,28 @@
 package top.speedcubing.reduce;
 
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_8_R3.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityVelocity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutNamedSoundEffect;
+import net.minecraft.server.v1_8_R3.PlayerConnection;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.*;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.CraftSound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -23,9 +42,6 @@ import top.speedcubing.reduce.List.StringList;
 import top.speedcubing.server.player.User;
 import top.speedcubing.server.speedcubingServer;
 import top.speedcubing.server.utils.config;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Member {
     public static Map<Integer, Member> users = new HashMap<>();
@@ -90,6 +106,7 @@ public class Member {
                 .setSpawnBodyYaw(90)
                 .setLocation(mX + 0.5, 100, coord + 0.5, 90, 0)
                 .hideNametag()
+                .world(Reduce.mapName)
                 .addListener(player)
                 .addListener(SPEC)
                 .hideFromTab(4000)
