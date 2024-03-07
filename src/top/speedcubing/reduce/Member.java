@@ -111,10 +111,10 @@ public class Member {
                 .addListener(SPEC)
                 .hideFromTab(4000)
                 .setItemInHand(ItemStackList.Sticks[0][0])
-                .setClickEvent((p, action) -> {
-                    if (action.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && p.getNoDamageTicks() < p.getMaximumNoDamageTicks() / 2 && p.getGameMode().equals(GameMode.SURVIVAL)) {
+                .setClickEvent((r) -> {
+                    Player p = r.getPlayer();
+                    if (r.getAction().equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && p.getNoDamageTicks() < p.getMaximumNoDamageTicks() / 2 && p.getGameMode().equals(GameMode.SURVIVAL)) {
                         ItemStack hand = p.getItemInHand();
-                        Boolean[] bs = booleanCache;
                         if ((hand == null || hand.getType() != Material.INK_SACK) && task == -1) {
                             task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Reduce.getPlugin(Reduce.class), () -> {
                                 Location location = p.getLocation();
@@ -145,6 +145,7 @@ public class Member {
                                 }
                             }, 0, 10);
                         }
+                        Boolean[] bs = booleanCache;
                         if (bs[1])
                             Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), map * 250 + 0.5, 101.62, coord + 0.5, 1, 1));
                         if (bs[0])
