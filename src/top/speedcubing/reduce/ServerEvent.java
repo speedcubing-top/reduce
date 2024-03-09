@@ -155,8 +155,7 @@ public class ServerEvent {
                 }
             } else if (message.charAt(0) != '/') {
                 e.isCancelled = true;
-                String[] formats = member.user.getFormat();
-                Chat.globalChat(Bukkit.getOnlinePlayers(), player, GlobalString.MessageFormat, message, formats[0] + player.getName(), formats[2]);
+                Chat.globalChat(Bukkit.getOnlinePlayers(), player, GlobalString.MessageFormat, message, member.user.getPrefixName(false), member.user.getFormat(false).getChatColor());
             }
         } else if (e.packet instanceof PacketPlayInUseEntity) {
             if (e.player.getGameMode() == GameMode.ADVENTURE && ((PacketPlayInUseEntity) e.packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {

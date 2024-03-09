@@ -1,7 +1,6 @@
 package top.speedcubing.reduce.List;
 
 import top.speedcubing.server.lang.LangMessage;
-import top.speedcubing.server.utils.config;
 
 public class StringList {
     public static LangMessage spec = new LangMessage("§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu"
@@ -22,13 +21,13 @@ public class StringList {
 
     );
     public static final LangMessage prefedit = new LangMessage("§bPreferences", "§bPreferences", "§bPreferences", "§bPreferences"
-        );
+    );
     public static LangMessage InputStringCancel2 = new LangMessage(
             "§cNPC name change is cancelled.",
             "§cNPC name change is cancelled.",
             "§cNPC name change is cancelled.",
             "§cNPC name change is cancelled."
-        );
+    );
 
     public static LangMessage InputStringCancel = new LangMessage(
             "§cNPC skin change is cancelled.",
@@ -71,12 +70,12 @@ public class StringList {
             "§aPlease input a String for NPC's name in chat:"
     );
 
-    public static final LangMessage npchitsettings = new LangMessage("§bHit Settings", "§bHit Settings", "§bHit Settings", "§bHit Settings" );
-    public static final LangMessage def = new LangMessage("§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack" );
+    public static final LangMessage npchitsettings = new LangMessage("§bHit Settings", "§bHit Settings", "§bHit Settings", "§bHit Settings");
+    public static final LangMessage def = new LangMessage("§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack");
 
 
-    public static LangMessage veloinput = new LangMessage("§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)" );
-    public static LangMessage veloinput2 = new LangMessage("§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)" );
+    public static LangMessage veloinput = new LangMessage("§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)");
+    public static LangMessage veloinput2 = new LangMessage("§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)");
 
 
     public static String[][] ReachLore = {
@@ -109,9 +108,9 @@ public class StringList {
             {"§6Chrama", "§6Chrama", "§6Chrama", "§6Chrama"},
             {"§6Inclined", "§6Inclined", "§6Inclined", "§6Inclined"}};
     public static String[][] ReduceSidebar = {
-            {"§3Reduce §7▶§b %t%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
-            {"§3Reduce §7▶§b %t%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
-            {"§3Reduce §7▶§b %t%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
-            {"§3Reduce §7▶§b %t%", "§6" + config.SERVERIP, "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"}
+            {"§3Reduce §7▶§b %t%", "§6speedcubing", "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
+            {"§3Reduce §7▶§b %t%", "§6speedcubing", "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
+            {"§3Reduce §7▶§b %t%", "§6speedcubing", "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"},
+            {"§3Reduce §7▶§b %t%", "§6speedcubing", "§6", "§aMap:", "§8»§b %str%", "§2", "§aBlock placed:", "§8»§b ", "§0"}
     };
 }

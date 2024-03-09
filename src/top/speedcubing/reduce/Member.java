@@ -31,6 +31,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import top.speedcubing.common.rank.Rank;
 import top.speedcubing.lib.bukkit.SideBar;
 import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.entity.Hologram;
@@ -160,7 +161,7 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6" + config.SERVERIP : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
+        this.Holo = new Hologram(first ? "§6speedcubing" : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
         Holo.addListener(player);
         Holo.addListener(SPEC);
         Holo.spawn();
@@ -265,7 +266,7 @@ public class Member {
     }
 
     public void b() {
-        int rank = speedcubingServer.getCode(user.displayRank);
+        int rank = Rank.getCode(user.displayRank);
         int diffmap = 0;
         int diffrank = 0;
         int total = Reduce.totalName.size();
@@ -293,13 +294,13 @@ public class Member {
         for (int i = total; i > realindex; i--) {
             Reduce.spec.setItem(i, Reduce.spec.getItem(i - 1));
         }
-        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(user.getFormatName(false)).build());
+        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(user.getColorName(false)).build());
         Reduce.updateSpecPage(0);
     }
 
     public void removeFromGUI(boolean ignored) {
         String name = user.bGetName();
-        int code = speedcubingServer.getCode(user.displayRank);
+        int code = Rank.getCode(user.displayRank);
         List<String> x = Reduce.specName[map].get(code);
         if (x.size() == 1)
             Reduce.specName[map].remove(code);
