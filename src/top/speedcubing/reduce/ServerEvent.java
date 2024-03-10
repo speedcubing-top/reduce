@@ -32,8 +32,10 @@ public class ServerEvent {
             case "reduce":
                 try {
                     int id = e.receive.readInt();
-                    Reduce.mapCache.put(id, e.receive.readInt());
-                    BungeeProxy.switchServer(id, "reduce", e.receive.readInt());
+                    int map = e.receive.readInt();
+                    int port = e.receive.readInt();
+                    Reduce.mapCache.put(id, map);
+                    BungeeProxy.switchServer(id, "reduce", port);
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
