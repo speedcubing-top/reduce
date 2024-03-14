@@ -17,6 +17,7 @@ import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.eventbus.CubingEventHandler;
 import top.speedcubing.lib.events.packet.PlayInEvent;
 import top.speedcubing.lib.utils.Reflections;
+import top.speedcubing.lib.utils.internet.HostAndPort;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.lang.GlobalString;
@@ -33,9 +34,10 @@ public class ServerEvent {
                 try {
                     int id = e.receive.readInt();
                     int map = e.receive.readInt();
+                    String host = e.receive.readUTF();
                     int port = e.receive.readInt();
                     Reduce.mapCache.put(id, map);
-                    BungeeProxy.switchServer(id, "reduce", port);
+                    BungeeProxy.switchServer(id, "reduce", new HostAndPort(host, port));
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
@@ -75,7 +77,7 @@ public class ServerEvent {
                                 if (member.npc != null)
                                     member.setSkin(player, skin.getValue(), skin.getSignature());
                             }).start();
-                            speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                            member.user.setInput(false);
                         }
                     } catch (IOException ignored) {
                     }
@@ -84,7 +86,7 @@ public class ServerEvent {
                 e.isCancelled = true;
                 member.Holo.setName(ChatColor.translateAlternateColorCodes('&', message));
                 member.setName = false;
-                speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                member.user.setInput(false);
             } else if (member.ReachSettings2) {
                 e.isCancelled = true;
                 try {
@@ -94,7 +96,7 @@ public class ServerEvent {
                     else {
                         member.ReachSettings2 = false;
                         member.integerCache[9] = x;
-                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                        member.user.setInput(false);
                     }
                 } catch (Exception exception) {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
@@ -108,7 +110,7 @@ public class ServerEvent {
                     else {
                         member.horSettings2 = false;
                         member.integerCache[10] = x;
-                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                        member.user.setInput(false);
                     }
                 } catch (Exception exception) {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
@@ -122,7 +124,7 @@ public class ServerEvent {
                     else {
                         member.ReachSettings = false;
                         member.integerCache[5] = x;
-                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                        member.user.setInput(false);
                     }
                 } catch (Exception exception) {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
@@ -136,7 +138,7 @@ public class ServerEvent {
                     else {
                         member.horSettings = false;
                         member.integerCache[6] = x;
-                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                        member.user.setInput(false);
                     }
                 } catch (Exception exception) {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
@@ -150,7 +152,7 @@ public class ServerEvent {
                     else {
                         member.verSettings = false;
                         member.integerCache[7] = x;
-                        speedcubingServer.node(false, member.user.id, member.user.tcpPort);
+                        member.user.setInput(false);
                     }
                 } catch (Exception exception) {
                     member.user.sendLangMessage(GlobalString.invalidNumber);

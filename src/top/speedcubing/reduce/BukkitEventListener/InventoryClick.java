@@ -262,7 +262,7 @@ public class InventoryClick implements Listener {
                             member.user.sendLangMessage(StringList.InputString);
                             player.closeInventory();
                             member.setSkin = true;
-                            speedcubingServer.node(true, member.user.id, member.user.tcpPort);
+                            member.user.setInput(true);
                         }
                         break;
                         case 11: {
@@ -276,7 +276,7 @@ public class InventoryClick implements Listener {
                             member.user.sendLangMessage(StringList.InputString2);
                             player.closeInventory();
                             member.setName = true;
-                            speedcubingServer.node(true, member.user.id, member.user.tcpPort);
+                            member.user.setInput(true);
                         }
                         break;
                         case 14: {
@@ -291,7 +291,7 @@ public class InventoryClick implements Listener {
                         case 11: {
                             Member member = Member.getMember(player);
                             player.closeInventory();
-                            speedcubingServer.node(true, member.user.id, member.user.tcpPort);
+                            member.user.setInput(true);
                             member.user.sendLangMessage(StringList.veloinput2);
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
@@ -307,7 +307,7 @@ public class InventoryClick implements Listener {
                             Member member = Member.getMember(player);
                             player.closeInventory();
                             member.user.sendLangMessage(StringList.veloinput);
-                            speedcubingServer.node(true, member.user.id, member.user.tcpPort);
+                            member.user.setInput(true);
                             switch (e.getAction()) {
                                 case PICKUP_ALL:
                                     member.horSettings = true;
@@ -325,7 +325,7 @@ public class InventoryClick implements Listener {
                                     player.closeInventory();
                                     member.verSettings = true;
                                     member.user.sendLangMessage(StringList.veloinput);
-                                    speedcubingServer.node(true, member.user.id, member.user.tcpPort);
+                                    member.user.setInput(true);
                                     break;
                             }
                         }
