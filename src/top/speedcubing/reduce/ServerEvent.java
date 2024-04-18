@@ -21,6 +21,7 @@ import top.speedcubing.lib.utils.internet.HostAndPort;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.events.player.NickEvent;
+import top.speedcubing.server.events.player.SkinEvent;
 import top.speedcubing.server.events.player.ToggleFlyEvent;
 import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.mulitproxy.BungeeProxy;
@@ -174,13 +175,19 @@ public class ServerEvent {
     }
 
     @CubingEventHandler
+    public void ToggleFlyEvent(ToggleFlyEvent e) {
+        e.isCancelled = true;
+        Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
+    }
+
+    @CubingEventHandler
     public void NickEvent(NickEvent e) {
         e.isCancelled = true;
         Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
-    public void ToggleFlyEvent(ToggleFlyEvent e) {
+    public void SkinEvent(SkinEvent e) {
         e.isCancelled = true;
         Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
     }
