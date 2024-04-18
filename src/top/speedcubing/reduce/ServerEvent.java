@@ -20,6 +20,8 @@ import top.speedcubing.lib.utils.Reflections;
 import top.speedcubing.lib.utils.internet.HostAndPort;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
+import top.speedcubing.server.events.player.NickEvent;
+import top.speedcubing.server.events.player.ToggleFlyEvent;
 import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.mulitproxy.BungeeProxy;
 import top.speedcubing.server.share.Chat;
@@ -27,34 +29,6 @@ import top.speedcubing.server.speedcubingServer;
 import top.speedcubing.server.utils.config;
 
 public class ServerEvent {
-    @CubingEventHandler
-    public void socketEvent(SocketEvent e) {
-        switch (e.header) {
-            case "reduce":
-                try {
-                    int id = e.receive.readInt();
-                    int map = e.receive.readInt();
-                    String host = e.receive.readUTF();
-                    int port = e.receive.readInt();
-                    Reduce.mapCache.put(id, map);
-                    BungeeProxy.switchServer(id, "reduce", new HostAndPort(host, port));
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-                break;
-        }
-    }
-
-    @CubingEventHandler
-    public void ConfigReloadEvent(ConfigReloadEvent e) {
-        Reduce.ReduceKB = new double[]{
-                config.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
-        };
-    }
 
     @CubingEventHandler
     public void PlayInEvent(PlayInEvent e) {
@@ -179,5 +153,46 @@ public class ServerEvent {
                 }
             }
         }
+    }
+
+    @CubingEventHandler
+    public void socketEvent(SocketEvent e) {
+        switch (e.header) {
+            case "reduce":
+                try {
+                    int id = e.receive.readInt();
+                    int map = e.receive.readInt();
+                    String host = e.receive.readUTF();
+                    int port = e.receive.readInt();
+                    Reduce.mapCache.put(id, map);
+                    BungeeProxy.switchServer(id, "reduce", new HostAndPort(host, port));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    @CubingEventHandler
+    public void NickEvent(NickEvent e) {
+        e.isCancelled = true;
+        Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
+    }
+
+    @CubingEventHandler
+    public void ToggleFlyEvent(ToggleFlyEvent e) {
+        e.isCancelled = true;
+        Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
+    }
+
+    @CubingEventHandler
+    public void ConfigReloadEvent(ConfigReloadEvent e) {
+        Reduce.ReduceKB = new double[]{
+                config.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
+                config.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
+        };
     }
 }
