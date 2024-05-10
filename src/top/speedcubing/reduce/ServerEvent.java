@@ -14,9 +14,9 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.api.mojang.ProfileSkin;
+import top.speedcubing.lib.bukkit.events.packet.PlayInEvent;
 import top.speedcubing.lib.eventbus.CubingEventHandler;
-import top.speedcubing.lib.events.packet.PlayInEvent;
-import top.speedcubing.lib.utils.Reflections;
+import top.speedcubing.lib.utils.ReflectionUtils;
 import top.speedcubing.lib.utils.internet.HostAndPort;
 import top.speedcubing.server.events.ConfigReloadEvent;
 import top.speedcubing.server.events.SocketEvent;
@@ -33,12 +33,12 @@ public class ServerEvent {
 
     @CubingEventHandler
     public void PlayInEvent(PlayInEvent e) {
-        if (e.packet instanceof PacketPlayInChat) {
-            String message = ((PacketPlayInChat) e.packet).a();
-            Player player = e.player;
+        if (e.getPacket() instanceof PacketPlayInChat) {
+            String message = ((PacketPlayInChat) e.getPacket()).a();
+            Player player = e.getPlayer();
             Member member = Member.getMember(player);
             if (member.setSkin) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 if (!speedcubingServer.nameRegex.matcher(message).matches())
                     member.user.sendLangMessage(GlobalString.invalidName);
                 else {
@@ -58,12 +58,12 @@ public class ServerEvent {
                     }
                 }
             } else if (member.setName) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 member.Holo.setName(ChatColor.translateAlternateColorCodes('&', message));
                 member.setName = false;
                 member.user.setInput(false);
             } else if (member.ReachSettings2) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 25000)
@@ -77,7 +77,7 @@ public class ServerEvent {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.horSettings2) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
@@ -91,7 +91,7 @@ public class ServerEvent {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.ReachSettings) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 25000)
@@ -105,7 +105,7 @@ public class ServerEvent {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.horSettings) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
@@ -119,7 +119,7 @@ public class ServerEvent {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (member.verSettings) {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 try {
                     int x = (int) (Double.parseDouble(message) * 1000);
                     if (x < 0 || x > 5000)
@@ -133,15 +133,15 @@ public class ServerEvent {
                     member.user.sendLangMessage(GlobalString.invalidNumber);
                 }
             } else if (message.charAt(0) != '/') {
-                e.isCancelled = true;
+                e.setCancelled(true);
                 Chat.globalChat(Bukkit.getOnlinePlayers(), player, GlobalString.MessageFormat, message, member.user.getPrefixName(false), member.user.getFormat(false).getChatColor());
             }
-        } else if (e.packet instanceof PacketPlayInUseEntity) {
-            if (e.player.getGameMode() == GameMode.ADVENTURE && ((PacketPlayInUseEntity) e.packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
-                Member member = Member.getMember(e.player);
+        } else if (e.getPacket() instanceof PacketPlayInUseEntity) {
+            if (e.getPlayer().getGameMode() == GameMode.ADVENTURE && ((PacketPlayInUseEntity) e.getPacket()).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
+                Member member = Member.getMember(e.getPlayer());
                 if (!member.isLockedOnSomeone) {
-                    if (member.target.user.player.getEntityId() == (int) Reflections.getField(e.packet, "a")) {
-                        PlayerConnection connection = ((CraftPlayer) e.player).getHandle().playerConnection;
+                    if (member.target.user.player.getEntityId() == (int) ReflectionUtils.getField(e.getPacket(), "a")) {
+                        PlayerConnection connection = ((CraftPlayer) e.getPlayer()).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutGameStateChange(3, 3));
                         connection.sendPacket(new PacketPlayOutCamera(member.target.user.toNMS()));
                         PacketPlayOutAbilities abilities = new PacketPlayOutAbilities();
@@ -176,19 +176,19 @@ public class ServerEvent {
 
     @CubingEventHandler
     public void ToggleFlyEvent(ToggleFlyEvent e) {
-        e.isCancelled = true;
+        e.setCancelled(true);
         Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
     public void NickEvent(NickEvent e) {
-        e.isCancelled = true;
+        e.setCancelled(true);
         Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
     public void SkinEvent(SkinEvent e) {
-        e.isCancelled = true;
+        e.setCancelled(true);
         Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
