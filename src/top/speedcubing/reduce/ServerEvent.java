@@ -166,6 +166,7 @@ public class ServerEvent {
                     String host = e.receive.readUTF();
                     int port = e.receive.readInt();
                     Reduce.mapCache.put(id, map);
+                    System.out.println(id + " " + map + " " + host + " " + port);
                     BungeeProxy.switchServer(id, "reduce", new HostAndPort(host, port));
                 } catch (IOException exception) {
                     exception.printStackTrace();
@@ -177,19 +178,19 @@ public class ServerEvent {
     @CubingEventHandler
     public void ToggleFlyEvent(ToggleFlyEvent e) {
         e.setCancelled(true);
-        Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
+        Member.getMember(e.getPlayer()).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
     public void NickEvent(NickEvent e) {
         e.setCancelled(true);
-        Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
+        Member.getMember(e.getPlayer()).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
     public void SkinEvent(SkinEvent e) {
         e.setCancelled(true);
-        Member.getMember(e.player).user.sendLangMessage(GlobalString.OnlyInHub);
+        Member.getMember(e.getPlayer()).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
