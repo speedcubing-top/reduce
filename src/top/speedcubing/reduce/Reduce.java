@@ -27,24 +27,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.lib.eventbus.CubingEventManager;
-import top.speedcubing.reduce.BukkitEventListener.BlockBreak;
-import top.speedcubing.reduce.BukkitEventListener.BlockPlace;
-import top.speedcubing.reduce.BukkitEventListener.EntityDamage;
-import top.speedcubing.reduce.BukkitEventListener.InventoryClick;
-import top.speedcubing.reduce.BukkitEventListener.InventoryClose;
-import top.speedcubing.reduce.BukkitEventListener.PlayerDropItem;
-import top.speedcubing.reduce.BukkitEventListener.PlayerInteract;
-import top.speedcubing.reduce.BukkitEventListener.PlayerItemHeld;
-import top.speedcubing.reduce.BukkitEventListener.PlayerJoin;
-import top.speedcubing.reduce.BukkitEventListener.PlayerMove;
-import top.speedcubing.reduce.BukkitEventListener.PlayerQuit;
-import top.speedcubing.reduce.BukkitEventListener.PlayerToggleSneak;
-import top.speedcubing.reduce.Core.BlockEditor;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.bukkitlistener.BlockBreak;
+import top.speedcubing.reduce.bukkitlistener.BlockPlace;
+import top.speedcubing.reduce.bukkitlistener.EntityDamage;
+import top.speedcubing.reduce.bukkitlistener.InventoryClick;
+import top.speedcubing.reduce.bukkitlistener.InventoryClose;
+import top.speedcubing.reduce.bukkitlistener.PlayerDropItem;
+import top.speedcubing.reduce.bukkitlistener.PlayerInteract;
+import top.speedcubing.reduce.bukkitlistener.PlayerItemHeld;
+import top.speedcubing.reduce.bukkitlistener.PlayerJoin;
+import top.speedcubing.reduce.bukkitlistener.PlayerMove;
+import top.speedcubing.reduce.bukkitlistener.PlayerQuit;
+import top.speedcubing.reduce.bukkitlistener.PlayerToggleSneak;
+import top.speedcubing.reduce.core.BlockEditor;
+import top.speedcubing.reduce.list.ItemStackList;
+import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.utils.MapManager;
-import top.speedcubing.server.utils.config;
 
 public class Reduce extends JavaPlugin {
     public static World world;
@@ -67,6 +66,8 @@ public class Reduce extends JavaPlugin {
 
     public void onEnable() {
         MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
+        CubingEventManager.registerListeners(new ServerEvent());
+
         Bukkit.getPluginManager().registerEvents(new BlockBreak(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlace(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamage(), this);
@@ -92,8 +93,6 @@ public class Reduce extends JavaPlugin {
             specName[i] = new HashMap<>();
             Rooms[i] = new HashSet<>();
         }
-        CubingEventManager.registerListeners(new ServerEvent());
-        config.event.call();
 
         try {
             world = MapManager.install(mapName, mapName, Difficulty.PEACEFUL, 6000, false);

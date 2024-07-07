@@ -1,4 +1,4 @@
-package top.speedcubing.reduce.List;
+package top.speedcubing.reduce.list;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

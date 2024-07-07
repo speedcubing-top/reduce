@@ -1,4 +1,4 @@
-package top.speedcubing.reduce.Core;
+package top.speedcubing.reduce.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
-import top.speedcubing.reduce.List.ItemStackList;
+import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.server.lang.GlobalString;
 

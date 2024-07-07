@@ -1,4 +1,4 @@
-package top.speedcubing.reduce.BukkitEventListener;
+package top.speedcubing.reduce.bukkitlistener;
 
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import org.bukkit.GameMode;

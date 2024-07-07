@@ -38,11 +38,9 @@ import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.utils.TimeFormatter;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.list.ItemStackList;
+import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.server.player.User;
-import top.speedcubing.server.speedcubingServer;
-import top.speedcubing.server.utils.config;
 
 public class Member {
     public static Map<Integer, Member> users = new HashMap<>();

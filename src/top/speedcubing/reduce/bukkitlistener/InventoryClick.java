@@ -1,4 +1,4 @@
-package top.speedcubing.reduce.BukkitEventListener;
+package top.speedcubing.reduce.bukkitlistener;
 
 
 import com.mojang.authlib.properties.Property;
@@ -20,14 +20,12 @@ import org.bukkit.inventory.ItemStack;
 import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.inventory.InventoryUtils;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
-import top.speedcubing.reduce.Core.BlockEditor;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.core.BlockEditor;
+import top.speedcubing.reduce.list.ItemStackList;
+import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.lang.GlobalString;
-import top.speedcubing.server.speedcubingServer;
-import top.speedcubing.server.utils.config;
 
 public class InventoryClick implements Listener {
     @EventHandler

@@ -1,4 +1,4 @@
-package top.speedcubing.reduce.List;
+package top.speedcubing.reduce.list;
 
 import top.speedcubing.server.lang.LangMessage;
 

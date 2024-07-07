@@ -12,14 +12,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import top.speedcubing.common.configuration.ServerConfig;
+import top.speedcubing.common.events.ConfigReloadEvent;
+import top.speedcubing.common.events.SocketReadEvent;
 import top.speedcubing.lib.api.MojangAPI;
 import top.speedcubing.lib.api.mojang.ProfileSkin;
 import top.speedcubing.lib.bukkit.events.packet.PlayInEvent;
 import top.speedcubing.lib.eventbus.CubingEventHandler;
 import top.speedcubing.lib.utils.ReflectionUtils;
 import top.speedcubing.lib.utils.internet.HostAndPort;
-import top.speedcubing.server.events.ConfigReloadEvent;
-import top.speedcubing.server.events.SocketEvent;
 import top.speedcubing.server.events.player.NickEvent;
 import top.speedcubing.server.events.player.SkinEvent;
 import top.speedcubing.server.events.player.ToggleFlyEvent;
@@ -27,7 +28,6 @@ import top.speedcubing.server.lang.GlobalString;
 import top.speedcubing.server.mulitproxy.BungeeProxy;
 import top.speedcubing.server.share.Chat;
 import top.speedcubing.server.speedcubingServer;
-import top.speedcubing.server.utils.config;
 
 public class ServerEvent {
 
@@ -157,14 +157,14 @@ public class ServerEvent {
     }
 
     @CubingEventHandler
-    public void socketEvent(SocketEvent e) {
-        switch (e.header) {
+    public void socketEvent(SocketReadEvent e) {
+        switch (e.getPacketID()) {
             case "reduce":
                 try {
-                    int id = e.receive.readInt();
-                    int map = e.receive.readInt();
-                    String host = e.receive.readUTF();
-                    int port = e.receive.readInt();
+                    int id = e.getData().readInt();
+                    int map = e.getData().readInt();
+                    String host = e.getData().readUTF();
+                    int port = e.getData().readInt();
                     Reduce.mapCache.put(id, map);
                     System.out.println(id + " " + map + " " + host + " " + port);
                     BungeeProxy.switchServer(id, "reduce", new HostAndPort(host, port));
@@ -196,11 +196,11 @@ public class ServerEvent {
     @CubingEventHandler
     public void ConfigReloadEvent(ConfigReloadEvent e) {
         Reduce.ReduceKB = new double[]{
-                config.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
-                config.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
+                ServerConfig.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
         };
     }
 }

@@ -1,4 +1,4 @@
-package top.speedcubing.reduce.BukkitEventListener;
+package top.speedcubing.reduce.bukkitlistener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -11,8 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
-import top.speedcubing.reduce.List.ItemStackList;
-import top.speedcubing.reduce.List.StringList;
+import top.speedcubing.reduce.list.ItemStackList;
+import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
 
