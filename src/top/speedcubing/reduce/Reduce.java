@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import top.speedcubing.common.events.ConfigReloadEvent;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.lib.eventbus.CubingEventManager;
@@ -67,6 +68,7 @@ public class Reduce extends JavaPlugin {
     public void onEnable() {
         MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
         CubingEventManager.registerListeners(new ServerEvent());
+        new ConfigReloadEvent().call();
 
         Bukkit.getPluginManager().registerEvents(new BlockBreak(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlace(), this);
