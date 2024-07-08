@@ -32,7 +32,18 @@ import top.speedcubing.server.speedcubingServer;
 public class ServerEvent {
 
     @CubingEventHandler
-    public void PlayInEvent(PlayInEvent e) {
+    public void configReloadEvent(ConfigReloadEvent e) {
+        Reduce.ReduceKB = new double[]{
+                ServerConfig.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
+                ServerConfig.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
+        };
+    }
+
+    @CubingEventHandler
+    public void playInEvent(PlayInEvent e) {
         if (e.getPacket() instanceof PacketPlayInChat) {
             String message = ((PacketPlayInChat) e.getPacket()).a();
             Player player = e.getPlayer();
@@ -157,7 +168,7 @@ public class ServerEvent {
     }
 
     @CubingEventHandler
-    public void socketEvent(SocketReadEvent e) {
+    public void socketReadEvent(SocketReadEvent e) {
         switch (e.getPacketID()) {
             case "reduce":
                 try {
@@ -176,31 +187,20 @@ public class ServerEvent {
     }
 
     @CubingEventHandler
-    public void ToggleFlyEvent(ToggleFlyEvent e) {
+    public void nickEvent(NickEvent e) {
         e.setCancelled(true);
         Member.getMember(e.getPlayer()).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
-    public void NickEvent(NickEvent e) {
+    public void skinEvent(SkinEvent e) {
         e.setCancelled(true);
         Member.getMember(e.getPlayer()).user.sendLangMessage(GlobalString.OnlyInHub);
     }
 
     @CubingEventHandler
-    public void SkinEvent(SkinEvent e) {
+    public void toggleFlyEvent(ToggleFlyEvent e) {
         e.setCancelled(true);
         Member.getMember(e.getPlayer()).user.sendLangMessage(GlobalString.OnlyInHub);
-    }
-
-    @CubingEventHandler
-    public void ConfigReloadEvent(ConfigReloadEvent e) {
-        Reduce.ReduceKB = new double[]{
-                ServerConfig.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
-        };
     }
 }

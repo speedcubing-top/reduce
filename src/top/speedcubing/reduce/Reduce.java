@@ -32,7 +32,6 @@ import top.speedcubing.reduce.bukkitlistener.BlockBreak;
 import top.speedcubing.reduce.bukkitlistener.BlockPlace;
 import top.speedcubing.reduce.bukkitlistener.EntityDamage;
 import top.speedcubing.reduce.bukkitlistener.InventoryClick;
-import top.speedcubing.reduce.bukkitlistener.InventoryClose;
 import top.speedcubing.reduce.bukkitlistener.PlayerDropItem;
 import top.speedcubing.reduce.bukkitlistener.PlayerInteract;
 import top.speedcubing.reduce.bukkitlistener.PlayerItemHeld;
@@ -44,6 +43,7 @@ import top.speedcubing.reduce.core.BlockEditor;
 import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.server.lang.GlobalString;
+import top.speedcubing.server.speedcubingServer;
 import top.speedcubing.server.utils.MapManager;
 
 public class Reduce extends JavaPlugin {
@@ -65,23 +65,12 @@ public class Reduce extends JavaPlugin {
     public static double[] ReduceKB;
     public static String mapName = "map_reduce";
 
+    @Override
     public void onEnable() {
         MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
         CubingEventManager.registerListeners(new ServerEvent());
         new ConfigReloadEvent().call();
-
-        Bukkit.getPluginManager().registerEvents(new BlockBreak(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockPlace(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDamage(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryClick(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerDropItem(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerInteract(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerItemHeld(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryClose(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerMove(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerQuit(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerToggleSneak(), this);
+        registerListeners();
 
         new ItemStackList().Load();
         new BlockEditor().Load();
@@ -102,6 +91,21 @@ public class Reduce extends JavaPlugin {
             e.printStackTrace();
             Bukkit.getServer().shutdown();
         }
+    }
+
+    private void registerListeners() {
+        speedcubingServer.registerListeners(
+                new BlockBreak(),
+                new BlockPlace(),
+                new EntityDamage(),
+                new InventoryClick(),
+                new PlayerDropItem(),
+                new PlayerInteract(),
+                new PlayerItemHeld(),
+                new PlayerJoin(),
+                new PlayerMove(),
+                new PlayerQuit(),
+                new PlayerToggleSneak());
     }
 
     public static int coordToRoom(int z) {
@@ -134,7 +138,7 @@ public class Reduce extends JavaPlugin {
             inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
             inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
             inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(top.speedcubing.reduce.Reduce.getPlugin(top.speedcubing.reduce.Reduce.class), () -> {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(speedcubingServer.getInstance(), () -> {
                 member.npc.spawn().hideFromTab(4000);
                 member.Holo.spawn();
             }, 1);
@@ -160,7 +164,7 @@ public class Reduce extends JavaPlugin {
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
                     ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.bGetName())));
-                Bukkit.getScheduler().runTask(top.speedcubing.reduce.Reduce.getPlugin(top.speedcubing.reduce.Reduce.class), () -> p.openInventory(inv1));
+                Bukkit.getScheduler().runTask(speedcubingServer.getInstance(), () -> p.openInventory(inv1));
             }
         }
     }

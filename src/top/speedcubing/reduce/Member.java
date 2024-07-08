@@ -41,6 +41,7 @@ import top.speedcubing.lib.utils.TimeFormatter;
 import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.server.player.User;
+import top.speedcubing.server.speedcubingServer;
 
 public class Member {
     public static Map<Integer, Member> users = new HashMap<>();
@@ -115,7 +116,7 @@ public class Member {
                     if (r.getAction().equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) && p.getNoDamageTicks() < p.getMaximumNoDamageTicks() / 2 && p.getGameMode().equals(GameMode.SURVIVAL)) {
                         ItemStack hand = p.getItemInHand();
                         if ((hand == null || hand.getType() != Material.INK_SACK) && task == -1) {
-                            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(Reduce.getPlugin(Reduce.class), () -> {
+                            task = Bukkit.getScheduler().scheduleSyncRepeatingTask(speedcubingServer.getInstance(), () -> {
                                 Location location = p.getLocation();
                                 double xDiff = location.getX() - map * 500 - 0.5;
                                 double zDiff = location.getZ() - coord - 0.5;
@@ -139,7 +140,7 @@ public class Member {
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutAnimation(entityplayer, 1));
                                     Reduce.sendPackets(connection, Spectators, new PacketPlayOutNamedSoundEffect(CraftSound.getSound(Sound.HURT_FLESH), location.getX(), location.getY(), location.getZ(), 1, 1));
                                     if (booleanCache[2] && Spectators != null)
-                                        Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () ->
+                                        Bukkit.getScheduler().scheduleSyncDelayedTask(speedcubingServer.getInstance(), () ->
                                                 npc.animation(0), 5);
                                 }
                             }, 0, 10);

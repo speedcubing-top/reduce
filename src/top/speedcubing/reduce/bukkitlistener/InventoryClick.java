@@ -26,6 +26,7 @@ import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
 import top.speedcubing.server.lang.GlobalString;
+import top.speedcubing.server.speedcubingServer;
 
 public class InventoryClick implements Listener {
     @EventHandler
@@ -387,7 +388,7 @@ public class InventoryClick implements Listener {
                             player.teleport(new Location(Reduce.world, map * 500 + 0.5, 100, targetMember.coord + 0.5, 0, 0));
                             player.closeInventory();
                             targetMember.user.bHidePlayer(player);
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(Reduce.getPlugin(Reduce.class), () -> {
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(speedcubingServer.getInstance(), () -> {
                                 targetMember.npc.setListener(player).spawn().hideFromTab(4000).undoSetListener();
                                 targetMember.Holo.setListener(player).spawn().undoSetListener();
                             }, 1);
