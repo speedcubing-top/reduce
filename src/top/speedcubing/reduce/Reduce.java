@@ -49,7 +49,6 @@ import top.speedcubing.server.utils.MapManager;
 public class Reduce extends JavaPlugin {
     public static World world;
 
-
     public static final int maptypes = 5;
     public static final int[][] MapLocations = {{2, 0}, {1, 0}, {0, 4}, {1, 0}, {1, 0}};
 
@@ -71,6 +70,7 @@ public class Reduce extends JavaPlugin {
         CubingEventManager.registerListeners(new ServerEvent());
         new ConfigReloadEvent().call();
         registerListeners();
+        registerWorlds();
 
         new ItemStackList().Load();
         new BlockEditor().Load();
@@ -83,13 +83,6 @@ public class Reduce extends JavaPlugin {
             specStorage[i] = new ArrayList<>();
             specName[i] = new HashMap<>();
             Rooms[i] = new HashSet<>();
-        }
-
-        try {
-            world = MapManager.install(mapName, mapName, Difficulty.PEACEFUL, 6000, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Bukkit.getServer().shutdown();
         }
     }
 
@@ -106,6 +99,15 @@ public class Reduce extends JavaPlugin {
                 new PlayerMove(),
                 new PlayerQuit(),
                 new PlayerToggleSneak());
+    }
+
+    private void registerWorlds() {
+        try {
+            world = MapManager.install(mapName, mapName, Difficulty.PEACEFUL, 6000, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getServer().shutdown();
+        }
     }
 
     public static int coordToRoom(int z) {
