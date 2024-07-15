@@ -54,19 +54,19 @@ public class ServerEvent {
                     member.user.sendLangMessage(GlobalString.invalidName);
                 else {
                     member.setSkin = false;
-                    try {
-                        ProfileSkin skin = MojangAPI.getSkinByName(message);
-                        if (skin == null)
-                            member.user.sendLangMessage(GlobalString.invalidName);
-                        else {
-                            new Thread(() -> {
+                    speedcubingServer.scheduledPool.execute(() -> {
+                        try {
+                            ProfileSkin skin = MojangAPI.getSkinByName(message);
+                            if (skin == null)
+                                member.user.sendLangMessage(GlobalString.invalidName);
+                            else {
                                 if (member.npc != null)
-                                    member.setSkin(player, skin.getValue(), skin.getSignature());
-                            }).start();
-                            member.user.setInput(false);
+                                    member.setSkin(player, skin.getSkin().getValue(), skin.getSkin().getSignature());
+                            }
+                        } catch (IOException ignored) {
                         }
-                    } catch (IOException ignored) {
-                    }
+                    });
+                    member.user.setInput(false);
                 }
             } else if (member.setName) {
                 e.setCancelled(true);
