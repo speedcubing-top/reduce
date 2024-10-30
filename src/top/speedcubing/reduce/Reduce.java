@@ -30,6 +30,7 @@ import top.speedcubing.reduce.bukkitlistener.BlockBreak;
 import top.speedcubing.reduce.bukkitlistener.BlockPlace;
 import top.speedcubing.reduce.bukkitlistener.EntityDamage;
 import top.speedcubing.reduce.bukkitlistener.InventoryClick;
+import top.speedcubing.reduce.bukkitlistener.InventoryClose;
 import top.speedcubing.reduce.bukkitlistener.PlayerDropItem;
 import top.speedcubing.reduce.bukkitlistener.PlayerInteract;
 import top.speedcubing.reduce.bukkitlistener.PlayerItemHeld;
@@ -88,6 +89,7 @@ public class Reduce extends JavaPlugin {
                 new BlockPlace(),
                 new EntityDamage(),
                 new InventoryClick(),
+                new InventoryClose(),
                 new PlayerDropItem(),
                 new PlayerInteract(),
                 new PlayerItemHeld(),

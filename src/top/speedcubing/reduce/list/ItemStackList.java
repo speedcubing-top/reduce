@@ -43,8 +43,6 @@ public class ItemStackList {
     public static ItemStack[] specialeditor = new ItemStack[9]; // blockedit-here
 
     public void Load() {
-        String[] leavespec = {"§cLeave Spectate mode", "§cLeave Spectate mode", "§cLeave Spectate mode", "§cLeave Spectate mode"};
-        String[] specitem = {"§bSpectate", "§bSpectate", "§bSpectate", "§bSpectate"};
         Maps[0][0] = new LangItem(Material.LOG).durability(3).name("§6Oneline");
         Maps[0][1] = new LangItem(Material.BED).name("§6BedWars");
         Maps[0][2] = new LangItem(Material.BARRIER).name("§6OneBlock");

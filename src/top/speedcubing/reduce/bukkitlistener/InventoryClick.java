@@ -2,6 +2,7 @@ package top.speedcubing.reduce.bukkitlistener;
 
 
 import com.mojang.authlib.properties.Property;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -90,13 +91,11 @@ public class InventoryClick implements Listener {
                                 }
                             }, 12);
                             inv.setClickEvent((r) -> {
-                                switch (e.getAction()) {
-                                    case PICKUP_ALL:
-                                        player.closeInventory();
-                                        member.verSettings = true;
-                                        member.user.sendMessage("§aPlease input a valid number (0.000 ~ 5.000)");
-                                        member.user.setInput(true);
-                                        break;
+                                if (Objects.requireNonNull(e.getAction()) == InventoryAction.PICKUP_ALL) {
+                                    player.closeInventory();
+                                    member.verSettings = true;
+                                    member.user.sendMessage("§aPlease input a valid number (0.000 ~ 5.000)");
+                                    member.user.setInput(true);
                                 }
                             }, 13);
                             inv.setClickEvent((r) -> {
