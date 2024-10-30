@@ -7,7 +7,6 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutAbilities;
 import net.minecraft.server.v1_8_R3.PacketPlayOutCamera;
 import net.minecraft.server.v1_8_R3.PacketPlayOutGameStateChange;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -55,19 +54,19 @@ public class ServerEvent {
                     member.user.sendMessage("%lang_general_invaid_name%");
                 else {
                     member.setSkin = false;
-                    try {
-                        ProfileSkin skin = MojangAPI.getSkinByName(message);
-                        if (skin == null)
-                            member.user.sendMessage("%lang_general_invaid_name%");
-                        else {
-                            new Thread(() -> {
+                    speedcubingServer.scheduledPool.execute(() -> {
+                        try {
+                            ProfileSkin skin = MojangAPI.getSkinByName(message);
+                            if (skin == null)
+                                member.user.sendMessage("%lang_general_invaid_name%");
+                            else {
                                 if (member.npc != null)
                                     member.setSkin(player, skin.getSkin().getValue(), skin.getSkin().getSignature());
-                            }).start();
-                            member.user.setInput(false);
+                            }
+                        } catch (IOException ignored) {
                         }
-                    } catch (IOException ignored) {
-                    }
+                    });
+                    member.user.setInput(false);
                 }
             } else if (member.setName) {
                 e.setCancelled(true);
