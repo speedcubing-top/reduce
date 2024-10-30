@@ -169,17 +169,17 @@ public class Member {
             m.coord = coord;
             m.user.bTeleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         }
-        new Thread(() -> {
-            booleanCache = first ? user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").getBooleanArray() : a;
-            integerCache = first ? user.dbSelect("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor").getIntArray() : integerCache;
-            Inventory inventory = player.getInventory();
-            inventory.clear();
-            inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
-            inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]][user.lang]);
-            inventory.setItem(integerCache[8], ItemStackList.Spec[user.lang]);
-            inventory.setItem(integerCache[2], ItemStackList.settings[user.lang]);
-            b();
-        }).start();
+
+        booleanCache = first ? user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").getBooleanArray() : a;
+        integerCache = first ? user.dbSelect("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor").getIntArray() : integerCache;
+        Inventory inventory = player.getInventory();
+        inventory.clear();
+        inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
+
+        inventory.setItem(integerCache[1], ItemStackList.Blocks[integerCache[4]]);
+        inventory.setItem(integerCache[8], ItemStackList.Spec.get(user));
+        inventory.setItem(integerCache[2], ItemStackList.settings[user.lang]);
+        b();
 
         player.updateInventory();
         String[] sidebar = StringList.ReduceSidebar[user.lang];
@@ -293,7 +293,7 @@ public class Member {
         for (int i = total; i > realindex; i--) {
             Reduce.spec.setItem(i, Reduce.spec.getItem(i - 1));
         }
-        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map][0].getType()).name(user.getColorName(false)).build());
+        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map].get(0).getType()).name(user.getColorName(false)).build());
         Reduce.updateSpecPage(0);
     }
 

@@ -27,31 +27,31 @@ public class PlayerInteract implements Listener {
                     Member member = Member.getMember(player);
                     player.openInventory(ItemStackList.Settings[member.user.lang]);
                     if (member.setSkin) {
-                        member.user.sendLangMessage(StringList.InputStringCancel);
+                        member.user.sendMessage(StringList.InputStringCancel);
                         member.setSkin = false;
                     }
                     if (member.setName) {
-                        member.user.sendLangMessage(StringList.InputStringCancel2);
+                        member.user.sendMessage(StringList.InputStringCancel2);
                         member.setName = false;
                     }
                     if (member.ReachSettings) {
-                        member.user.sendLangMessage(StringList.InputStringCancel3);
+                        member.user.sendMessage(StringList.InputStringCancel3);
                         member.ReachSettings = false;
                     }
                     if (member.horSettings) {
-                        member.user.sendLangMessage(StringList.InputStringCancel4);
+                        member.user.sendMessage(StringList.InputStringCancel4);
                         member.horSettings = false;
                     }
                     if (member.verSettings) {
-                        member.user.sendLangMessage(StringList.InputStringCancel5);
+                        member.user.sendMessage(StringList.InputStringCancel5);
                         member.verSettings = false;
                     }
                     if (member.ReachSettings2) {
-                        member.user.sendLangMessage(StringList.InputStringCancel3);
+                        member.user.sendMessage(StringList.InputStringCancel3);
                         member.ReachSettings2 = false;
                     }
                     if (member.horSettings2) {
-                        member.user.sendLangMessage(StringList.InputStringCancel4);
+                        member.user.sendMessage(StringList.InputStringCancel4);
                         member.horSettings2 = false;
                     }
                 }
@@ -59,7 +59,7 @@ public class PlayerInteract implements Listener {
             case COMPASS:
                 Member member = Member.getMember(player);
                 Inventory orig = Reduce.spec;
-                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.get(member.user.lang));
+                Inventory inventory = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.getString(member.user.lang));
                 inventory.setContents(orig.getContents());
                 if (player.getGameMode().equals(GameMode.ADVENTURE)) {
                     int a = Reduce.totalName.indexOf(member.target.user.bGetName());

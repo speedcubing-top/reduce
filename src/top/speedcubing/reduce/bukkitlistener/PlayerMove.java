@@ -37,7 +37,7 @@ public class PlayerMove implements Listener {
                 member.stopDamage();
                 int[] m = Reduce.MapLocations[map];
                 player.teleport(new Location(Reduce.world, NPCx - m[0], 100 + m[1], NPCz, 270, 0));
-                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]][member.user.lang]);
+                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]]);
                 member.BlockPlaced = 0;
                 member.clearBlocks();
                 new Timer().schedule(new TimerTask() {

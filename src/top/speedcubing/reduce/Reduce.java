@@ -22,10 +22,8 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.speedcubing.common.events.ConfigReloadEvent;
-import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
 import top.speedcubing.lib.bukkit.inventory.ItemUtils;
 import top.speedcubing.lib.eventbus.CubingEventManager;
 import top.speedcubing.reduce.bukkitlistener.BlockBreak;
@@ -42,7 +40,7 @@ import top.speedcubing.reduce.bukkitlistener.PlayerToggleSneak;
 import top.speedcubing.reduce.core.BlockEditor;
 import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
-import top.speedcubing.server.lang.GlobalString;
+import top.speedcubing.server.lang.LangItem;
 import top.speedcubing.server.speedcubingServer;
 import top.speedcubing.server.utils.MapManager;
 
@@ -56,7 +54,7 @@ public class Reduce extends JavaPlugin {
 
     public static final Set<Integer>[] Rooms = new HashSet[maptypes];
     public static final Map<Integer, Integer> mapCache = new HashMap<>();
-    public static final ItemStack[] Invalid = new ItemStack[4];
+    public static LangItem Invalid;
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
     public static final List<Integer>[] specStorage = new ArrayList[maptypes];
     public static final Map<Integer, List<String>>[] specName = new HashMap[maptypes];
@@ -76,9 +74,7 @@ public class Reduce extends JavaPlugin {
         new BlockEditor().Load();
         NoNameTag = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), "");
         NoNameTag.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
-        for (int i = 0; i < 4; i++) {
-            Invalid[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).durability(8).name(GlobalString.CantSetItemhere.get(i)).build();
-        }
+        Invalid = new LangItem(Material.STAINED_GLASS_PANE).durability(8).name("%lang_inv_cant_set_item%");
         for (int i = 0; i < maptypes; i++) {
             specStorage[i] = new ArrayList<>();
             specName[i] = new HashMap<>();
@@ -137,8 +133,8 @@ public class Reduce extends JavaPlugin {
             Inventory inventory = member.user.bGetInventory();
             inventory.clear();
             inventory.setItem(ints[0], ItemStackList.Sticks[ints[3]][member.user.lang]);
-            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]][member.user.lang]);
-            inventory.setItem(ints[8], ItemStackList.Spec[member.user.lang]);
+            inventory.setItem(ints[1], ItemStackList.Blocks[ints[4]]);
+            inventory.setItem(ints[8], ItemStackList.Spec.get(member.user));
             inventory.setItem(ints[2], ItemStackList.settings[member.user.lang]);
             Bukkit.getScheduler().scheduleSyncDelayedTask(speedcubingServer.getInstance(), () -> {
                 member.npc.spawn().hideFromTab(4000);
@@ -162,7 +158,7 @@ public class Reduce extends JavaPlugin {
             Member member = Member.getMember(p);
             if (p.getOpenInventory().getTopInventory().getHolder() == ItemStackList.SpecHolder && !(notnull && member.user.id == id)) {
                 Inventory orig = spec;
-                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.get(member.user.lang));
+                Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.getString(member.user.lang));
                 inv1.setContents(orig.getContents());
                 if (p.getGameMode() == GameMode.ADVENTURE)
                     ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.bGetName())));

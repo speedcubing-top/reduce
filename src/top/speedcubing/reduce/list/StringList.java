@@ -1,81 +1,17 @@
 package top.speedcubing.reduce.list;
 
-import top.speedcubing.server.lang.LangMessage;
+import top.speedcubing.server.lang.Lang;
 
 public class StringList {
-    public static LangMessage spec = new LangMessage("§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu", "§bSpectate Menu"
-    );
-    public static final LangMessage stickedit = new LangMessage("§bStick Skin", "§bStick Skin", "§bStick Skin", "§bStick Skin"
-    );
-    public static final LangMessage title = new LangMessage("§bNPC appearances", "§bNPC appearances", "§bNPC appearances", "§bNPC appearances"
-    );
-    public static final LangMessage input = new LangMessage("§aChange NPC's skin", "§aChange NPC's skin", "§aChange NPC's skin", "§aChange NPC's skin"
-    );
-    public static final LangMessage name = new LangMessage("§aChange NPC's DisplayName", "§aChange NPC's DisplayName", "§aChange NPC's DisplayName", "§aChange NPC's DisplayName"
-    );
-    public static final LangMessage resetname = new LangMessage("§aReset NPC's name to default", "§aReset NPC's name to default", "§aReset NPC's name to default", "§aReset NPC's name to default"
-    );
-    public static final LangMessage own = new LangMessage("§aUse your current skin", "§aUse your current skin", "§aUse your current skin", "§aUse your current skin"
-    );
-    public static final LangMessage mapselect = new LangMessage("§6Select Map", "§6Select Map", "§6Select Map", "§6Select Map"
-
-    );
-    public static final LangMessage prefedit = new LangMessage("§bPreferences", "§bPreferences", "§bPreferences", "§bPreferences"
-    );
-    public static LangMessage InputStringCancel2 = new LangMessage(
-            "§cNPC name change is cancelled.",
-            "§cNPC name change is cancelled.",
-            "§cNPC name change is cancelled.",
-            "§cNPC name change is cancelled."
-    );
-
-    public static LangMessage InputStringCancel = new LangMessage(
-            "§cNPC skin change is cancelled.",
-            "§cNPC skin change is cancelled.",
-            "§cNPC skin change is cancelled.",
-            "§cNPC skin change is cancelled."
-    );
-
-    public static LangMessage InputStringCancel3 = new LangMessage(
-            "§cNPC Reach Settings is cancelled.",
-            "§cNPC Reach Settings is cancelled.",
-            "§cNPC Reach Settings is cancelled.",
-            "§cNPC Reach Settings is cancelled."
-    );
-    public static LangMessage InputStringCancel4 = new LangMessage(
-            "§cHorizontal Kb Settings is cancelled.",
-            "§cHorizontal Kb Settings is cancelled.",
-            "§cHorizontal Kb Settings is cancelled.",
-            "§cHorizontal Kb Settings is cancelled."
-    );
-
-
-    public static LangMessage InputStringCancel5 = new LangMessage(
-            "§cVertical Kb Settings is cancelled.",
-            "§cVertical Kb Settings is cancelled.",
-            "§cVertical Kb Settings is cancelled.",
-            "§cVertical Kb Settings is cancelled."
-    );
-
-    public static LangMessage InputString = new LangMessage(
-            "§aPlease input a valid username for NPC's skin in chat:",
-            "§aPlease input a valid username for NPC's skin in chat:",
-            "§aPlease input a valid username for NPC's skin in chat:",
-            "§aPlease input a valid username for NPC's skin in chat:"
-    );
-    public static LangMessage InputString2 = new LangMessage(
-            "§aPlease input a String for NPC's name in chat:",
-            "§aPlease input a String for NPC's name in chat:",
-            "§aPlease input a String for NPC's name in chat:",
-            "§aPlease input a String for NPC's name in chat:"
-    );
-
-    public static final LangMessage npchitsettings = new LangMessage("§bHit Settings", "§bHit Settings", "§bHit Settings", "§bHit Settings");
-    public static final LangMessage def = new LangMessage("§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack", "§bVanilla KnockBack");
-
-
-    public static LangMessage veloinput = new LangMessage("§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)", "§aPlease input a valid number (0.000 ~ 5.000)");
-    public static LangMessage veloinput2 = new LangMessage("§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)", "§aPlease input a valid number (0.000 ~ 25.000)");
+    public static Lang spec = Lang.of("§bSpectate Menu");
+    public static final Lang stickedit = Lang.of("§bStick Skin");
+    public static final Lang prefedit = Lang.of("§bPreferences");
+    public static final Lang InputStringCancel2 = Lang.of("§cNPC name change is cancelled.");
+    public static final Lang InputStringCancel = Lang.of("§cNPC skin change is cancelled.");
+    public static final Lang InputStringCancel3 = Lang.of("§cNPC Reach Settings is cancelled.");
+    public static final Lang InputStringCancel4 = Lang.of("§cHorizontal Kb Settings is cancelled.");
+    public static final Lang InputStringCancel5 = Lang.of("§cVertical Kb Settings is cancelled.");
+    public static final Lang npchitsettings = Lang.of("§bHit Settings");
 
 
     public static String[][] ReachLore = {
