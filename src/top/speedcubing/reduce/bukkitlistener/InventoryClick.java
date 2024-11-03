@@ -68,7 +68,7 @@ public class InventoryClick implements Listener {
                                 player.closeInventory();
                                 member.user.setInput(true);
                                 member.user.sendMessage("§aPlease input a valid number (0.000 ~ 25.000)");
-                                switch (e.getAction()) {
+                                switch (r.getEvent().getAction()) {
                                     case PICKUP_ALL:
                                         member.ReachSettings = true;
                                         break;
@@ -81,7 +81,7 @@ public class InventoryClick implements Listener {
                                 player.closeInventory();
                                 member.user.sendMessage("§aPlease input a valid number (0.000 ~ 5.000)");
                                 member.user.setInput(true);
-                                switch (e.getAction()) {
+                                switch (r.getEvent().getAction()) {
                                     case PICKUP_ALL:
                                         member.horSettings = true;
                                         break;
@@ -91,7 +91,7 @@ public class InventoryClick implements Listener {
                                 }
                             }, 12);
                             inv.setClickEvent((r) -> {
-                                if (Objects.requireNonNull(e.getAction()) == InventoryAction.PICKUP_ALL) {
+                                if (r.getEvent().getAction() == InventoryAction.PICKUP_ALL) {
                                     player.closeInventory();
                                     member.verSettings = true;
                                     member.user.sendMessage("§aPlease input a valid number (0.000 ~ 5.000)");
