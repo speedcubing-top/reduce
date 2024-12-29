@@ -37,6 +37,7 @@ import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
+import top.speedcubing.lib.utils.SQL.SQLField;
 import top.speedcubing.lib.utils.TimeFormatter;
 import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
@@ -170,8 +171,20 @@ public class Member {
             m.user.bTeleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
         }
 
-        booleanCache = first ? user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla").getBooleanArray() : a;
-        integerCache = first ? user.dbSelect("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor").getIntArray() : integerCache;
+        if(first) {
+            booleanCache = new Boolean[4];
+            int i = 0;
+            for(SQLField f : user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla")) {
+                booleanCache[i++] = f.getBoolean();
+            }
+            integerCache = new Integer[11];
+            i = 0;
+            for(SQLField f : user.dbSelect("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor")) {
+                integerCache[i++] = f.getInt();
+            }
+        } else {
+            booleanCache = a;
+        }
         Inventory inventory = player.getInventory();
         inventory.clear();
         inventory.setItem(integerCache[0], ItemStackList.Sticks[integerCache[3]][user.lang]);
