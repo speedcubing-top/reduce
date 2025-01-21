@@ -1,0 +1,6 @@
+name: Reduce
+main: top.speedcubing.reduce.Reduce
+version: 1.0
+depend:
+  - speedcubingServer
+  - speedcubingLib

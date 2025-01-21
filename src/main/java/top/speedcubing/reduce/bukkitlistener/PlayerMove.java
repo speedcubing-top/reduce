@@ -1,0 +1,53 @@
+package top.speedcubing.reduce.bukkitlistener;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import top.speedcubing.lib.bukkit.SideBar;
+import top.speedcubing.reduce.list.ItemStackList;
+import top.speedcubing.reduce.list.StringList;
+import top.speedcubing.reduce.Member;
+import top.speedcubing.reduce.Reduce;
+
+public class PlayerMove implements Listener {
+    @EventHandler
+    public void PlayerMoveEvent(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+        if (player.getGameMode() == GameMode.ADVENTURE) {
+            Location to = e.getTo();
+            Member member = Member.getMember(player);
+            if (Math.abs(to.getZ() - member.coord - 0.5) > 149.5 || Math.abs(to.getX() - member.map * 500 - 0.5) > 149.5)
+                player.teleport(e.getFrom());
+            else if (to.getY() < 85)
+                player.teleport(new Location(Reduce.world, member.map * 500 + 0.5, 100, member.coord + 0.5, 0, 0));
+        } else if (player.getGameMode() == GameMode.SURVIVAL) {
+            Location to = e.getTo();
+            Member member = Member.getMember(player);
+            member.Aim(player.getLocation());
+            if (to.getY() < 85 || Math.abs(to.getZ() - member.coord - 0.5) > 149.5 || Math.abs(to.getX() - member.map * 500 - 0.5) > 149.5) {
+                int map = member.map;
+                double NPCx = map * 500 + 0.5;
+                double NPCz = member.coord + 0.5;
+                SideBar.getSidebar(player).setLineByScore(StringList.ReduceSidebar[member.user.lang][7] + 0, 1);
+                member.stopDamage();
+                int[] m = Reduce.MapLocations[map];
+                player.teleport(new Location(Reduce.world, NPCx - m[0], 100 + m[1], NPCz, 270, 0));
+                player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]]);
+                member.BlockPlaced = 0;
+                member.clearBlocks();
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (member.npc != null)
+                            member.npc.setLocation(NPCx, member.npc.entityPlayer.locY, NPCz, 90, 0).updateNpcLocation();
+                    }
+                }, 50);
+            }
+        }
+    }
+}
