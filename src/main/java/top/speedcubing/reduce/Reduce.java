@@ -1,5 +1,6 @@
 package top.speedcubing.reduce;
 
+import configuration.Configuration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,14 +61,13 @@ public class Reduce extends JavaPlugin {
     public static final List<Integer>[] specStorage = new ArrayList[maptypes];
     public static final Map<Integer, List<String>>[] specName = new HashMap[maptypes];
     public static final List<String> totalName = new ArrayList<>();
-    public static double[] ReduceKB;
     public static String mapName = "map_reduce";
 
     @Override
     public void onEnable() {
         MinecraftServer.getServer().getPropertyManager().setProperty("server-name", "reduce");
-        CubingEventManager.registerListeners(new ServerEvent());
-        new ConfigReloadEvent().call();
+        CubingEventManager.registerListeners(new ServerEvent(), new Configuration());
+        Configuration.reload();
         registerListeners();
         registerWorlds();
 

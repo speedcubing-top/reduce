@@ -1,6 +1,7 @@
 package top.speedcubing.reduce;
 
 import com.mojang.authlib.properties.Property;
+import configuration.Configuration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -123,8 +124,8 @@ public class Member {
                                 double xDiff = location.getX() - map * 500 - 0.5;
                                 double zDiff = location.getZ() - coord - 0.5;
                                 double yDiff = p.getEyeLocation().getY() - 101.62;
-                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= Reduce.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
-                                    double[] value = Reduce.ReduceKB;
+                                if (Math.sqrt(xDiff * xDiff + zDiff * zDiff + yDiff * yDiff) <= Configuration.ReduceKB[4] * integerCache[booleanCache[3] ? 9 : 5] / 1000) {
+                                    double[] value = Configuration.ReduceKB;
                                     double hor = p.isOnGround() ? value[0] : value[2];
                                     double horizontalDistance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
                                     double x = xDiff * hor / horizontalDistance * integerCache[booleanCache[3] ? 10 : 6] / 1000;

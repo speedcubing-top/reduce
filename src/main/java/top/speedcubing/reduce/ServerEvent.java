@@ -32,17 +32,6 @@ import top.speedcubing.server.speedcubingServer;
 public class ServerEvent {
 
     @CubingEventHandler
-    public void configReloadEvent(ConfigReloadEvent e) {
-        Reduce.ReduceKB = new double[]{
-                ServerConfig.config.getAsJsonObject("reducekb").get("hor").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("ver").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("airhor").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("airver").getAsDouble(),
-                ServerConfig.config.getAsJsonObject("reducekb").get("reach").getAsDouble()
-        };
-    }
-
-    @CubingEventHandler
     public void playInEvent(PlayInEvent e) {
         if (e.getPacket() instanceof PacketPlayInChat) {
             String message = ((PacketPlayInChat) e.getPacket()).a();
