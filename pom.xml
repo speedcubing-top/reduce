@@ -9,11 +9,29 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>speedcubing-public</id>
+            <url>https://repo.speedcubing.top/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>speedcubing-private-projects-release</id>
+            <url>https://repo.speedcubing.top/repository/maven-private-projects-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>speedcubing-private-projects-snapshot</id>
+            <url>https://repo.speedcubing.top/repository/maven-private-projects-snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
