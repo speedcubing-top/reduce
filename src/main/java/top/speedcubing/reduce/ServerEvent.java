@@ -158,22 +158,6 @@ public class ServerEvent {
     }
 
     @CubingEventHandler
-    public void socketReadEvent(SocketReadEvent e) {
-        switch (e.getPacketID()) {
-            case "reduce":
-                try {
-                    int id = e.getData().readInt();
-                    int map = e.getData().readInt();
-                    Reduce.mapCache.put(id, map);
-                    BungeeProxy.switchServer(id, "reduce");
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-                break;
-        }
-    }
-
-    @CubingEventHandler
     public void nickEvent(NickEvent e) {
         e.setCancelled(true);
         Member.getMember(e.getPlayer()).user.sendMessage("%lang_general_lobby_only%");

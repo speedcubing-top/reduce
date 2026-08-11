@@ -42,6 +42,7 @@ import top.speedcubing.reduce.bukkitlistener.PlayerToggleSneak;
 import top.speedcubing.reduce.core.BlockEditor;
 import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
+import top.speedcubing.reduce.redis.RedisListener;
 import top.speedcubing.server.lang.LangItem;
 import top.speedcubing.server.speedcubingServer;
 import top.speedcubing.server.utils.MapManager;
@@ -81,6 +82,8 @@ public class Reduce extends JavaPlugin {
             specName[i] = new HashMap<>();
             Rooms[i] = new HashSet<>();
         }
+
+        RedisListener.init();
     }
 
     private void registerListeners() {
