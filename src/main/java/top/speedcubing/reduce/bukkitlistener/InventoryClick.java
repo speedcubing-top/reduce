@@ -62,12 +62,12 @@ public class InventoryClick implements Listener {
                             inv.setItem(new LangItem(Material.STICK).name(reach[0]).lore2(reach[1] + "\n" + reach[2].replace("%kb%", String.format("%.3f", cache[5] / 1000D)) + "\n" + reach[3].replace("%kb2%", String.format("%.3f", cache[9] / 1000D)) + "\n" + reach[4] + "\n" + reach[5] + "\n" + reach[6] + "\n" + reach[7]), 11);
                             inv.setItem(new LangItem(Material.STICK).name(hor[0]).lore2(hor[1] + "\n" + hor[2].replace("%kb%", String.format("%.3f", cache[6] / 1000D)) + "\n" + hor[3].replace("%kb2%", String.format("%.3f", cache[10] / 1000D)) + "\n" + hor[4] + "\n" + hor[5] + "\n" + hor[6] + "\n" + hor[7]), 12);
                             inv.setItem(new LangItem(Material.STICK).name(ver[0]).lore2(ver[1] + "\n" + ver[2].replace("%kb%", String.format("%.3f", cache[7] / 1000D)) + "\n" + ver[3] + "\n" + ver[4] + "\n" + ver[5] + "\n" + ver[6] + "\n" + ver[7]), 13);
-                            inv.setItem(new LangItem(Material.FEATHER).name("§bVanilla KnockBack").lore2(member.booleanCache[3] ? "§cClick to turn off" : "§aClick to turn on"), 15);
+                            inv.setItem(new LangItem(Material.FEATHER).name("%lang_reduce_item_vanilla_kb%").lore2(member.booleanCache[3] ? "%lang_reduce_lore_click_off%" : "%lang_reduce_lore_click_on%"), 15);
 
                             inv.setClickEvent((r) -> {
                                 player.closeInventory();
                                 member.user.setInput(true);
-                                member.user.sendMessage("§aPlease input a valid number (0.000 ~ 25.000)");
+                                member.user.sendMessage("%lang_input_input_num%", "0.000", "25.000");
                                 switch (r.getEvent().getAction()) {
                                     case PICKUP_ALL:
                                         member.ReachSettings = true;
@@ -79,7 +79,7 @@ public class InventoryClick implements Listener {
                             }, 11);
                             inv.setClickEvent((r) -> {
                                 player.closeInventory();
-                                member.user.sendMessage("§aPlease input a valid number (0.000 ~ 5.000)");
+                                member.user.sendMessage("%lang_input_input_num%", "0.000", "5.000");
                                 member.user.setInput(true);
                                 switch (r.getEvent().getAction()) {
                                     case PICKUP_ALL:
@@ -94,7 +94,7 @@ public class InventoryClick implements Listener {
                                 if (r.getEvent().getAction() == InventoryAction.PICKUP_ALL) {
                                     player.closeInventory();
                                     member.verSettings = true;
-                                    member.user.sendMessage("§aPlease input a valid number (0.000 ~ 5.000)");
+                                    member.user.sendMessage("%lang_input_input_num%", "0.000", "5.000");
                                     member.user.setInput(true);
                                 }
                             }, 13);
@@ -140,7 +140,7 @@ public class InventoryClick implements Listener {
                         break;
                         case 14: {
                             member.user.sound(Sound.CLICK);
-                            LangInv inv = new LangInv(18, "§6Select Map");
+                            LangInv inv = new LangInv(18, "%lang_reduce_inv_select_map%");
                             LangItem[] stacks = ItemStackList.Maps[0];
                             inv.setItem(stacks[0], 0);
                             inv.setItem(stacks[1], 1);
@@ -186,13 +186,13 @@ public class InventoryClick implements Listener {
                         break;
                         case 15: {
                             member.user.sound(Sound.CLICK);
-                            LangInv inv = new LangInv(27, "§bNPC appearances");
-                            inv.setItem(new LangItem(Material.SIGN).name("§aChange NPC's skin"), 10);
-                            inv.setItem(new LangItem(Material.SKULL_ITEM).durability(3).name("§aUse your current skin").owner(player.getName()), 11);
-                            inv.setItem(new LangItem(Material.NAME_TAG).name("§aChange NPC's DisplayName"), 13);
-                            inv.setItem(new LangItem(Material.NAME_TAG).name("§aReset NPC's name to default"), 14);
+                            LangInv inv = new LangInv(27, "%lang_reduce_inv_npc_appearance%");
+                            inv.setItem(new LangItem(Material.SIGN).name("%lang_reduce_item_npc_skin%"), 10);
+                            inv.setItem(new LangItem(Material.SKULL_ITEM).durability(3).name("%lang_reduce_item_npc_own_skin%").owner(player.getName()), 11);
+                            inv.setItem(new LangItem(Material.NAME_TAG).name("%lang_reduce_item_npc_name%"), 13);
+                            inv.setItem(new LangItem(Material.NAME_TAG).name("%lang_reduce_item_npc_name_reset%"), 14);
                             inv.setClickEvent((r) -> {
-                                member.user.sendMessage("§aPlease input a valid username for NPC's skin in chat:");
+                                member.user.sendMessage("%lang_reduce_msg_input_skin%");
                                 player.closeInventory();
                                 member.setSkin = true;
                                 member.user.setInput(true);
@@ -203,7 +203,7 @@ public class InventoryClick implements Listener {
                                 player.closeInventory();
                             }, 11);
                             inv.setClickEvent((r) -> {
-                                member.user.sendMessage("§aPlease input a String for NPC's name in chat:");
+                                member.user.sendMessage("%lang_reduce_msg_input_name%");
                                 player.closeInventory();
                                 member.setName = true;
                                 member.user.setInput(true);

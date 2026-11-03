@@ -14,7 +14,7 @@ public class PlayerJoin implements Listener {
         Member member = new Member(player);
         Integer map = Reduce.mapCache.get(member.user.id);
         if (map == null) {
-            player.sendMessage("§4Error while transporting map data. please contact speedcubing");
+            member.user.sendMessage("%lang_reduce_msg_map_error%");
             map = 0;
         }
         int room = 1;

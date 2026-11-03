@@ -18,10 +18,10 @@ public class ItemStackList {
     public static InventoryHolder SpecHolder = () -> null;
     public static ItemStack[][] Sticks = new ItemStack[6][4];
     public static Inventory[] Settings = new Inventory[4];
-    public static LangItem LeaveSpec = new LangItem(Material.SLIME_BALL).name("§bSpectate");
+    public static LangItem LeaveSpec = new LangItem(Material.SLIME_BALL).name("%lang_reduce_item_spectate%");
     public static Inventory[] InventoryKitEditor = new Inventory[4];
     public static ItemStack[] settings = new ItemStack[4];
-    public static LangItem Spec = new LangItem(Material.COMPASS).name("§bSpectate");
+    public static LangItem Spec = new LangItem(Material.COMPASS).name("%lang_reduce_item_spectate%");
     public static ItemStack[][][] stickeditor = new ItemStack[2][6][4];
     public static LangItem[][] Maps = new LangItem[2][Reduce.maptypes];
     public static ItemStack[][] prefereditor = new ItemStack[3][4];
@@ -43,18 +43,18 @@ public class ItemStackList {
     public static ItemStack[] specialeditor = new ItemStack[9]; // blockedit-here
 
     public void Load() {
-        Maps[0][0] = new LangItem(Material.LOG).durability(3).name("§6Oneline");
-        Maps[0][1] = new LangItem(Material.BED).name("§6BedWars");
-        Maps[0][2] = new LangItem(Material.BARRIER).name("§6OneBlock");
-        Maps[0][3] = new LangItem(Material.SMOOTH_BRICK).name("§6Chrama");
-        Maps[0][4] = new LangItem(Material.SANDSTONE).name("§6Inclined");
-        Maps[1][0] = new LangItem(Material.LOG).durability(3).glow().durability(3).name("§6Oneline").lore2("general_selected");
-        Maps[1][1] = new LangItem(Material.BED).glow().name("§6BedWars").lore2("general_selected");
-        Maps[1][2] = new LangItem(Material.BARRIER).glow().name("§6OneBlock").lore2("general_selected");
-        Maps[1][3] = new LangItem(Material.SMOOTH_BRICK).glow().name("§6Chrama").lore2("general_selected");
-        Maps[1][4] = new LangItem(Material.SANDSTONE).glow().name("§6Inclined").lore2("general_selected");
+        Maps[0][0] = new LangItem(Material.LOG).durability(3).name("%lang_reduce_map_name_0%");
+        Maps[0][1] = new LangItem(Material.BED).name("%lang_reduce_map_name_1%");
+        Maps[0][2] = new LangItem(Material.BARRIER).name("%lang_reduce_map_name_2%");
+        Maps[0][3] = new LangItem(Material.SMOOTH_BRICK).name("%lang_reduce_map_name_3%");
+        Maps[0][4] = new LangItem(Material.SANDSTONE).name("%lang_reduce_map_name_4%");
+        Maps[1][0] = new LangItem(Material.LOG).durability(3).glow().durability(3).name("%lang_reduce_map_name_0%").lore2("%lang_general_selected%");
+        Maps[1][1] = new LangItem(Material.BED).glow().name("%lang_reduce_map_name_1%").lore2("%lang_general_selected%");
+        Maps[1][2] = new LangItem(Material.BARRIER).glow().name("%lang_reduce_map_name_2%").lore2("%lang_general_selected%");
+        Maps[1][3] = new LangItem(Material.SMOOTH_BRICK).glow().name("%lang_reduce_map_name_3%").lore2("%lang_general_selected%");
+        Maps[1][4] = new LangItem(Material.SANDSTONE).glow().name("%lang_reduce_map_name_4%").lore2("%lang_general_selected%");
         {
-            String[] stick = {"§6Stock", "§6Stick", "§6擊退棒", "§6击退棒"};
+            String[] stick = StringList.lang("reduce_item_stick");
             for (int i = 0; i < 4; i++) {
                 ItemStack[] sticks = {
                         new ItemBuilder(Material.STICK).name(stick[i]).ench(Enchantment.KNOCKBACK, 1).build(),
@@ -70,20 +70,20 @@ public class ItemStackList {
             }
         }
         {
-            String[] display = {"§cpause & settings", "§cpause & settings", "§cpause & settings", "§cpause & settings"};
+            String[] display = StringList.lang("reduce_item_pause_settings");
             for (int i = 0; i < 4; i++) {
                 settings[i] = new ItemBuilder(Material.INK_SACK).durability(1).name(display[i]).build();
             }
         }
         {
-            String[] title = {"§cReduce Einstellungen", "§cReduce Settings", "§cReduce 設定", "§cReduce 设置"};
-            String[] hit = {"§bHit Settings", "§bHit Settings", "§bHit Settings", "§bHit Settings"};
-            String[] inv = {"§bInventar", "§bInventory", "§b物品欄", "§b物品栏"};
-            String[] block = {"§bBlock Skin", "§bBlock Skin", "§c方塊材質", "§c方块材质"};
-            String[] stick = {"§bKnockBackStick Skin", "§bKnockBackStick Skin", "§b擊退棒材質", "§b击退棒材质"};
-            String[] map = {"§bChange Map", "§bChange Map", "§bChange Map", "§bChange Map"};
-            String[] skin = {"§bNPC Settings", "§bNPC Settings", "§bNPC Settings", "§bNPC Settings"};
-            String[] other = {"§bPreferences", "§bPreferences", "§bPreferences", "§bPreferences"};
+            String[] title = StringList.lang("reduce_inv_settings");
+            String[] hit = StringList.lang("reduce_inv_hit_settings");
+            String[] inv = StringList.lang("inv_inventory");
+            String[] block = StringList.lang("item_blockskin");
+            String[] stick = StringList.lang("reduce_item_stick_skin");
+            String[] map = StringList.lang("reduce_item_change_map");
+            String[] skin = StringList.lang("reduce_item_npc_settings");
+            String[] other = StringList.lang("reduce_inv_preferences");
             for (int i = 0; i < 4; i++) {
                 Settings[i] = Bukkit.createInventory(SettingsHolder, 27, title[i]);
                 Settings[i].setItem(10, new ItemBuilder(Material.STICK).name(hit[i]).build());
@@ -96,9 +96,9 @@ public class ItemStackList {
             }
         }
         {
-            String[] title = {"§b Inventar", "§cReduce Inventory", "§cReduce 物品欄", "§cReduce 物品栏"};
-            String[] save = {"§aÄnderungen speichern", "§aSave Changes", "§a儲存設定", "§a储存设置"};
-            String[] unsave = {"§cnicht gespeicherte Änderungen", "§cUnSave Changes", "§c不儲存設定", "§c不储存设置"};
+            String[] title = StringList.lang("reduce_inv_kit_editor");
+            String[] save = StringList.lang("reduce_item_save_changes");
+            String[] unsave = StringList.lang("reduce_item_discard_changes");
             for (int i = 0; i < 4; i++) {
                 InventoryKitEditor[i] = Bukkit.createInventory(KitEditorHolder, 9, title[i]);
                 InventoryUtils.fillItem(InventoryKitEditor[i], 0, 9, new ItemBuilder(Material.STAINED_GLASS_PANE).durability(7).name("§a").build());
@@ -109,12 +109,12 @@ public class ItemStackList {
 
         {
             String[][] prefs = {
-                    {"§6NPC damage color", "§6NPC damage color", "§6NPC damage color", "§6NPC damage color"},
-                    {"§6NPC damage sound", "§6NPC damage sound", "§6NPC damage sound", "§6NPC damage sound"},
-                    {"§6NPC keep swinging", "§6NPC keep swinging", "§6NPC keep swinging", "§6NPC keep swinging"}
+                    StringList.lang("reduce_item_pref_damage_color"),
+                    StringList.lang("reduce_item_pref_damage_sound"),
+                    StringList.lang("reduce_item_pref_keep_swinging")
             };
-            String[] active = {"§aActivated", "§aActivated", "§aActivated", "§aActivated"};
-            String[] deactivated = {"§cDeactivated", "§cDeactivated", "§cDeactivated", "§cDeactivated"};
+            String[] active = StringList.lang("reduce_item_activated");
+            String[] deactivated = StringList.lang("reduce_item_deactivated");
             for (int i = 0; i < 4; i++) {
                 ItemStack[] prefers = {
                         new ItemBuilder(Material.REDSTONE).name(prefs[0][i]).build(),
@@ -135,12 +135,13 @@ public class ItemStackList {
         }
 
         {
-            String[] stick = {"§6Stock", "§6Stick", "§6擊退棒", "§6击退棒"};
-            String[] sword = {"§6Schwert", "§6Sword", "§6劍", "§6剑"};
-            String[] hoe = {"§6Hoe", "§6Hoe", "§6Hoe", "§6Hoe"};
-            String[] blaze = {"§6Blaze Rod", "§6Blaze Rod", "§6烈焰棒", "§6烈焰棒"};
-            String[] bone = {"§6Bone", "§6Bone", "§6骨頭", "§6骨头"};
-            String[] feather = {"§6Feather", "§6Feather", "§6Feather", "§6Feather"};
+            String[] stick = StringList.lang("reduce_item_stick");
+            String[] sword = StringList.lang("reduce_item_sword");
+            String[] hoe = StringList.lang("reduce_item_hoe");
+            String[] blaze = StringList.lang("reduce_item_blaze_rod");
+            String[] bone = StringList.lang("reduce_item_bone");
+            String[] feather = StringList.lang("reduce_item_feather");
+            String[] selected = StringList.lang("general_selected");
             for (int i = 0; i < 4; i++) {
                 ItemStack[] sticks = {
                         new ItemBuilder(Material.STICK).name(stick[i]).build(),
@@ -151,12 +152,12 @@ public class ItemStackList {
                         new ItemBuilder(Material.FEATHER).name(feather[i]).build()
                 };
                 ItemStack[] sticks2 = {
-                        new ItemBuilder(Material.STICK).name(stick[i]).lore("§aSelected!").build(),
-                        new ItemBuilder(Material.DIAMOND_SWORD).glow().name(sword[i]).hideAttr().lore("§aSelected!").build(),
-                        new ItemBuilder(Material.DIAMOND_HOE).glow().name(hoe[i]).hideAttr().lore("§aSelected!").build(),
-                        new ItemBuilder(Material.BLAZE_ROD).name(blaze[i]).lore("§aSelected!").build(),
-                        new ItemBuilder(Material.BONE).name(bone[i]).lore("§aSelected!").build(),
-                        new ItemBuilder(Material.FEATHER).name(feather[i]).lore("§aSelected!").build()
+                        new ItemBuilder(Material.STICK).name(stick[i]).lore(selected[i]).build(),
+                        new ItemBuilder(Material.DIAMOND_SWORD).glow().name(sword[i]).hideAttr().lore(selected[i]).build(),
+                        new ItemBuilder(Material.DIAMOND_HOE).glow().name(hoe[i]).hideAttr().lore(selected[i]).build(),
+                        new ItemBuilder(Material.BLAZE_ROD).name(blaze[i]).lore(selected[i]).build(),
+                        new ItemBuilder(Material.BONE).name(bone[i]).lore(selected[i]).build(),
+                        new ItemBuilder(Material.FEATHER).name(feather[i]).lore(selected[i]).build()
                 };
                 int length = sticks.length;
                 for (int j = 0; j < length; j++) {
