@@ -20,6 +20,13 @@ public class InventoryClose implements Listener {
             member.kitedit = false;
             member.user.sendMessage("%lang_inventory_discard%");
             InventoryUtils.fillItem(player.getInventory(), 9, 36, new ItemStack(Material.AIR));
+            Integer[] ints = member.integerCache;
+            for (int i = 0; i < 9; i++)
+                player.getInventory().setItem(i, null);
+            player.getInventory().setItem(ints[0], ItemStackList.Sticks[ints[3]][member.user.lang]);
+            player.getInventory().setItem(ints[1], ItemStackList.Blocks[ints[4]]);
+            player.getInventory().setItem(ints[8], ItemStackList.Spec.get(member.user));
+            player.getInventory().setItem(ints[2], ItemStackList.settings[member.user.lang]);
             player.updateInventory();
         }
     }

@@ -39,7 +39,7 @@ import top.speedcubing.lib.bukkit.WorldUtils;
 import top.speedcubing.lib.bukkit.entity.Hologram;
 import top.speedcubing.lib.bukkit.entity.NPC;
 import top.speedcubing.lib.bukkit.inventory.ItemBuilder;
-import top.speedcubing.lib.utils.SQL.SQLField;
+import top.speedcubing.lib.utils.SQL.SQLRow;
 import top.speedcubing.lib.utils.TimeFormatter;
 import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
@@ -85,6 +85,8 @@ public class Member {
     public PlayerConnection connection;
     public boolean isLockedOnSomeone;
     public int kb;
+    private int guiRank;
+    private String guiName;
 
     public Member(Player player) {
         this.user = User.getUser(player);
@@ -100,7 +102,9 @@ public class Member {
         boolean first = a == null;
         EntityPlayer entityplayer = ((CraftPlayer) player).getHandle();
         connection = entityplayer.playerConnection;
-        Property property = first ? entityplayer.getProfile().getProperties().get("textures").iterator().next() : npc.entityPlayer.getProfile().getProperties().get("textures").iterator().next();
+        NPC oldNpc = npc;
+        Hologram oldHolo = Holo;
+        Property property = first ? entityplayer.getProfile().getProperties().get("textures").iterator().next() : oldNpc.entityPlayer.getProfile().getProperties().get("textures").iterator().next();
         Set<Player> SPEC = new HashSet<>();
         for (Member m : Spectators)
             SPEC.add(m.user.player);
@@ -163,7 +167,11 @@ public class Member {
         double locy = 100 + Reduce.MapLocations[map][1];
         double locz = coord + 0.5;
         player.teleport(new Location(Reduce.world, locx, locy, locz, 270, 0));
-        this.Holo = new Hologram(first ? "§6speedcubing" : Holo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
+        this.Holo = new Hologram(first ? "§6speedcubing" : oldHolo.armorStand.getCustomName(), false, false).setLocation(mX + 0.5, 101.85, coord + 0.5, 0, 0);
+        if (!first) {
+            oldNpc.delete();
+            oldHolo.delete();
+        }
         Holo.addListener(player);
         Holo.addListener(SPEC);
         Holo.spawn();
@@ -175,15 +183,12 @@ public class Member {
 
         if(first) {
             booleanCache = new Boolean[4];
-            int i = 0;
-            for(SQLField f : user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla")) {
-                booleanCache[i++] = f.getBoolean();
-            }
             integerCache = new Integer[11];
-            i = 0;
-            for(SQLField f : user.dbSelect("reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor")) {
-                integerCache[i++] = f.getInt();
-            }
+            SQLRow row = user.dbSelect("reduce_npccolor,reduce_npcsound,reduce_npcswing,reduce_vanilla,reduce_stick,reduce_block,reduce_setting,reduce_stickskin,reduce_blockskin,reduce_reach,reduce_hor,reduce_ver,reduce_spec,reduce_vanilla_reach,reduce_vanilla_hor");
+            for (int i = 0; i < 4; i++)
+                booleanCache[i] = row.getBoolean(i);
+            for (int i = 0; i < 11; i++)
+                integerCache[i] = row.getInt(i + 4);
         } else {
             booleanCache = a;
         }
@@ -281,12 +286,7 @@ public class Member {
 
     public void b() {
         int rank = Rank.getCode(user.displayRank);
-        int diffmap = 0;
         int diffrank = 0;
-        int total = Reduce.totalName.size();
-        for (int i = 0; i < map; i++) {
-            diffmap += Reduce.specStorage[i].size();
-        }
         Map<Integer, List<String>> names = Reduce.specName[map];
         List<Integer> ranks = new ArrayList<>(names.keySet());
         Collections.sort(ranks);
@@ -299,33 +299,47 @@ public class Member {
             names.put(rank, new ArrayList<>());
         List<String> same = names.get(rank);
         String name = user.bGetName();
+        guiRank = rank;
+        guiName = name;
         same.add(name);
         Collections.sort(same);
         int index = same.indexOf(name);
-        int realindex = diffmap + diffrank + index;
-        Reduce.totalName.add(realindex, name);
-        Reduce.specStorage[map].add(diffrank + index, user.id);
-        for (int i = total; i > realindex; i--) {
-            Reduce.spec.setItem(i, Reduce.spec.getItem(i - 1));
+        int diffmap = 0;
+        for (int i = 0; i < map; i++) {
+            diffmap += Reduce.specStorage[i].size();
         }
-        Reduce.spec.setItem(realindex, new ItemBuilder(ItemStackList.Maps[0][map].get(0).getType()).name(user.getColorName(false)).build());
+        Reduce.totalName.add(diffmap + diffrank + index, name);
+        Reduce.specStorage[map].add(diffrank + index, user.id);
+        renderSpec();
         Reduce.updateSpecPage(0);
     }
 
     public void removeFromGUI(boolean ignored) {
-        String name = user.bGetName();
-        int code = Rank.getCode(user.displayRank);
-        List<String> x = Reduce.specName[map].get(code);
-        if (x.size() == 1)
-            Reduce.specName[map].remove(code);
-        else x.remove(name);
-        int total = Reduce.totalName.size();
-        Reduce.specStorage[map].remove(Integer.valueOf(user.id));
-        for (int i = Reduce.totalName.indexOf(name); i < total; i++) {
-            Reduce.spec.setItem(i, Reduce.spec.getItem(i + 1));
+        List<String> x = Reduce.specName[map].get(guiRank);
+        if (x != null) {
+            x.remove(guiName);
+            if (x.isEmpty())
+                Reduce.specName[map].remove(guiRank);
         }
-        Reduce.spec.setItem(total, new ItemStack(Material.AIR));
-        Reduce.totalName.remove(name);
+        Reduce.specStorage[map].remove(Integer.valueOf(user.id));
+        Reduce.totalName.remove(guiName);
+        renderSpec();
         Reduce.updateSpecPage(ignored ? 0 : user.id);
+    }
+
+    //redraw the shared spectate GUI from specStorage (same order as totalName), capped at the inventory size
+    private static void renderSpec() {
+        int size = Reduce.spec.getSize();
+        int slot = 0;
+        for (int m = 0; m < Reduce.maptypes && slot < size; m++) {
+            for (int id : Reduce.specStorage[m]) {
+                if (slot >= size)
+                    break;
+                Member member = getMember(id);
+                Reduce.spec.setItem(slot++, member == null ? null : new ItemBuilder(ItemStackList.Maps[0][m].get(0).getType()).name(member.user.getColorName(false)).build());
+            }
+        }
+        while (slot < size)
+            Reduce.spec.setItem(slot++, null);
     }
 }

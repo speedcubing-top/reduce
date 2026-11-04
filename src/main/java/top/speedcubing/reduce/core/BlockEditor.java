@@ -42,7 +42,7 @@ public class BlockEditor {
             member.integerCache[4] = x;
             player.closeInventory();
             ItemStack stack = ItemStackList.Blocks[x];
-            player.getInventory().setItem(1, stack);
+            player.getInventory().setItem(member.integerCache[1], stack);
             member.user.sendMessage("%lang_general_saved_setting%");
         } else if (RawSlot >= 1 && RawSlot <= ItemStackList.categoryblockeditor.length) {
             switch (RawSlot) {
@@ -70,7 +70,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -97,7 +97,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -124,7 +124,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -151,7 +151,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -179,7 +179,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -216,7 +216,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -243,7 +243,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });
@@ -270,7 +270,7 @@ public class BlockEditor {
                             player.closeInventory();
                             ItemStack stack = ItemStackList.Blocks[x];
 
-                            player.getInventory().setItem(1, stack);
+                            player.getInventory().setItem(member.integerCache[1], stack);
                             member.user.sendMessage("%lang_general_saved_setting%");
                         }
                     });

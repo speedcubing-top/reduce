@@ -63,7 +63,7 @@ public class PlayerInteract implements Listener {
                 inventory.setContents(orig.getContents());
                 if (player.getGameMode().equals(GameMode.ADVENTURE)) {
                     int a = Reduce.totalName.indexOf(member.target.user.bGetName());
-                    if (a != -1)
+                    if (a != -1 && a < inventory.getSize())
                         ItemUtils.glow(inventory.getItem(a));
                 }
                 player.openInventory(inventory);

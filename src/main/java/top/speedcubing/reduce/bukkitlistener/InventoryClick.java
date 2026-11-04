@@ -322,6 +322,7 @@ public class InventoryClick implements Listener {
                                 member.target.npc.removeListener(player);
                                 member.target.Holo.removeListener(player);
                             } else {
+                                member.stopDamage();
                                 member.Spectators.forEach(a -> Reduce.quitSpec(true, a, true));
                                 member.Spectators.clear();
                                 member.removeFromGUI(false);

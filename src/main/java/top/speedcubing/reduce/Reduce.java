@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutCamera;
@@ -56,7 +57,7 @@ public class Reduce extends JavaPlugin {
     public static ScoreboardTeam NoNameTag;
 
     public static final Set<Integer>[] Rooms = new HashSet[maptypes];
-    public static final Map<Integer, Integer> mapCache = new HashMap<>();
+    public static final Map<Integer, Integer> mapCache = new ConcurrentHashMap<>();
     public static LangItem Invalid;
     public static final Inventory spec = Bukkit.createInventory(ItemStackList.SpecHolder, 54, "");
     public static final List<Integer>[] specStorage = new ArrayList[maptypes];
@@ -165,8 +166,11 @@ public class Reduce extends JavaPlugin {
                 Inventory orig = spec;
                 Inventory inv1 = Bukkit.createInventory(orig.getHolder(), orig.getSize(), StringList.spec.getString(member.user.lang));
                 inv1.setContents(orig.getContents());
-                if (p.getGameMode() == GameMode.ADVENTURE)
-                    ItemUtils.glow(inv1.getItem(totalName.indexOf(member.target.user.bGetName())));
+                if (p.getGameMode() == GameMode.ADVENTURE) {
+                    int index = totalName.indexOf(member.target.user.bGetName());
+                    if (index != -1 && index < inv1.getSize())
+                        ItemUtils.glow(inv1.getItem(index));
+                }
                 Bukkit.getScheduler().runTask(speedcubingServer.getInstance(), () -> p.openInventory(inv1));
             }
         }

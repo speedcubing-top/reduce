@@ -132,7 +132,7 @@ public class ServerEvent {
                 } catch (Exception exception) {
                     member.user.sendMessage("%lang_input_invalid_number%");
                 }
-            } else if (message.charAt(0) != '/') {
+            } else if (!message.startsWith("/")) {
                 e.setCancelled(true);
                 RankFormat format = member.user.getFormat(false);
                 Chat.globalChat(player.getWorld().getPlayers(), player, Lang.of("%lang_message_format%"), message, format.getPrefix() + player.getName(), format.getChatColor());

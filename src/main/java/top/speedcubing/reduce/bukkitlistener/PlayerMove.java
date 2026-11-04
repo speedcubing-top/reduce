@@ -1,7 +1,6 @@
 package top.speedcubing.reduce.bukkitlistener;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import top.speedcubing.reduce.list.ItemStackList;
 import top.speedcubing.reduce.list.StringList;
 import top.speedcubing.reduce.Member;
 import top.speedcubing.reduce.Reduce;
+import top.speedcubing.server.speedcubingServer;
 
 public class PlayerMove implements Listener {
     @EventHandler
@@ -40,13 +40,10 @@ public class PlayerMove implements Listener {
                 player.getInventory().setItem(member.integerCache[1], ItemStackList.Blocks[member.integerCache[4]]);
                 member.BlockPlaced = 0;
                 member.clearBlocks();
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (member.npc != null)
-                            member.npc.setLocation(NPCx, member.npc.entityPlayer.locY, NPCz, 90, 0).updateNpcLocation();
-                    }
-                }, 50);
+                Bukkit.getScheduler().runTaskLater(speedcubingServer.getInstance(), () -> {
+                    if (member.npc != null)
+                        member.npc.setLocation(NPCx, member.npc.entityPlayer.locY, NPCz, 90, 0).updateNpcLocation();
+                }, 1);
             }
         }
     }

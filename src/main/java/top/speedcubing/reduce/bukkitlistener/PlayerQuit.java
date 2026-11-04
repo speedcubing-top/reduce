@@ -58,6 +58,8 @@ public class PlayerQuit implements Listener {
         }
         member.npc.despawn();
         member.npc.delete();
+        member.Holo.despawn();
+        member.Holo.delete();
         player.teleport(new Location(Reduce.world, 0.5, 1000, 0.5, 0, 0));
         Member.users.remove(member.user.id);
     }
