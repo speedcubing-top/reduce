@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -63,7 +63,7 @@ public class Member {
     public Hologram Holo;
     public int task = -1;
     public Set<BlockPosition> blocks = new HashSet<>();
-    public TimerTask SideBar;
+    public BukkitTask SideBar;
     public int coord;
     public int map;
     public int oldMap;
@@ -207,7 +207,9 @@ public class Member {
                 .staticLine(sidebar[6], 2)
                 .changeableLine(sidebar[7] + 0, 1)
                 .staticLine(sidebar[8], 0).create();
-        SideBar = new TimerTask() {
+        if (SideBar != null)
+            SideBar.cancel();
+        SideBar = new BukkitRunnable() {
             int x = 0;
 
             @Override
@@ -217,9 +219,7 @@ public class Member {
                     objective.setDisplayName(StringList.ReduceSidebar[user.lang][0].replace("%t%", new TimeFormatter(x, TimeUnit.SECONDS).format("%H%:", true).format("%m%:%s%", false).toString()));
                 x++;
             }
-        };
-        Timer timer = new Timer();
-        timer.schedule(SideBar, 0, 1000);
+        }.runTaskTimer(speedcubingServer.getInstance(), 0, 20);
     }
 
     public void clearBlocks() {

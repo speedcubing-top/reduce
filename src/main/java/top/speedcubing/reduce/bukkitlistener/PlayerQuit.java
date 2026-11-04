@@ -19,6 +19,8 @@ public class PlayerQuit implements Listener {
         Player player = e.getPlayer();
         boolean spec = player.getGameMode() == GameMode.ADVENTURE;
         Member member = Member.getMember(player);
+        if (member.SideBar != null)
+            member.SideBar.cancel();
         if (spec) {
             Reduce.quitSpec(false, member, false);
             Reduce.Rooms[member.oldMap].remove(Reduce.coordToRoom(member.oldCoord));
